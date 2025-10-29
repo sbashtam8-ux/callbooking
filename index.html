@@ -6,107 +6,108 @@
 <title>Callbooking Performance</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
-body { font-family: Calibri, sans-serif; background:#f0f2f5; margin:0; padding:0; direction:rtl; text-align:right; }
+body { font-family: 'Calibri', sans-serif; background:#f0f2f5; margin:0; padding:0; direction:rtl; text-align:right; }
 header {
-  background: linear-gradient(90deg, #28a745, #34d058);
+  background: linear-gradient(90deg,#28a745,#34d058);
   color:white;
-  padding:25px 0;
-  text-align:center;
-  font-size:32px;
-  font-weight:bold;
+  padding:20px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:15px;
   border-bottom-left-radius:12px;
   border-bottom-right-radius:12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  box-shadow:0 5px 15px rgba(0,0,0,0.2);
 }
-main { padding:30px; max-width:1200px; margin:auto; display:flex; flex-direction:column; gap:30px; }
-.card {
-  background:white;
-  padding:25px;
-  border-radius:15px;
-  box-shadow:0 6px 20px rgba(0,0,0,0.1);
-  transition:0.3s;
-}
-.card:hover { box-shadow:0 10px 25px rgba(0,0,0,0.2); }
-.card h2 { margin-top:0; color:#28a745; font-size:26px; text-align:right; }
+header img { height:50px; }
+header h1 { margin:0; font-size:30px; text-shadow:1px 1px 3px rgba(0,0,0,0.3); }
 
-.form-column { display:flex; flex-direction:column; gap:15px; }
-.form-field { display:flex; flex-direction:column; gap:5px; align-items:flex-start; }
-input, textarea, select { padding:12px; border-radius:10px; border:1px solid #ccc; width:100%; font-size:16px; transition:0.3s; }
-input:focus, textarea:focus { border-color:#28a745; box-shadow:0 0 5px rgba(40,167,69,0.4); outline:none; }
-
-input[type=number] { width:100px; text-align:right; }
-
-button { padding:12px 18px; border:none; border-radius:10px; cursor:pointer; font-size:16px; transition:0.3s; }
-button.submit { background-color:#28a745; color:white; }
-button.submit:hover { background-color:#218838; }
-button.reset { background-color:#dc2626; color:white; display:none; }
-button.reset:hover { background-color:#991b1b; }
-
-table { width:100%; border-collapse:collapse; margin-top:20px; text-align:right; }
-th, td { border:1px solid #ddd; padding:12px; vertical-align:middle; }
-th { background-color:#f3f4f6; color:#111827; }
-tbody tr:hover { background-color:#d1fae5; }
-
-canvas { margin-top:20px; width:100% !important; height:400px !important; }
-
-@media(max-width:768px){ main{padding:15px;} header{font-size:24px;} }
+main{max-width:1200px;margin:auto;padding:30px;display:flex;flex-direction:column;gap:30px;}
+.card{background:white;padding:25px;border-radius:15px;box-shadow:0 6px 20px rgba(0,0,0,0.1);transition:0.3s;}
+.card:hover{box-shadow:0 10px 25px rgba(0,0,0,0.2);}
+.card h2{margin-top:0;color:#28a745;font-size:24px;text-align:right;}
+.form-column{display:flex;flex-direction:column;gap:15px;}
+.form-field{display:flex;flex-direction:column;gap:5px;align-items:flex-start;}
+input,textarea,select{padding:10px;border-radius:10px;border:1px solid #ccc;width:100%;font-size:16px;transition:0.3s;}
+input:focus,textarea:focus,select:focus{border-color:#28a745;box-shadow:0 0 5px rgba(40,167,69,0.4);outline:none;}
+input[type=number]{width:100px;text-align:right;}
+button{padding:10px 15px;border:none;border-radius:10px;cursor:pointer;font-size:16px;transition:0.3s;}
+button.submit{background:#28a745;color:white;}
+button.submit:hover{background:#218838;}
+button.reset{background:#dc2626;color:white;display:none;}
+button.reset:hover{background:#991b1b;}
+table{width:100%;border-collapse:collapse;margin-top:20px;text-align:right;}
+th,td{border:1px solid #ddd;padding:12px;vertical-align:middle;}
+th{background-color:#f3f4f6;color:#111827;}
+tbody tr:hover{background-color:#d1fae5;}
+canvas{margin-top:20px;width:100%!important;height:400px!important;border-radius:15px;box-shadow:0 6px 20px rgba(0,0,0,0.1);}
 </style>
 </head>
 <body>
 
 <header>
-  Callbooking Performance
+<img src="snap_logo.png" alt="Snapp Logo">
+<h1>Callbooking Performance</h1>
 </header>
 
 <main>
+
+<!-- فرم آموزش -->
 <div class="card">
 <h2>مشکلات و نیاز آموزشی کارشناسان / ثبت توسط تیم آموزش</h2>
 <form id="trainingForm" class="form-column">
-  <div class="form-field"><label>نام کارشناس:</label><input type="text" id="trainingName"></div>
-  <div class="form-field"><label>امتیاز:</label><input type="number" id="trainingScore" min="0" max="80"></div>
-  <div class="form-field"><label>مشکلات تماس:</label><textarea id="trainingIssue"></textarea></div>
-  <div class="form-field"><label>مشکلات کارشناس:</label><textarea id="trainingProblem"></textarea></div>
-  <div class="form-field"><label>فایل شنود:</label><input type="file" id="trainingFile"></div>
-  <div style="display:flex; gap:15px; margin-top:15px;"><button type="submit" class="submit">ثبت</button></div>
+<div class="form-field"><label>نام کارشناس:</label><input type="text" id="trainingName"></div>
+<div class="form-field"><label>امتیاز:</label><input type="number" id="trainingScore" min="0" max="80"></div>
+<div class="form-field"><label>مشکلات تماس:</label><textarea id="trainingIssue"></textarea></div>
+<div class="form-field"><label>مشکلات کارشناس:</label><textarea id="trainingProblem"></textarea></div>
+<div class="form-field"><label>فایل شنود:</label><input type="file" id="trainingFile"></div>
+<div style="display:flex;gap:15px;margin-top:15px;"><button type="submit" class="submit">ثبت</button></div>
 </form>
 </div>
 
+<!-- فرم دوره همراهی -->
 <div class="card">
 <h2>کارشناسان نیازمند به دوره همراهی / ثبت توسط کوردیناتور ها</h2>
 <form id="callForm" class="form-column">
-  <div class="form-field"><label>نام کارشناس:</label><input type="text" id="agentName"></div>
-  <div class="form-field"><label>نام کوردیناتور:</label><input type="text" id="coordinatorName"></div>
-  <div class="form-field"><label>مشکلات کارشناس:</label><textarea id="note2"></textarea></div>
-  <div style="display:flex; gap:15px; margin-top:15px;"><button type="submit" class="submit">ثبت</button></div>
+<div class="form-field"><label>نام کارشناس:</label><input type="text" id="agentName"></div>
+<div class="form-field"><label>نام کوردیناتور:</label><input type="text" id="coordinatorName"></div>
+<div class="form-field"><label>مشکلات کارشناس:</label><textarea id="note2"></textarea></div>
+<div style="display:flex;gap:15px;margin-top:15px;"><button type="submit" class="submit">ثبت</button></div>
 </form>
 </div>
 
+<!-- نمودار امتیاز حرفه‌ای -->
 <div class="card">
 <h2>امتیاز کارشناسان</h2>
 <canvas id="scoreChart"></canvas>
 </div>
 
 <script>
+// نمونه داده‌ها
 const ctx = document.getElementById("scoreChart").getContext("2d");
-new Chart(ctx, {
-  type: "bar",
-  data: {
-    labels: ["علی","رضا","سارا","نگار","مهدی"],
-    datasets:[{
-      label:"امتیاز",
-      data:[70,55,80,45,60],
-      backgroundColor: function(ctx){
-        const value = ctx.dataset.data[ctx.dataIndex];
-        return value < 60 ? "#ff4d4d" : "#28a745";
-      }
-    }]
-  },
-  options:{
-    responsive:true,
-    plugins:{legend:{display:false}},
-    scales:{y:{beginAtZero:true, max:80}}
-  }
+new Chart(ctx,{
+    type:'bar',
+    data:{
+        labels:["علی","رضا","سارا","نگار","مهدی"],
+        datasets:[{
+            label:"امتیاز",
+            data:[70,55,80,45,60],
+            backgroundColor: function(ctx){
+                const val = ctx.dataset.data[ctx.dataIndex];
+                return val < 60 ? "#ff4d4d" : "#ffcc00";
+            },
+            borderRadius:10
+        }]
+    },
+    options:{
+        responsive:true,
+        plugins:{legend:{display:false}},
+        animation:{duration:1500,easing:'easeOutBounce'},
+        scales:{y:{beginAtZero:true,max:80}}
+    }
 });
 </script>
+
+</main>
 </body>
 </html>
