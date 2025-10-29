@@ -1,113 +1,412 @@
 <!DOCTYPE html>
 <html lang="fa">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Callbooking Performance</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<style>
-body { font-family: 'Calibri', sans-serif; background:#f0f2f5; margin:0; padding:0; direction:rtl; text-align:right; }
-header {
-  background: linear-gradient(90deg,#28a745,#34d058);
-  color:white;
-  padding:20px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:15px;
-  border-bottom-left-radius:12px;
-  border-bottom-right-radius:12px;
-  box-shadow:0 5px 15px rgba(0,0,0,0.2);
-}
-header img { height:50px; }
-header h1 { margin:0; font-size:30px; text-shadow:1px 1px 3px rgba(0,0,0,0.3); }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Callbooking Performance — Pro</title>
 
-main{max-width:1200px;margin:auto;padding:30px;display:flex;flex-direction:column;gap:30px;}
-.card{background:white;padding:25px;border-radius:15px;box-shadow:0 6px 20px rgba(0,0,0,0.1);transition:0.3s;}
-.card:hover{box-shadow:0 10px 25px rgba(0,0,0,0.2);}
-.card h2{margin-top:0;color:#28a745;font-size:24px;text-align:right;}
-.form-column{display:flex;flex-direction:column;gap:15px;}
-.form-field{display:flex;flex-direction:column;gap:5px;align-items:flex-start;}
-input,textarea,select{padding:10px;border-radius:10px;border:1px solid #ccc;width:100%;font-size:16px;transition:0.3s;}
-input:focus,textarea:focus,select:focus{border-color:#28a745;box-shadow:0 0 5px rgba(40,167,69,0.4);outline:none;}
-input[type=number]{width:100px;text-align:right;}
-button{padding:10px 15px;border:none;border-radius:10px;cursor:pointer;font-size:16px;transition:0.3s;}
-button.submit{background:#28a745;color:white;}
-button.submit:hover{background:#218838;}
-button.reset{background:#dc2626;color:white;display:none;}
-button.reset:hover{background:#991b1b;}
-table{width:100%;border-collapse:collapse;margin-top:20px;text-align:right;}
-th,td{border:1px solid #ddd;padding:12px;vertical-align:middle;}
-th{background-color:#f3f4f6;color:#111827;}
-tbody tr:hover{background-color:#d1fae5;}
-canvas{margin-top:20px;width:100%!important;height:400px!important;border-radius:15px;box-shadow:0 6px 20px rgba(0,0,0,0.1);}
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+  :root{
+    --bg:#0f1724;
+    --card:#0b1220;
+    --muted:#9aa4b2;
+    --accent1:#ffcc00; /* yellow */
+    --accent2:#d72631; /* red */
+    --glass: rgba(255,255,255,0.04);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;background:linear-gradient(180deg,#071226 0%, #0f1724 100%);font-family: "Vazir", "Tahoma", sans-serif;color:#e6eef6;direction:rtl}
+  .wrap{max-width:1200px;margin:28px auto;padding:20px;display:flex;flex-direction:column;gap:18px}
+
+  /* Header */
+  header.appHeader{display:flex;align-items:center;justify-content:center;padding:18px 22px;border-radius:12px;background:linear-gradient(90deg,#0ea5a2,#0b7a3f);box-shadow:0 10px 40px rgba(2,6,23,0.6)}
+  header.appHeader h1{margin:0;font-size:22px;font-weight:800;letter-spacing:0.6px}
+
+  /* Layout */
+  .topRow{display:grid;grid-template-columns:1fr 460px;gap:18px}
+  .col{display:flex;flex-direction:column;gap:18px}
+
+  /* Card */
+  .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:14px;padding:18px;box-shadow:0 8px 30px rgba(2,6,23,0.6);border:1px solid rgba(255,255,255,0.03)}
+  .card h2{margin:0 0 10px 0;color:#a7f3d0;font-size:16px}
+
+  /* Form rows */
+  .row{display:flex;gap:12px;align-items:center}
+  .row label{min-width:120px;text-align:right;font-weight:700;color:var(--muted)}
+  .input{flex:1;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:#eaf6ff}
+  .input:focus{outline:none;box-shadow:0 4px 18px rgba(14,165,162,0.12);border-color:rgba(14,165,162,0.35)}
+
+  input[type=number].input {width:120px;text-align:right}
+
+  .btn{padding:10px 14px;border-radius:10px;border:none;cursor:pointer}
+  .btn.primary{background:linear-gradient(90deg,#0ea5a2,#047857);color:#fff}
+  .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+
+  /* Chart card - floating */
+  .chartWrap{display:flex;flex-direction:column;align-items:center;gap:8px;transform:translateY(-10px);box-shadow:0 30px 60px rgba(2,6,23,0.6);border-radius:16px;padding:18px}
+  canvas#scoreChart{border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));}
+
+  /* Recordings list */
+  .recordings{display:flex;flex-direction:column;gap:10px;max-height:340px;overflow:auto;padding-right:6px}
+  .agentBlock{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.02)}
+  .fileItem{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px;border-radius:8px;background:rgba(255,255,255,0.01)}
+  .fileMeta{font-size:13px;color:var(--muted)}
+  .fileControls{display:flex;gap:8px;align-items:center}
+
+  /* Admin bar */
+  .adminBar{display:flex;gap:10px;align-items:center;justify-content:flex-end}
+  .adminBadge{background:linear-gradient(90deg,#ffcc00,#ffb020);color:#111;padding:6px 10px;border-radius:8px;font-weight:700}
+
+  /* modal */
+  .modalBack{position:fixed;inset:0;background:rgba(2,6,23,0.6);display:flex;align-items:center;justify-content:center;z-index:999}
+  .modal{background:var(--card);padding:20px;border-radius:12px;width:360px;box-shadow:0 20px 60px rgba(2,6,23,0.7)}
+  .modal h3{margin:0 0 12px;font-size:18px}
+  .modal input{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:#eaf6ff}
+
+  /* small */
+  .muted{color:var(--muted);font-size:13px}
+  @media(max-width:980px){ .topRow{grid-template-columns:1fr} .chartWrap{order:-1} }
 </style>
 </head>
 <body>
 
-<header>
-<img src="snap_logo.png" alt="Snapp Logo">
-<h1>Callbooking Performance</h1>
-</header>
+<header class="appHeader"><h1>Callbooking Performance</h1></header>
 
-<main>
+<div class="wrap">
 
-<!-- فرم آموزش -->
-<div class="card">
-<h2>مشکلات و نیاز آموزشی کارشناسان / ثبت توسط تیم آموزش</h2>
-<form id="trainingForm" class="form-column">
-<div class="form-field"><label>نام کارشناس:</label><input type="text" id="trainingName"></div>
-<div class="form-field"><label>امتیاز:</label><input type="number" id="trainingScore" min="0" max="80"></div>
-<div class="form-field"><label>مشکلات تماس:</label><textarea id="trainingIssue"></textarea></div>
-<div class="form-field"><label>مشکلات کارشناس:</label><textarea id="trainingProblem"></textarea></div>
-<div class="form-field"><label>فایل شنود:</label><input type="file" id="trainingFile"></div>
-<div style="display:flex;gap:15px;margin-top:15px;"><button type="submit" class="submit">ثبت</button></div>
-</form>
+  <!-- admin area -->
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+    <div class="muted">نسخه حرفه‌ای — طراحی اختصاصی</div>
+    <div class="adminBar" id="adminBar">
+      <!-- dynamic: admin badge or login button -->
+    </div>
+  </div>
+
+  <div class="topRow">
+    <!-- left: forms & list -->
+    <div class="col">
+      <!-- training form -->
+      <div class="card">
+        <h2>مشکلات و نیاز آموزشی کارشناسان / ثبت توسط تیم آموزش</h2>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="row"><label>نام کارشناس</label><input id="trainingName" class="input" /></div>
+          <div class="row"><label>امتیاز</label><input id="trainingScore" type="number" min="0" max="80" class="input" /></div>
+          <div class="row"><label>مشکلات تماس</label><input id="trainingIssue" class="input" /></div>
+          <div class="row"><label>مشکلات کارشناس</label><input id="trainingProblem" class="input" /></div>
+          <div class="row"><label>فایل شنود</label><input id="trainingFile" type="file" class="input" /></div>
+          <div style="display:flex;gap:10px;justify-content:flex-start">
+            <button id="submitTraining" class="btn primary">ثبت</button>
+            <button id="resetTraining" class="btn btn-ghost" style="display:none">ریست (مدیر)</button>
+          </div>
+          <div class="muted">نکته: امتیاز بین 0 تا 80 ثبت می‌شود.</div>
+        </div>
+      </div>
+
+      <!-- calls form -->
+      <div class="card">
+        <h2>کارشناسان نیازمند به دوره همراهی / ثبت توسط کوردیناتورها</h2>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="row"><label>نام کارشناس</label><input id="agentName" class="input" /></div>
+          <div class="row"><label>نام کوردیناتور</label><input id="coordinatorName" class="input" /></div>
+          <div class="row"><label>مشکلات تماس</label><input id="note2" class="input" /></div>
+          <div style="display:flex;gap:10px;justify-content:flex-start">
+            <button id="submitCall" class="btn primary">ثبت</button>
+            <button id="resetCall" class="btn btn-ghost" style="display:none">ریست (مدیر)</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- recordings grouped -->
+      <div class="card">
+        <h2>فایل‌های شنود (مرتب‌شده بر اساس کارشناس)</h2>
+        <div id="recordingsContainer" class="recordings">
+          <div class="muted">هنوز فایل شنودی ثبت نشده.</div>
+        </div>
+        <div class="muted" style="margin-top:8px">فایل‌ها روی حافظه مرورگر ذخیره می‌شوند؛ مدیر قابلیت دانلود و پخش را دارد.</div>
+      </div>
+    </div>
+
+    <!-- right: chart -->
+    <div class="col">
+      <div class="card chartWrap">
+        <h2>نمودار امتیاز کارشناسان</h2>
+        <canvas id="scoreChart"></canvas>
+      </div>
+
+      <div class="card">
+        <h2>لیست اجمالی کارشناسان</h2>
+        <div id="tablePreview" class="muted">فعلا هیچ رکوردی ثبت نشده.</div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<!-- فرم دوره همراهی -->
-<div class="card">
-<h2>کارشناسان نیازمند به دوره همراهی / ثبت توسط کوردیناتور ها</h2>
-<form id="callForm" class="form-column">
-<div class="form-field"><label>نام کارشناس:</label><input type="text" id="agentName"></div>
-<div class="form-field"><label>نام کوردیناتور:</label><input type="text" id="coordinatorName"></div>
-<div class="form-field"><label>مشکلات کارشناس:</label><textarea id="note2"></textarea></div>
-<div style="display:flex;gap:15px;margin-top:15px;"><button type="submit" class="submit">ثبت</button></div>
-</form>
-</div>
-
-<!-- نمودار امتیاز حرفه‌ای -->
-<div class="card">
-<h2>امتیاز کارشناسان</h2>
-<canvas id="scoreChart"></canvas>
+<!-- admin login modal -->
+<div id="adminModal" class="modalBack" style="display:none">
+  <div class="modal">
+    <h3>ورود مدیر</h3>
+    <div class="muted" style="margin-bottom:10px">برای دسترسی مدیر، رمز را وارد کنید.</div>
+    <input id="adminPass" placeholder="رمز مدیر">
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px">
+      <button id="adminCancel" class="btn btn-ghost">انصراف</button>
+      <button id="adminLoginBtn" class="btn primary">ورود</button>
+    </div>
+  </div>
 </div>
 
 <script>
-// نمونه داده‌ها
-const ctx = document.getElementById("scoreChart").getContext("2d");
-new Chart(ctx,{
-    type:'bar',
-    data:{
-        labels:["علی","رضا","سارا","نگار","مهدی"],
-        datasets:[{
-            label:"امتیاز",
-            data:[70,55,80,45,60],
-            backgroundColor: function(ctx){
-                const val = ctx.dataset.data[ctx.dataIndex];
-                return val < 60 ? "#ff4d4d" : "#ffcc00";
-            },
-            borderRadius:10
-        }]
-    },
-    options:{
-        responsive:true,
-        plugins:{legend:{display:false}},
-        animation:{duration:1500,easing:'easeOutBounce'},
-        scales:{y:{beginAtZero:true,max:80}}
-    }
-});
-</script>
+/* ========== state + storage keys ========== */
+const KEY_TRAININGS = 'cb_trainings_pro_v1';
+const KEY_CALLS = 'cb_calls_pro_v1';
+let isAdmin = false;
+const ADMIN_PASSWORD = '123456'; // as requested
 
-</main>
+/* ========== elements ========== */
+const adminBar = document.getElementById('adminBar');
+const adminModal = document.getElementById('adminModal');
+const adminPassEl = document.getElementById('adminPass');
+const adminLoginBtn = document.getElementById('adminLoginBtn');
+const adminCancel = document.getElementById('adminCancel');
+
+const trainingNameEl = document.getElementById('trainingName');
+const trainingScoreEl = document.getElementById('trainingScore');
+const trainingIssueEl = document.getElementById('trainingIssue');
+const trainingProblemEl = document.getElementById('trainingProblem');
+const trainingFileEl = document.getElementById('trainingFile');
+const submitTrainingBtn = document.getElementById('submitTraining');
+const resetTrainingBtn = document.getElementById('resetTraining');
+
+const agentNameEl = document.getElementById('agentName');
+const coordinatorNameEl = document.getElementById('coordinatorName');
+const noteEl = document.getElementById('note2');
+const submitCallBtn = document.getElementById('submitCall');
+const resetCallBtn = document.getElementById('resetCall');
+
+const recordingsContainer = document.getElementById('recordingsContainer');
+const tablePreview = document.getElementById('tablePreview');
+
+/* ========== helpers for storage ========== */
+function readTrainings(){ try { return JSON.parse(localStorage.getItem(KEY_TRAININGS)||'[]'); } catch(e){ return []; } }
+function writeTrainings(arr){ localStorage.setItem(KEY_TRAININGS, JSON.stringify(arr)); }
+function readCalls(){ try { return JSON.parse(localStorage.getItem(KEY_CALLS)||'[]'); } catch(e){ return []; } }
+function writeCalls(arr){ localStorage.setItem(KEY_CALLS, JSON.stringify(arr)); }
+
+/* ========== Admin UI setup ========== */
+function renderAdminBar(){
+  adminBar.innerHTML = '';
+  if (isAdmin){
+    const badge = document.createElement('div'); badge.className='adminBadge'; badge.textContent='مدیر (وارد شده)';
+    adminBar.appendChild(badge);
+    const logoutBtn = document.createElement('button'); logoutBtn.className='btn btn-ghost'; logoutBtn.textContent='خروج مدیر';
+    logoutBtn.onclick = ()=>{ isAdmin=false; sessionStorage.removeItem('cb_isAdmin'); renderAdminBar(); renderAll(); };
+    adminBar.appendChild(logoutBtn);
+  } else {
+    const loginBtn = document.createElement('button'); loginBtn.className='btn primary'; loginBtn.textContent='ورود مدیر';
+    loginBtn.onclick = ()=>{ adminModal.style.display='flex'; adminPassEl.value=''; adminPassEl.focus(); };
+    adminBar.appendChild(loginBtn);
+  }
+}
+
+/* admin modal handlers */
+adminCancel.onclick = ()=> adminModal.style.display='none';
+adminLoginBtn.onclick = ()=>{
+  const val = adminPassEl.value || '';
+  if (val === ADMIN_PASSWORD){
+    isAdmin = true;
+    sessionStorage.setItem('cb_isAdmin','1');
+    adminModal.style.display='none';
+    renderAdminBar();
+    renderAll();
+    alert('خوش آمدید مدیر — دسترسی‌ها فعال شد.');
+    return;
+  }
+  alert('رمز اشتباه است.');
+}
+
+/* restore admin on reload */
+if (sessionStorage.getItem('cb_isAdmin')==='1'){ isAdmin=true; }
+
+/* ========== file -> base64 helper ========== */
+function fileToBase64(file){ return new Promise((res,rej)=>{ const r = new FileReader(); r.onload = ()=>res(r.result); r.onerror = e=>rej(e); r.readAsDataURL(file); }); }
+
+/* ========== render recordings grouped by agent ========== */
+function renderRecordings(){
+  const arr = readTrainings();
+  const map = {};
+  arr.forEach(it=>{
+    if (!it.fileName || !it.fileData) return;
+    if (!map[it.name]) map[it.name]=[];
+    map[it.name].push({ fileName:it.fileName, fileData:it.fileData, date: it.createdAt || '' });
+  });
+  recordingsContainer.innerHTML = '';
+  const names = Object.keys(map).sort((a,b)=> a.localeCompare(b));
+  if (names.length===0){
+    recordingsContainer.innerHTML = '<div class="muted">هنوز فایل شنودی ثبت نشده.</div>';
+    return;
+  }
+  names.forEach(name=>{
+    const block = document.createElement('div'); block.className='agentBlock';
+    const title = document.createElement('div'); title.style.fontWeight='800'; title.style.marginBottom='8px'; title.textContent = name;
+    block.appendChild(title);
+    const files = map[name].sort((a,b)=> (b.date||'').localeCompare(a.date||''));
+    files.forEach(f=>{
+      const fi = document.createElement('div'); fi.className='fileItem';
+      const meta = document.createElement('div'); meta.className='fileMeta'; meta.innerHTML = `<div>${f.fileName}</div><div class="muted" style="margin-top:4px;font-size:12px">${new Date(f.date||Date.now()).toLocaleString()}</div>`;
+      const controls = document.createElement('div'); controls.className='fileControls';
+      if (isAdmin){
+        const audio = document.createElement('audio'); audio.controls=true; audio.src=f.fileData; audio.style.maxWidth='260px'; controls.appendChild(audio);
+        const dl = document.createElement('a'); dl.href=f.fileData; dl.download = f.fileName; dl.className='btn'; dl.style.background='#111'; dl.style.color='#fff'; dl.style.padding='6px 10px'; dl.style.borderRadius='8px'; dl.textContent='دانلود';
+        controls.appendChild(dl);
+      } else {
+        // non-admin sees only file name (no audio/download)
+        const icon = document.createElement('div'); icon.className='muted'; icon.textContent='فایل بارگذاری شده (دسترسی دانلود برای مدیر)';
+        controls.appendChild(icon);
+      }
+      fi.appendChild(meta); fi.appendChild(controls); block.appendChild(fi);
+    });
+    recordingsContainer.appendChild(block);
+  });
+}
+
+/* ========== render training table preview and chart data ======== */
+function renderPreviewAndChart(){
+  const arr = readTrainings();
+  // sort: yellow >=60 desc, red <60 desc
+  const yellow = arr.filter(x=>Number(x.score)>=60).sort((a,b)=>b.score - a.score);
+  const red = arr.filter(x=>Number(x.score)<60).sort((a,b)=>b.score - a.score);
+  const sorted = [...yellow, ...red];
+  // preview
+  if (!sorted.length){ tablePreview.innerHTML = '<div class="muted">فعلا رکوردی ثبت نشده.</div>'; return; }
+  let html = '<table style="width:100%;border-collapse:collapse"><thead><tr style="text-align:right;color:var(--muted)"><th>نام</th><th>امتیاز</th><th>مشکلات</th></tr></thead><tbody>';
+  sorted.forEach(it=>{
+    html += `<tr style="background:transparent"><td style="padding:8px">${escapeHtml(it.name)}</td><td style="padding:8px">${it.score}</td><td style="padding:8px">${escapeHtml(it.issue)}</td></tr>`;
+  });
+  html += '</tbody></table>';
+  tablePreview.innerHTML = html;
+
+  // chart update
+  const labels = sorted.map(s=>s.name || '');
+  const data = sorted.map(s=>Number(s.score||0));
+  updateChart(labels, data);
+}
+
+/* escape simple */
+function escapeHtml(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+/* ========== Chart setup (advanced gradient + floating effect) ======== */
+const ctx = document.getElementById('scoreChart').getContext('2d');
+let scoreChart = null;
+function createGradientColors(vals){
+  // return array of colors (yellow or red)
+  return vals.map(v=> Number(v) >= 60 ? getComputedStyle(document.documentElement).getPropertyValue('--accent1').trim() || '#ffcc00' : getComputedStyle(document.documentElement).getPropertyValue('--accent2').trim() || '#d72631');
+}
+function updateChart(labels, data){
+  const bg = createGradientColors(data);
+  // destroy previous
+  if (scoreChart) scoreChart.destroy();
+  // create gradient for border/shine
+  const g = ctx.createLinearGradient(0,0,0,400);
+  g.addColorStop(0,'rgba(255,255,255,0.06)');
+  g.addColorStop(1,'rgba(0,0,0,0.02)');
+  scoreChart = new Chart(ctx, {
+    type:'bar',
+    data:{ labels, datasets:[{ label:'امتیاز', data, backgroundColor:bg, borderColor:g, borderWidth:1, borderRadius:10 }]},
+    options:{
+      responsive:true,
+      plugins:{
+        legend:{display:false},
+        tooltip:{enabled:true, bodySpacing:6, titleFont:{size:14}},
+      },
+      animation:{duration:900,easing:'easeOutQuart'},
+      scales:{
+        x:{grid:{display:false}, ticks:{color:'#d7e9f2'}},
+        y:{beginAtZero:true, max:80, ticks:{color:'#d7e9f2'}}
+      }
+    }
+  });
+}
+
+/* ========== initial render ========== */
+renderAdminBar();
+renderAll();
+
+/* helper combined */
+function renderAll(){ renderRecordings(); renderPreviewAndChart(); toggleAdminControls(); }
+
+/* ========== toggle admin controls ========== */
+function toggleAdminControls(){
+  const show = isAdmin;
+  // show reset buttons and download controls are handled in renderRecordings
+  resetTrainingBtn.style.display = show ? 'inline-block' : 'none';
+  resetCallBtn.style.display = show ? 'inline-block' : 'none';
+  renderRecordings(); // re-render so controls reflect admin state
+}
+
+/* ========== submit handlers ========== */
+submitTrainingBtn.addEventListener('click', async ()=>{
+  const name = (trainingNameEl.value || '').trim();
+  let score = Number(trainingScoreEl.value);
+  const issue = (trainingIssueEl.value || '').trim();
+  const problem = (trainingProblemEl.value || '').trim();
+  if (!name || (!issue && !problem)) { alert('لطفاً نام و توضیحات را وارد کنید.'); return; }
+  if (isNaN(score)) score = 0;
+  if (score < 0) score = 0;
+  if (score > 80) { alert('امتیاز باید بین 0 تا 80 باشد'); return; }
+
+  let fileName = '';
+  let fileData = null;
+  if (trainingFileEl.files && trainingFileEl.files[0]){
+    fileName = trainingFileEl.files[0].name;
+    try{ fileData = await fileToBase64(trainingFileEl.files[0]); } catch(e){ alert('خطا در خواندن فایل'); console.error(e); return; }
+  }
+
+  const arr = readTrainings();
+  arr.push({ name, score, issue, problem, fileName, fileData, createdAt: new Date().toISOString() });
+  writeTrainings(arr);
+  // clear inputs
+  trainingNameEl.value=''; trainingScoreEl.value=''; trainingIssueEl.value=''; trainingProblemEl.value=''; trainingFileEl.value='';
+  renderAll();
+});
+
+submitCallBtn.addEventListener('click', ()=>{
+  const name = (agentNameEl.value || '').trim();
+  const coord = (coordinatorNameEl.value || '').trim();
+  const note = (noteEl.value || '').trim();
+  if (!name) { alert('نام کارشناس الزامی است'); return; }
+  const arr = readCalls();
+  arr.push({ name, coord, note, createdAt: new Date().toISOString() });
+  writeCalls(arr);
+  agentNameEl.value=''; coordinatorNameEl.value=''; noteEl.value='';
+  renderAll();
+});
+
+/* ========== resets (admin) ========== */
+resetTrainingBtn.addEventListener('click', ()=>{
+  if (!isAdmin){ alert('فقط مدیر می‌تواند ریست کند'); return; }
+  if (!confirm('آیا مطمئن هستید همه داده‌های آموزش پاک شوند؟')) return;
+  writeTrainings([]); renderAll();
+});
+resetCallBtn.addEventListener('click', ()=>{
+  if (!isAdmin){ alert('فقط مدیر می‌تواند ریست کند'); return; }
+  if (!confirm('آیا مطمئن هستید همه داده‌های تماس پاک شوند؟')) return;
+  writeCalls([]); renderAll();
+});
+
+/* ========== initial demo data if empty (optional) ========= */
+if (readTrainings().length===0){
+  // add demo
+  writeTrainings([
+    {name:'علی', score:70, issue:'مشکل اول', problem:'نیاز به تمرین', fileName:'demo1.mp3', fileData:null, createdAt:new Date().toISOString()},
+    {name:'رضا', score:55, issue:'نقص تماس', problem:'خطای روند', fileName:null, fileData:null, createdAt:new Date().toISOString()},
+  ]);
+}
+
+/* create chart with current data on load */
+renderAll();
+
+</script>
 </body>
 </html>
