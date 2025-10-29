@@ -1,308 +1,350 @@
 <!DOCTYPE html>
 <html lang="fa">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Callbooking Performance</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Vazir&display=swap');
-
-body {
-    font-family: 'Vazir', sans-serif;
-    background:#f0f2f5;
-    margin:0;
-    padding:0;
-    direction:rtl;
-    text-align:right;
-}
-
-header {
-    background: linear-gradient(135deg, #28a745, #218838);
-    color:white;
-    padding:30px 0;
-    text-align:center;
-    font-size:36px;
-    font-weight:bold;
-    border-bottom-left-radius:15px;
-    border-bottom-right-radius:15px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-    animation: gradientShift 10s ease infinite;
-    background-size: 300% 300%;
-}
-
-@keyframes gradientShift {
-  0%{background-position:0% 50%;}
-  50%{background-position:100% 50%;}
-  100%{background-position:0% 50%;}
-}
-
-main {
-    padding:30px;
-    max-width:1200px;
-    margin:auto;
-    display:flex;
-    flex-direction:column;
-    gap:30px;
-}
-
-.card {
-    background:white;
-    padding:25px;
-    border-radius:15px;
-    box-shadow:0 10px 25px rgba(0,0,0,0.15);
-    transition:0.3s;
-}
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow:0 15px 30px rgba(0,0,0,0.2);
-}
-
-.card h2 {
-    margin-top:0;
-    color:#28a745;
-    font-size:28px;
-    text-align:right;
-}
-
-.form-column {
-    display:flex;
-    flex-direction:column;
-    gap:15px;
-}
-
-.form-field {
-    display:flex;
-    flex-direction:column;
-    gap:5px;
-    align-items:flex-start;
-}
-
-input, select {
-    padding:12px;
-    border-radius:10px;
-    border:1px solid #ccc;
-    width:100%;
-    font-size:16px;
-    transition:0.3s;
-}
-input:focus, select:focus {
-    border-color:#28a745;
-    box-shadow:0 0 8px rgba(40,167,69,0.4);
-    outline:none;
-}
-
-button {
-    padding:12px 18px;
-    border:none;
-    border-radius:10px;
-    cursor:pointer;
-    font-size:16px;
-    transition:0.3s;
-}
-button.submit { background-color:#28a745; color:white; }
-button.submit:hover { background-color:#218838; }
-button.reset { background-color:#dc2626; color:white; }
-button.reset:hover { background-color:#991b1b; }
-
-table { width:100%; border-collapse:collapse; margin-top:20px; text-align:right; transition:0.3s; }
-th, td { border:1px solid #ddd; padding:12px; vertical-align:middle; transition:0.3s; }
-th { background-color:#f3f4f6; color:#111827; }
-tbody tr:hover { background-color:#d1fae5; }
-
-canvas { margin-top:20px; width:100% !important; height:400px !important; }
-
-.admin-section { display:none; flex-direction:column; gap:15px; margin-top:20px; }
-.files-list div { margin-bottom:10px; }
-
+  :root{
+    --green1:#66d17a; /* روشن */
+    --green2:#0b7a3f; /* تیره */
+    --yellow:#fef3c7;
+    --red:#d72631;
+    --bg:#f0f2f5;
+  }
+  *{box-sizing:border-box}
+  body{font-family:Calibri, sans-serif;background:var(--bg);margin:0;padding:0;direction:rtl;color:#111}
+  header{
+    background:linear-gradient(90deg,var(--green1),var(--green2));
+    color:#fff;padding:20px;text-align:center;font-size:24px;font-weight:800;
+    box-shadow:0 4px 12px rgba(0,0,0,0.12)
+  }
+  main{max-width:1100px;margin:18px auto;padding:16px;display:flex;flex-direction:column;gap:16px}
+  .card{background:#fff;padding:14px;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
+  h2{margin:0 0 10px;color:var(--green2);font-size:18px}
+  /* فرم: label سمت راست، input سمت چپ */
+  .row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+  .row label{min-width:140px;text-align:right;font-weight:600}
+  .small-input{width:260px;padding:8px;border:1px solid #ccc;border-radius:8px;font-size:14px}
+  .full-input{flex:1;padding:8px;border:1px solid #ccc;border-radius:8px;font-size:14px}
+  .file-box{display:flex;align-items:center;gap:8px}
+  .file-btn{padding:8px 10px;border-radius:8px;border:1px solid #ccc;background:#fff;cursor:pointer}
+  .file-name{font-size:14px;color:#333}
+  .controls{display:flex;gap:10px;align-items:center;margin-top:6px}
+  button.primary{background:var(--green2);color:#fff;padding:8px 12px;border-radius:8px;border:none;cursor:pointer}
+  button.danger{background:#dc2626;color:#fff;padding:8px 12px;border-radius:8px;border:none;cursor:pointer;display:none}
+  table{width:100%;border-collapse:collapse;margin-top:12px;text-align:right}
+  th,td{border:1px solid #e9e9e9;padding:10px;vertical-align:top}
+  th{background:#fafafa;color:#111;font-weight:700}
+  td.problem{max-width:420px;word-wrap:break-word}
+  tbody tr:hover{background:#fbfffb}
+  canvas{width:100% !important;height:360px !important;margin-top:10px}
+  .recordings-list{margin-top:10px}
+  .agent-block{border:1px solid #eee;padding:10px;border-radius:8px;margin-bottom:8px;background:#fff}
+  .file-item{display:flex;gap:10px;align-items:center;margin:6px 0}
+  .file-item .meta{font-size:13px;color:#333}
+  .muted{color:#666;font-size:13px}
+  a.download-link{color:#0645ad;text-decoration:none;font-weight:600}
+  audio{margin-left:8px}
+  @media(max-width:720px){
+    .row{flex-direction:column;align-items:stretch}
+    .row label{min-width:unset;text-align:left}
+    .small-input{width:100%}
+  }
 </style>
 </head>
 <body>
-
 <header>Callbooking Performance</header>
-
 <main>
 
-<!-- ثبت توسط تیم آموزش -->
-<div class="card">
-<h2>ثبت توسط تیم آموزش</h2>
-<form id="trainingForm" class="form-column">
-  <div class="form-field">
-    <label>نام کارشناس:</label>
-    <input type="text" id="trainingName" placeholder="نام کارشناس">
-  </div>
-  <div class="form-field">
-    <label>امتیاز:</label>
-    <input type="number" id="trainingScore" placeholder="0-80" min="0" max="80">
-  </div>
-  <div class="form-field">
-    <label>مشکلات کارشناس:</label>
-    <input type="text" id="trainingIssue" placeholder="مشکلات کارشناس">
-  </div>
-  <div class="form-field">
-    <label>فایل شنود:</label>
-    <input type="file" id="auditFileUpload">
-  </div>
-  <div style="display:flex; gap:15px; justify-content:flex-start; margin-top:15px;">
-    <button type="submit" class="submit">ثبت</button>
-    <button type="button" id="resetTrainingButton" class="reset">ریست</button>
-  </div>
-</form>
-<table id="trainingTable">
-<thead><tr><th>نام کارشناس</th><th>امتیاز</th><th>مشکلات کارشناس</th><th>فایل شنود</th></tr></thead>
-<tbody></tbody>
-</table>
-</div>
+  <!-- آموزش -->
+  <div class="card">
+    <h2>مشکلات و نیاز آموزشی کارشناسان / ثبت توسط تیم آموزش</h2>
 
-<!-- ثبت توسط کوردیناتور -->
-<div class="card">
-<h2>ثبت توسط کوردیناتور</h2>
-<form id="callForm" class="form-column">
-  <div class="form-field">
-    <label>نام کارشناس:</label>
-    <input type="text" id="agentName" placeholder="نام کارشناس">
-  </div>
-  <div class="form-field">
-    <label>نام کوردیناتور:</label>
-    <input type="text" id="coordinatorName2" placeholder="نام کوردیناتور">
-  </div>
-  <div class="form-field">
-    <label>مشکلات کارشناس:</label>
-    <input type="text" id="note2" placeholder="مشکلات کارشناس">
-  </div>
-  <div style="display:flex; gap:15px; justify-content:flex-start; margin-top:15px;">
-    <button type="submit" class="submit">ثبت</button>
-    <button type="button" id="resetFormButton" class="reset">ریست</button>
-  </div>
-</form>
-<table id="agentsTable">
-<thead><tr><th>نام کارشناس</th><th>نام کوردیناتور</th><th>مشکلات کارشناس</th></tr></thead>
-<tbody></tbody>
-</table>
-</div>
+    <form id="trainingForm" autocomplete="off" onsubmit="return false;">
+      <div class="row">
+        <label for="trainingName">نام کارشناس</label>
+        <input id="trainingName" class="small-input" type="text" />
+      </div>
 
-<!-- نمودار -->
-<div class="card">
-<h2>امتیاز کارشناسان</h2>
-<canvas id="performanceChart"></canvas>
-</div>
+      <div class="row">
+        <label for="trainingScore">امتیاز</label>
+        <!-- امتیاز هم‌عرض با نام کارشناس -->
+        <input id="trainingScore" class="small-input" type="number" min="0" max="80" />
+      </div>
 
-<!-- بخش فایل‌های شنود (مدیر) -->
-<div class="card admin-section" id="adminSection">
-<h2>فایل‌های شنود (مدیر)</h2>
-<div class="files-list" id="filesList"></div>
-</div>
+      <div class="row">
+        <label for="trainingIssue">مشکلات کارشناس</label>
+        <input id="trainingIssue" class="full-input" type="text" />
+      </div>
+
+      <div class="row">
+        <label>فایل شنود</label>
+        <div class="file-box">
+          <button type="button" id="chooseFileBtn" class="file-btn">انتخاب فایل</button>
+          <span id="fileLabel" class="file-name">فایل شنود</span>
+          <input id="audioFile" type="file" />
+        </div>
+      </div>
+
+      <div class="controls">
+        <button id="submitTraining" class="primary" type="button">ثبت</button>
+        <button id="resetTraining" class="danger" type="button">ریست (مدیر)</button>
+      </div>
+    </form>
+
+    <table id="trainingTable" aria-label="training-table">
+      <thead><tr><th>نام کارشناس</th><th>امتیاز</th><th>مشکلات کارشناس</th><th>شنود</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <!-- کوردیناتورها -->
+  <div class="card">
+    <h2>کارشناسان نیازمند به دوره همراهی / ثبت توسط کوردیناتورها</h2>
+
+    <form id="callForm" autocomplete="off" onsubmit="return false;">
+      <div class="row">
+        <label for="agentName">نام کارشناس</label>
+        <input id="agentName" class="small-input" type="text" />
+      </div>
+
+      <div class="row">
+        <label for="coordinatorName2">نام کوردیناتور</label>
+        <input id="coordinatorName2" class="small-input" type="text" />
+      </div>
+
+      <div class="row">
+        <label for="note2">مشکلات تماس</label>
+        <input id="note2" class="full-input" type="text" />
+      </div>
+
+      <div class="controls">
+        <button id="submitCall" class="primary" type="button">ثبت</button>
+        <button id="resetCall" class="danger" type="button">ریست (مدیر)</button>
+      </div>
+    </form>
+
+    <table id="agentsTable">
+      <thead><tr><th>نام کارشناس</th><th>نام کوردیناتور</th><th>مشکلات تماس</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <!-- نمودار -->
+  <div class="card">
+    <h2>امتیاز کارشناسان</h2>
+    <canvas id="performanceChart"></canvas>
+  </div>
+
+  <!-- بخش مرتب فایل‌های شنود بر اساس کارشناس -->
+  <div class="card">
+    <h2>فایل‌های شنود (مرتب‌شده بر اساس کارشناس)</h2>
+    <div id="recordingsContainer" class="recordings-list"></div>
+    <div class="muted">فایل‌ها با تاریخ آپلود مرتب شده‌اند؛ فقط مدیر می‌تواند پخش و دانلود کند.</div>
+  </div>
+
+</main>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-// دسترسی مدیر
-const adminPassword = "123456";
+/* ====== Keys & admin ====== */
+const KEY_TRAININGS = 'cb_trainings_final_v2';
+const KEY_CALLS = 'cb_calls_final_v2';
 let isAdmin = false;
-const userPass = prompt("رمز مدیر را وارد کنید:");
-if(userPass === adminPassword){
-    isAdmin = true;
-    document.getElementById('adminSection').style.display="flex";
-}
+const pwd = prompt("اگر مدیر هستید، رمز را وارد کنید (یا خالی بگذار):");
+if (pwd === "123456789") { isAdmin = true; document.querySelectorAll('.danger').forEach(b=>b.style.display='inline-block'); }
 
-// داده‌ها
-let trainingData = [];
-let agentsData = [];
+/* ====== elements ====== */
+const audioFileInput = document.getElementById('audioFile');
+const chooseFileBtn = document.getElementById('chooseFileBtn');
+const fileLabel = document.getElementById('fileLabel');
 
-// فرم تیم آموزش
-const trainingForm = document.getElementById('trainingForm');
-trainingForm.addEventListener('submit', e=>{
-    e.preventDefault();
-    const name = document.getElementById('trainingName').value.trim();
-    const score = parseInt(document.getElementById('trainingScore').value);
-    const issue = document.getElementById('trainingIssue').value.trim();
-    const fileInput = document.getElementById('auditFileUpload');
-    if(!name || isNaN(score) || score<0 || score>80) return alert("اطلاعات صحیح وارد شود");
-    let fileName = fileInput.files[0] ? fileInput.files[0].name : '';
-    trainingData.push({name, score, issue, fileName});
-    updateTrainingTable();
-    if(isAdmin && fileInput.files[0]){
-        const div = document.createElement("div");
-        div.innerHTML=`${name} - ${fileName} - <a href="${URL.createObjectURL(fileInput.files[0])}" download>دانلود</a>`;
-        document.getElementById('filesList').appendChild(div);
+const trainingNameEl = document.getElementById('trainingName');
+const trainingScoreEl = document.getElementById('trainingScore');
+const trainingIssueEl = document.getElementById('trainingIssue');
+const submitTrainingBtn = document.getElementById('submitTraining');
+const resetTrainingBtn = document.getElementById('resetTraining');
+const trainingTableBody = document.querySelector('#trainingTable tbody');
+
+const agentNameEl = document.getElementById('agentName');
+const coordEl = document.getElementById('coordinatorName2');
+const noteEl = document.getElementById('note2');
+const submitCallBtn = document.getElementById('submitCall');
+const resetCallBtn = document.getElementById('resetCall');
+const agentsTableBody = document.querySelector('#agentsTable tbody');
+
+const recordingsContainer = document.getElementById('recordingsContainer');
+
+/* ====== storage helpers ====== */
+function readTrainings(){ try { return JSON.parse(localStorage.getItem(KEY_TRAININGS)||'[]'); } catch(e){ return []; } }
+function writeTrainings(arr){ localStorage.setItem(KEY_TRAININGS, JSON.stringify(arr)); }
+function readCalls(){ try { return JSON.parse(localStorage.getItem(KEY_CALLS)||'[]'); } catch(e){ return []; } }
+function writeCalls(arr){ localStorage.setItem(KEY_CALLS, JSON.stringify(arr)); }
+
+/* ====== file helper ====== */
+function fileToBase64(file){ return new Promise((res, rej)=>{ const r = new FileReader(); r.onload = ()=>res(r.result); r.onerror = e=>rej(e); r.readAsDataURL(file); }); }
+
+/* ====== file UI ====== */
+chooseFileBtn.addEventListener('click', ()=> audioFileInput.click());
+audioFileInput.addEventListener('change', ()=> {
+  if (audioFileInput.files && audioFileInput.files.length>0) fileLabel.textContent = audioFileInput.files[0].name;
+  else fileLabel.textContent = 'فایل شنود';
+});
+
+/* ====== render trainings table ====== */
+function renderTrainings(){
+  const arr = readTrainings();
+  const yellow = arr.filter(x=>Number(x.score)>=60).sort((a,b)=>b.score - a.score);
+  const red = arr.filter(x=>Number(x.score)<=59).sort((a,b)=>b.score - a.score);
+  const all = [...yellow, ...red];
+  trainingTableBody.innerHTML = '';
+  all.forEach(item=>{
+    const tr = document.createElement('tr');
+    tr.style.background = Number(item.score) >= 60 ? 'var(--yellow)' : 'var(--red)';
+    const tdName = document.createElement('td'); tdName.textContent = item.name || '';
+    const tdScore = document.createElement('td'); tdScore.textContent = item.score != null ? item.score : '';
+    const tdIssue = document.createElement('td'); tdIssue.className = 'problem'; tdIssue.textContent = item.issue || '';
+    const tdFile = document.createElement('td');
+    if (item.fileName){
+      const span = document.createElement('div'); span.textContent = item.fileName;
+      tdFile.appendChild(span);
+      if (isAdmin && item.fileData){
+        const audio = document.createElement('audio'); audio.controls = true; audio.src = item.fileData; tdFile.appendChild(audio);
+        const dl = document.createElement('a'); dl.href = item.fileData; dl.download = item.fileName; dl.className='download-link'; dl.textContent = 'دانلود'; tdFile.appendChild(dl);
+      }
+    } else {
+      tdFile.textContent = '';
     }
-    trainingForm.reset();
-});
-
-function updateTrainingTable(){
-    const tbody = document.querySelector("#trainingTable tbody");
-    tbody.innerHTML="";
-    trainingData.forEach(d=>{
-        const tr = document.createElement("tr");
-        tr.innerHTML=`<td>${d.name}</td><td>${d.score}</td><td>${d.issue}</td><td>${d.fileName}</td>`;
-        tbody.appendChild(tr);
-    });
+    tr.appendChild(tdName); tr.appendChild(tdScore); tr.appendChild(tdIssue); tr.appendChild(tdFile);
+    trainingTableBody.appendChild(tr);
+  });
+  updateChart();
+  renderRecordingsList();
 }
 
-// فرم کوردیناتور
-const callForm = document.getElementById('callForm');
-callForm.addEventListener('submit', e=>{
-    e.preventDefault();
-    const name = document.getElementById('agentName').value.trim();
-    const coord = document.getElementById('coordinatorName2').value.trim();
-    const note = document.getElementById('note2').value.trim();
-    if(!name || !coord) return alert("اطلاعات صحیح وارد شود");
-    agentsData.push({name, coord, note});
-    updateAgentsTable();
-    callForm.reset();
-});
-
-function updateAgentsTable(){
-    const tbody = document.querySelector("#agentsTable tbody");
-    tbody.innerHTML="";
-    agentsData.forEach(d=>{
-        const tr = document.createElement("tr");
-        tr.innerHTML=`<td>${d.name}</td><td>${d.coord}</td><td>${d.note}</td>`;
-        tbody.appendChild(tr);
+/* ====== render recordings grouped by agent ====== */
+function renderRecordingsList(){
+  const arr = readTrainings();
+  // group by name
+  const map = {};
+  arr.forEach(item=>{
+    if (!item.fileName || !item.fileData) return;
+    if (!map[item.name]) map[item.name]=[];
+    map[item.name].push({ fileName:item.fileName, fileData:item.fileData, date:item.date || item.createdAt || new Date().toISOString() });
+  });
+  // for each agent sort by date desc
+  recordingsContainer.innerHTML = '';
+  const names = Object.keys(map).sort();
+  if(names.length===0){ recordingsContainer.innerHTML = '<div class="muted">هنوز هیچ فایل شنودی ثبت نشده</div>'; return; }
+  names.forEach(name=>{
+    const block = document.createElement('div'); block.className='agent-block';
+    const h = document.createElement('div'); h.style.fontWeight='700'; h.style.marginBottom='8px'; h.textContent = name;
+    block.appendChild(h);
+    const files = map[name].sort((a,b)=> (b.date||'').localeCompare(a.date||'') );
+    files.forEach(f=>{
+      const fi = document.createElement('div'); fi.className='file-item';
+      const meta = document.createElement('div'); meta.className='meta'; meta.textContent = f.fileName + ' · ' + (new Date(f.date).toLocaleString());
+      fi.appendChild(meta);
+      if (isAdmin){
+        const audio = document.createElement('audio'); audio.controls = true; audio.src = f.fileData; audio.style.marginLeft='6px'; fi.appendChild(audio);
+        const a = document.createElement('a'); a.href = f.fileData; a.download = f.fileName; a.className='download-link'; a.textContent = 'دانلود'; fi.appendChild(a);
+      }
+      block.appendChild(fi);
     });
+    recordingsContainer.appendChild(block);
+  });
 }
 
-// ریست فرم‌ها برای مدیر
-document.getElementById("resetTrainingButton").addEventListener("click", ()=>{
-    if(isAdmin) {
-        trainingData=[];
-        updateTrainingTable();
-        document.getElementById("filesList").innerHTML="";
-    } else alert("فقط مدیر مجاز است");
-});
-document.getElementById("resetFormButton").addEventListener("click", ()=>{
-    if(isAdmin) {
-        agentsData=[];
-        updateAgentsTable();
-    } else alert("فقط مدیر مجاز است");
+/* ====== render calls table ====== */
+function renderCalls(){
+  const arr = readCalls();
+  agentsTableBody.innerHTML = '';
+  arr.forEach(item=>{
+    const tr = document.createElement('tr');
+    const td1 = document.createElement('td'); td1.textContent = item.name || '';
+    const td2 = document.createElement('td'); td2.textContent = item.coord || '';
+    const td3 = document.createElement('td'); td3.className='problem'; td3.textContent = item.note || '';
+    tr.appendChild(td1); tr.appendChild(td2); tr.appendChild(td3);
+    agentsTableBody.appendChild(tr);
+  });
+}
+
+/* ====== submit handlers ====== */
+submitTrainingBtn.addEventListener('click', async ()=>{
+  const name = trainingNameEl.value.trim();
+  let score = Number(trainingScoreEl.value);
+  const issue = trainingIssueEl.value.trim();
+  if (!name || !issue) { alert('لطفاً نام و مشکلات را وارد کنید.'); return; }
+  if (isNaN(score)) score = 0;
+  if (score < 0) score = 0;
+  if (score > 80) { alert('امتیاز باید بین 0 تا 80 باشد'); return; }
+
+  let fileName = '';
+  let fileData = null;
+  if (audioFileInput.files && audioFileInput.files.length>0){
+    fileName = audioFileInput.files[0].name;
+    try { fileData = await fileToBase64(audioFileInput.files[0]); }
+    catch(e){ console.error(e); alert('خطا در خواندن فایل'); return; }
+  }
+
+  const arr = readTrainings();
+  arr.push({ name, score, issue, fileName, fileData, createdAt: new Date().toISOString() });
+  writeTrainings(arr);
+  renderTrainings();
+
+  // reset inputs & file UI
+  trainingNameEl.value=''; trainingScoreEl.value=''; trainingIssueEl.value=''; audioFileInput.value=''; fileLabel.textContent='فایل شنود';
 });
 
-// نمودار حرفه‌ای
+submitCallBtn.addEventListener('click', ()=>{
+  const name = agentNameEl.value.trim();
+  const coord = coordEl.value.trim();
+  const note = noteEl.value.trim();
+  if (!name) { alert('نام کارشناس الزامی است.'); return; }
+  const arr = readCalls();
+  arr.push({ name, coord, note, createdAt: new Date().toISOString() });
+  writeCalls(arr);
+  renderCalls();
+  agentNameEl.value=''; coordEl.value=''; noteEl.value='';
+});
+
+/* ====== resets (admin only) ====== */
+resetTrainingBtn.addEventListener('click', ()=>{
+  if (!isAdmin) { alert('فقط مدیر می‌تواند ریست کند'); return; }
+  if (!confirm('آیا مطمئن هستید همه داده‌های آموزش پاک شوند؟')) return;
+  writeTrainings([]); renderTrainings();
+});
+resetCallBtn.addEventListener('click', ()=>{
+  if (!isAdmin) { alert('فقط مدیر می‌تواند ریست کند'); return; }
+  if (!confirm('آیا مطمئن هستید همه داده‌های تماس پاک شوند؟')) return;
+  writeCalls([]); renderCalls();
+});
+
+/* ====== chart setup ====== */
 const ctx = document.getElementById('performanceChart').getContext('2d');
-const chartData = {
-    labels: [],
-    datasets: [{
-        label: 'امتیاز',
-        data: [],
-        backgroundColor: [],
-        borderRadius: 6,
-        barThickness: 30
-    }]
-};
-const chartOptions = {
-    responsive:true,
-    plugins:{legend:{display:false}},
-    scales:{y:{beginAtZero:true,max:80}}
-};
-const performanceChart = new Chart(ctx,{type:'bar',data:chartData,options:chartOptions});
-
+let chart = null;
 function updateChart(){
-    chartData.labels = trainingData.map(d=>d.name);
-    chartData.datasets[0].data = trainingData.map(d=>d.score);
-    chartData.datasets[0].backgroundColor = trainingData.map(d=>d.score<60 ? 'red':'green');
-    performanceChart.update();
+  const arr = readTrainings();
+  const yellow = arr.filter(x=>Number(x.score)>=60).sort((a,b)=>b.score - a.score);
+  const red = arr.filter(x=>Number(x.score)<=59).sort((a,b)=>b.score - a.score);
+  const sorted = [...yellow, ...red];
+  const labels = sorted.map(s=>s.name || '');
+  const data = sorted.map(s=>Number(s.score || 0));
+  const bg = sorted.map(s=> Number(s.score)>=60 ? '#fef3c7' : '#d72631');
+  const border = sorted.map(s=> Number(s.score)>=60 ? 'goldenrod' : 'darkred');
+
+  if (chart) chart.destroy();
+  chart = new Chart(ctx, {
+    type: 'bar',
+    data: { labels, datasets: [{ label: 'امتیاز', data, backgroundColor: bg, borderColor: border, borderWidth: 1 }]},
+    options: { responsive:true, scales:{ y:{ beginAtZero:true, suggestedMax:80 } } }
+  });
 }
 
-// بروزرسانی نمودار بعد از ثبت
-trainingForm.addEventListener('submit',()=>updateChart());
+/* ====== initial render ====== */
+renderTrainings();
+renderCalls();
 </script>
 </body>
 </html>
