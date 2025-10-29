@@ -17,17 +17,17 @@ body {
 }
 
 header {
-    background: linear-gradient(90deg, #28a745, #218838);
+    background: linear-gradient(135deg, #28a745, #218838);
     color:white;
-    padding:25px 0;
+    padding:30px 0;
     text-align:center;
-    font-size:32px;
+    font-size:36px;
     font-weight:bold;
-    border-bottom-left-radius:12px;
-    border-bottom-right-radius:12px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    animation: gradientShift 8s ease infinite;
-    background-size: 200% 200%;
+    border-bottom-left-radius:15px;
+    border-bottom-right-radius:15px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    animation: gradientShift 10s ease infinite;
+    background-size: 300% 300%;
 }
 
 @keyframes gradientShift {
@@ -49,17 +49,18 @@ main {
     background:white;
     padding:25px;
     border-radius:15px;
-    box-shadow:0 6px 20px rgba(0,0,0,0.1);
+    box-shadow:0 10px 25px rgba(0,0,0,0.15);
     transition:0.3s;
 }
 .card:hover {
-    box-shadow:0 10px 25px rgba(0,0,0,0.2);
+    transform: translateY(-5px);
+    box-shadow:0 15px 30px rgba(0,0,0,0.2);
 }
 
 .card h2 {
     margin-top:0;
     color:#28a745;
-    font-size:26px;
+    font-size:28px;
     text-align:right;
 }
 
@@ -86,7 +87,7 @@ input, select {
 }
 input:focus, select:focus {
     border-color:#28a745;
-    box-shadow:0 0 5px rgba(40,167,69,0.4);
+    box-shadow:0 0 8px rgba(40,167,69,0.4);
     outline:none;
 }
 
@@ -111,8 +112,8 @@ tbody tr:hover { background-color:#d1fae5; }
 canvas { margin-top:20px; width:100% !important; height:400px !important; }
 
 .admin-section { display:none; flex-direction:column; gap:15px; margin-top:20px; }
+.files-list div { margin-bottom:10px; }
 
-.search-field input { width:250px; padding:10px; border-radius:10px; border:1px solid #ccc; }
 </style>
 </head>
 <body>
@@ -121,7 +122,7 @@ canvas { margin-top:20px; width:100% !important; height:400px !important; }
 
 <main>
 
-<!-- فرم ثبت توسط تیم آموزش -->
+<!-- ثبت توسط تیم آموزش -->
 <div class="card">
 <h2>ثبت توسط تیم آموزش</h2>
 <form id="trainingForm" class="form-column">
@@ -133,18 +134,26 @@ canvas { margin-top:20px; width:100% !important; height:400px !important; }
     <label>امتیاز:</label>
     <input type="number" id="trainingScore" placeholder="0-80" min="0" max="80">
   </div>
+  <div class="form-field">
+    <label>مشکلات کارشناس:</label>
+    <input type="text" id="trainingIssue" placeholder="مشکلات کارشناس">
+  </div>
+  <div class="form-field">
+    <label>فایل شنود:</label>
+    <input type="file" id="auditFileUpload">
+  </div>
   <div style="display:flex; gap:15px; justify-content:flex-start; margin-top:15px;">
     <button type="submit" class="submit">ثبت</button>
     <button type="button" id="resetTrainingButton" class="reset">ریست</button>
   </div>
 </form>
 <table id="trainingTable">
-<thead><tr><th>نام کارشناس</th><th>امتیاز</th></tr></thead>
+<thead><tr><th>نام کارشناس</th><th>امتیاز</th><th>مشکلات کارشناس</th><th>فایل شنود</th></tr></thead>
 <tbody></tbody>
 </table>
 </div>
 
-<!-- فرم ثبت توسط کوردیناتور -->
+<!-- ثبت توسط کوردیناتور -->
 <div class="card">
 <h2>ثبت توسط کوردیناتور</h2>
 <form id="callForm" class="form-column">
@@ -171,33 +180,32 @@ canvas { margin-top:20px; width:100% !important; height:400px !important; }
 </table>
 </div>
 
-<!-- نمودار امتیاز -->
+<!-- نمودار -->
 <div class="card">
 <h2>امتیاز کارشناسان</h2>
 <canvas id="performanceChart"></canvas>
 </div>
 
-<!-- فایل شنود مدیر -->
+<!-- بخش فایل‌های شنود (مدیر) -->
 <div class="card admin-section" id="adminSection">
 <h2>فایل‌های شنود (مدیر)</h2>
-<input type="file" id="auditFile" multiple>
-<div id="filesList"></div>
+<div class="files-list" id="filesList"></div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 // دسترسی مدیر
 const adminPassword = "123456";
-const adminSection = document.getElementById('adminSection');
+let isAdmin = false;
 const userPass = prompt("رمز مدیر را وارد کنید:");
-if(userPass === adminPassword) {
-    adminSection.style.display = "flex";
+if(userPass === adminPassword){
+    isAdmin = true;
+    document.getElementById('adminSection').style.display="flex";
 }
 
 // داده‌ها
 let trainingData = [];
 let agentsData = [];
-let filesData = [];
 
 // فرم تیم آموزش
 const trainingForm = document.getElementById('trainingForm');
@@ -205,10 +213,29 @@ trainingForm.addEventListener('submit', e=>{
     e.preventDefault();
     const name = document.getElementById('trainingName').value.trim();
     const score = parseInt(document.getElementById('trainingScore').value);
+    const issue = document.getElementById('trainingIssue').value.trim();
+    const fileInput = document.getElementById('auditFileUpload');
     if(!name || isNaN(score) || score<0 || score>80) return alert("اطلاعات صحیح وارد شود");
-    trainingData.push({name, score});
+    let fileName = fileInput.files[0] ? fileInput.files[0].name : '';
+    trainingData.push({name, score, issue, fileName});
     updateTrainingTable();
+    if(isAdmin && fileInput.files[0]){
+        const div = document.createElement("div");
+        div.innerHTML=`${name} - ${fileName} - <a href="${URL.createObjectURL(fileInput.files[0])}" download>دانلود</a>`;
+        document.getElementById('filesList').appendChild(div);
+    }
+    trainingForm.reset();
 });
+
+function updateTrainingTable(){
+    const tbody = document.querySelector("#trainingTable tbody");
+    tbody.innerHTML="";
+    trainingData.forEach(d=>{
+        const tr = document.createElement("tr");
+        tr.innerHTML=`<td>${d.name}</td><td>${d.score}</td><td>${d.issue}</td><td>${d.fileName}</td>`;
+        tbody.appendChild(tr);
+    });
+}
 
 // فرم کوردیناتور
 const callForm = document.getElementById('callForm');
@@ -217,24 +244,11 @@ callForm.addEventListener('submit', e=>{
     const name = document.getElementById('agentName').value.trim();
     const coord = document.getElementById('coordinatorName2').value.trim();
     const note = document.getElementById('note2').value.trim();
-    if(!name) return alert("نام کارشناس ضروری است");
+    if(!name || !coord) return alert("اطلاعات صحیح وارد شود");
     agentsData.push({name, coord, note});
     updateAgentsTable();
+    callForm.reset();
 });
-
-// آپدیت جدول‌ها
-function updateTrainingTable(){
-    const tbody = document.querySelector("#trainingTable tbody");
-    tbody.innerHTML = "";
-    // مرتب‌سازی بر اساس امتیاز
-    trainingData.sort((a,b)=>b.score-a.score);
-    trainingData.forEach(d=>{
-        const tr = document.createElement("tr");
-        tr.innerHTML=`<td>${d.name}</td><td>${d.score}</td>`;
-        tbody.appendChild(tr);
-    });
-    updateChart();
-}
 
 function updateAgentsTable(){
     const tbody = document.querySelector("#agentsTable tbody");
@@ -246,64 +260,49 @@ function updateAgentsTable(){
     });
 }
 
-// نمودار حرفه‌ای
-const ctx = document.getElementById('performanceChart').getContext('2d');
-const performanceChart = new Chart(ctx,{
-    type:'bar',
-    data:{
-        labels: [],
-        datasets:[{
-            label:'امتیاز',
-            data:[],
-            backgroundColor:[],
-            borderRadius:5
-        }]
-    },
-    options:{
-        responsive:true,
-        scales:{
-            y:{beginAtZero:true, max:80}
-        }
-    }
+// ریست فرم‌ها برای مدیر
+document.getElementById("resetTrainingButton").addEventListener("click", ()=>{
+    if(isAdmin) {
+        trainingData=[];
+        updateTrainingTable();
+        document.getElementById("filesList").innerHTML="";
+    } else alert("فقط مدیر مجاز است");
+});
+document.getElementById("resetFormButton").addEventListener("click", ()=>{
+    if(isAdmin) {
+        agentsData=[];
+        updateAgentsTable();
+    } else alert("فقط مدیر مجاز است");
 });
 
+// نمودار حرفه‌ای
+const ctx = document.getElementById('performanceChart').getContext('2d');
+const chartData = {
+    labels: [],
+    datasets: [{
+        label: 'امتیاز',
+        data: [],
+        backgroundColor: [],
+        borderRadius: 6,
+        barThickness: 30
+    }]
+};
+const chartOptions = {
+    responsive:true,
+    plugins:{legend:{display:false}},
+    scales:{y:{beginAtZero:true,max:80}}
+};
+const performanceChart = new Chart(ctx,{type:'bar',data:chartData,options:chartOptions});
+
 function updateChart(){
-    performanceChart.data.labels = trainingData.map(d=>d.name);
-    performanceChart.data.datasets[0].data = trainingData.map(d=>d.score);
-    performanceChart.data.datasets[0].backgroundColor = trainingData.map(d=>{
-        if(d.score>=60) return '#28a745';
-        else return '#dc2626';
-    });
+    chartData.labels = trainingData.map(d=>d.name);
+    chartData.datasets[0].data = trainingData.map(d=>d.score);
+    chartData.datasets[0].backgroundColor = trainingData.map(d=>d.score<60 ? 'red':'green');
     performanceChart.update();
 }
 
-// ریست مدیر
-document.getElementById('resetTrainingButton').addEventListener('click',()=>{
-    if(userPass===adminPassword){
-        trainingData=[];
-        updateTrainingTable();
-        alert("ریست انجام شد");
-    }else alert("شما دسترسی ندارید");
-});
-document.getElementById('resetFormButton').addEventListener('click',()=>{
-    if(userPass===adminPassword){
-        agentsData=[];
-        updateAgentsTable();
-        alert("ریست انجام شد");
-    }else alert("شما دسترسی ندارید");
-});
-
-// فایل شنود
-document.getElementById('auditFile').addEventListener('change',e=>{
-    if(userPass!==adminPassword) return;
-    const files = e.target.files;
-    const filesList = document.getElementById('filesList');
-    for(const file of files){
-        const div = document.createElement("div");
-        div.innerHTML=`${file.name} - <a href="${URL.createObjectURL(file)}" download>دانلود</a>`;
-        filesList.appendChild(div);
-    }
-});
+// بروزرسانی نمودار بعد از ثبت
+trainingForm.addEventListener('submit',()=>updateChart());
 </script>
 </body>
 </html>
