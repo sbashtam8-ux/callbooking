@@ -2,56 +2,55 @@
 <html lang="fa">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Callbooking Performance</title>
 <style>
   :root{
     --green1:#66d17a;
     --green2:#0b7a3f;
     --yellow:#fef3c7;
-    --red:#e85c5c; /* قرمز کم‌چشم‌تر */
+    --red:#e05d64; /* قرمز کم‌رنگ */
     --bg:#f0f2f5;
-    --button:#ffd700; /* طلایی دکمه‌ها */
   }
-  *{box-sizing:border-box;}
-  body{font-family:Calibri,sans-serif;background:var(--bg);margin:0;padding:0;direction:rtl;color:#111;}
+  *{box-sizing:border-box}
+  body{font-family:Calibri, sans-serif;background:var(--bg);margin:0;padding:0;direction:rtl;color:#111}
   header{
     background:linear-gradient(90deg,var(--green1),var(--green2));
     color:#fff;padding:20px;text-align:center;font-size:24px;font-weight:800;
-    box-shadow:0 4px 12px rgba(0,0,0,0.12);
+    box-shadow:0 4px 12px rgba(0,0,0,0.12)
   }
-  main{max-width:1100px;margin:18px auto;padding:16px;display:flex;flex-direction:column;gap:16px;}
-  .card{background:#fff;padding:14px;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,0.06);}
-  h2{margin:0 0 10px;color:var(--green2);font-size:18px;}
-  .row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
-  .row label{min-width:140px;text-align:right;font-weight:600;}
-  .small-input{width:260px;padding:8px;border:1px solid #ccc;border-radius:8px;font-size:14px;}
-  .full-input{flex:1;padding:8px;border:1px solid #ccc;border-radius:8px;font-size:14px;}
-  .file-box{display:flex;align-items:center;gap:8px;}
-  .file-btn{padding:8px 10px;border-radius:8px;border:1px solid #ccc;background:#d3d3d3;cursor:pointer;}
-  .file-name{font-size:14px;color:#333;}
-  .controls{display:flex;gap:10px;align-items:center;margin-top:6px;}
-  button.primary{background:var(--button);color:#000;padding:8px 12px;border-radius:8px;border:none;cursor:pointer;}
-  button.danger{background:#dc2626;color:#fff;padding:8px 12px;border-radius:8px;border:none;display:none;}
-  table{width:100%;border-collapse:collapse;margin-top:12px;text-align:right;}
-  th,td{border:1px solid #e9e9e9;padding:10px;vertical-align:top;}
-  th{background:#fafafa;color:#111;font-weight:700;}
-  td.problem{max-width:420px;word-wrap:break-word;}
-  tbody tr:hover{background:#fbfffb;}
-  canvas{width:100% !important;height:360px !important;margin-top:10px;}
-  .recordings-list{margin-top:10px;}
-  .agent-block{border:1px solid #eee;padding:10px;border-radius:8px;margin-bottom:8px;background:#fff;}
-  .file-item{display:flex;gap:10px;align-items:center;margin:6px 0;}
-  .file-item .meta{font-size:13px;color:#333;}
-  .muted{color:#666;font-size:13px;}
-  a.download-link{color:#0645ad;text-decoration:none;font-weight:600;}
-  audio{margin-left:8px;}
-  .login-buttons{display:flex;gap:8px;margin-bottom:16px;}
-  .login-buttons button{font-size:14px;}
+  main{max-width:1100px;margin:18px auto;padding:16px;display:flex;flex-direction:column;gap:16px}
+  .card{background:#fff;padding:14px;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
+  h2{margin:0 0 10px;color:var(--green2);font-size:18px}
+  .row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+  .row label{min-width:140px;text-align:right;font-weight:600}
+  .small-input{width:260px;padding:8px;border:1px solid #ccc;border-radius:8px;font-size:14px}
+  .full-input{flex:1;padding:8px;border:1px solid #ccc;border-radius:8px;font-size:14px}
+  .file-box{display:flex;align-items:center;gap:8px}
+  .file-btn{padding:8px 10px;border-radius:8px;border:1px solid #ccc;background:#d1d5db;cursor:pointer} /* خاکستری */
+  .file-name{font-size:14px;color:#333}
+  .controls{display:flex;gap:10px;align-items:center;margin-top:6px}
+  button.primary{background:#10b981;color:#fff;padding:8px 12px;border-radius:8px;border:none;cursor:pointer;font-weight:600} /* ثبت سبز */
+  button.danger{background:#dc2626;color:#fff;padding:8px 12px;border-radius:8px;border:none;display:none;cursor:pointer}
+  table{width:100%;border-collapse:collapse;margin-top:12px;text-align:right}
+  th,td{border:1px solid #e9e9e9;padding:10px;vertical-align:top}
+  th{background:#fafafa;color:#111;font-weight:700}
+  td.problem{max-width:420px;word-wrap:break-word}
+  tbody tr:hover{background:#fbfffb}
+  canvas{width:100% !important;height:360px !important;margin-top:10px}
+  .recordings-list{margin-top:10px}
+  .agent-block{border:1px solid #eee;padding:10px;border-radius:8px;margin-bottom:8px;background:#fff}
+  .file-item{display:flex;gap:10px;align-items:center;margin:6px 0}
+  .file-item .meta{font-size:13px;color:#333}
+  .muted{color:#666;font-size:13px}
+  a.download-link{color:#0645ad;text-decoration:none;font-weight:600}
+  audio{margin-left:8px}
+  .login-container{display:flex;gap:10px;justify-content:flex-start;margin-bottom:12px}
+  .login-btn{background:#fbbf24;color:#111;padding:6px 10px;border-radius:6px;border:none;cursor:pointer;font-size:14px}
   @media(max-width:720px){
-    .row{flex-direction:column;align-items:stretch;}
-    .row label{min-width:unset;text-align:left;}
-    .small-input{width:100%;}
+    .row{flex-direction:column;align-items:stretch}
+    .row label{min-width:unset;text-align:left}
+    .small-input{width:100%}
   }
 </style>
 </head>
@@ -59,41 +58,37 @@
 <header>Callbooking Performance</header>
 <main>
 
-<div class="login-buttons">
-  <button id="adminLogin">ورود مدیر</button>
-  <button id="memberLogin">ورود کارشناس</button>
+<div class="login-container">
+  <button id="loginAdminBtn" class="login-btn">ورود مدیر 🔒</button>
+  <button id="loginUserBtn" class="login-btn">ورود کارشناس</button>
 </div>
 
 <!-- آموزش -->
 <div class="card">
-  <h2>ثبت توسط تیم آموزش</h2>
+  <h2>مشکلات و نیاز آموزشی کارشناسان / ثبت توسط تیم آموزش</h2>
   <form id="trainingForm" autocomplete="off" onsubmit="return false;">
     <div class="row">
       <label for="trainingName">نام کارشناس</label>
-      <input id="trainingName" class="small-input" type="text" disabled/>
+      <input id="trainingName" class="small-input" type="text" disabled />
     </div>
     <div class="row">
       <label for="trainingScore">امتیاز</label>
-      <input id="trainingScore" class="small-input" type="number" min="0" max="80" disabled/>
+      <input id="trainingScore" class="small-input" type="number" min="0" max="80" disabled />
     </div>
     <div class="row">
       <label for="trainingIssue">مشکلات کارشناس</label>
-      <input id="trainingIssue" class="full-input" type="text" disabled/>
+      <input id="trainingIssue" class="full-input" type="text" disabled />
     </div>
     <div class="row">
       <label>فایل شنود</label>
-      <div class="file-box">
-        <button type="button" id="chooseFileBtn" class="file-btn">انتخاب فایل</button>
-        <span id="fileLabel" class="file-name">Choose a file</span>
-        <input id="audioFile" type="file" disabled/>
-      </div>
+      <input id="audioFile" type="file" class="file-btn" disabled />
     </div>
     <div class="controls">
       <button id="submitTraining" class="primary" type="button" disabled>ثبت</button>
       <button id="resetTraining" class="danger" type="button">ریست (مدیر)</button>
     </div>
   </form>
-  <table id="trainingTable" aria-label="training-table">
+  <table id="trainingTable">
     <thead><tr><th>نام کارشناس</th><th>امتیاز</th><th>مشکلات کارشناس</th><th>شنود</th></tr></thead>
     <tbody></tbody>
   </table>
@@ -101,19 +96,19 @@
 
 <!-- کوردیناتورها -->
 <div class="card">
-  <h2>ثبت توسط کوردیناتورها</h2>
+  <h2>کارشناسان نیازمند به دوره همراهی / ثبت توسط کوردیناتور</h2>
   <form id="callForm" autocomplete="off" onsubmit="return false;">
     <div class="row">
       <label for="agentName">نام کارشناس</label>
-      <input id="agentName" class="small-input" type="text" disabled/>
+      <input id="agentName" class="small-input" type="text" disabled />
     </div>
     <div class="row">
       <label for="coordinatorName2">نام کوردیناتور</label>
-      <input id="coordinatorName2" class="small-input" type="text" disabled/>
+      <input id="coordinatorName2" class="small-input" type="text" disabled />
     </div>
     <div class="row">
       <label for="note2">مشکلات کارشناس</label>
-      <input id="note2" class="full-input" type="text" disabled/>
+      <input id="note2" class="full-input" type="text" disabled />
     </div>
     <div class="controls">
       <button id="submitCall" class="primary" type="button" disabled>ثبت</button>
@@ -132,192 +127,132 @@
   <canvas id="performanceChart"></canvas>
 </div>
 
-<!-- فایل‌های شنود -->
-<div class="card">
-  <h2>فایل‌های شنود (مرتب بر اساس کارشناس)</h2>
-  <div id="recordingsContainer" class="recordings-list"></div>
-  <div class="muted">فقط مدیر می‌تواند پخش و دانلود کند.</div>
-</div>
-
-</main>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-/* ====== Keys & admin ====== */
-const KEY_TRAININGS='cb_trainings_final_v3';
-const KEY_CALLS='cb_calls_final_v3';
-let isAdmin=false;
-let isMember=false;
+let isAdmin=false, isUser=false;
 
-/* ===== login buttons ===== */
-const adminBtn=document.getElementById('adminLogin');
-const memberBtn=document.getElementById('memberLogin');
+const adminPwd="123456", userPwd="654321";
 
-const trainingNameEl=document.getElementById('trainingName');
-const trainingScoreEl=document.getElementById('trainingScore');
-const trainingIssueEl=document.getElementById('trainingIssue');
-const submitTrainingBtn=document.getElementById('submitTraining');
-const resetTrainingBtn=document.getElementById('resetTraining');
-const trainingTableBody=document.querySelector('#trainingTable tbody');
+const trainingFormEls=[ 'trainingName','trainingScore','trainingIssue','audioFile','submitTraining' ];
+const callFormEls=['agentName','coordinatorName2','note2','submitCall'];
 
-const agentNameEl=document.getElementById('agentName');
-const coordEl=document.getElementById('coordinatorName2');
-const noteEl=document.getElementById('note2');
-const submitCallBtn=document.getElementById('submitCall');
-const resetCallBtn=document.getElementById('resetCall');
-const agentsTableBody=document.querySelector('#agentsTable tbody');
-
-const audioFileInput=document.getElementById('audioFile');
-const chooseFileBtn=document.getElementById('chooseFileBtn');
-const fileLabel=document.getElementById('fileLabel');
-
-const recordingsContainer=document.getElementById('recordingsContainer');
-
-/* ===== storage helpers ===== */
-function readTrainings(){ try { return JSON.parse(localStorage.getItem(KEY_TRAININGS)||'[]');} catch(e){ return [];}}
-function writeTrainings(arr){ localStorage.setItem(KEY_TRAININGS, JSON.stringify(arr));}
-function readCalls(){ try { return JSON.parse(localStorage.getItem(KEY_CALLS)||'[]');} catch(e){ return [];}}
-function writeCalls(arr){ localStorage.setItem(KEY_CALLS, JSON.stringify(arr));}
-
-/* ===== file helper ===== */
-function fileToBase64(file){ return new Promise((res, rej)=>{ const r=new FileReader(); r.onload=()=>res(r.result); r.onerror=e=>rej(e); r.readAsDataURL(file); }); }
-
-/* ===== file UI ===== */
-chooseFileBtn.addEventListener('click', ()=>{ if(!trainingNameEl.disabled) audioFileInput.click(); });
-audioFileInput.addEventListener('change', ()=>{ fileLabel.textContent=audioFileInput.files[0]?.name || 'Choose a file'; });
-
-/* ===== login logic ===== */
-adminBtn.addEventListener('click', ()=>{
-  const u=prompt("User:"); const p=prompt("Password:");
-  if(u==='admin' && p==='123456'){ isAdmin=true; enableForms(); alert('ورود مدیر موفق'); }
-});
-memberBtn.addEventListener('click', ()=>{
-  const u=prompt("User:"); const p=prompt("Password:");
-  if(u==='member' && p==='654321'){ isMember=true; enableForms(); alert('ورود کارشناس موفق'); }
-});
-
-function enableForms(){
-  [trainingNameEl, trainingScoreEl, trainingIssueEl, submitTrainingBtn, audioFileInput].forEach(e=>e.disabled=false);
-  [agentNameEl, coordEl, noteEl, submitCallBtn].forEach(e=>e.disabled=false);
+function setFormAccess(enable){
+  trainingFormEls.forEach(id=>document.getElementById(id).disabled=!enable);
+  callFormEls.forEach(id=>document.getElementById(id).disabled=!enable);
 }
 
-/* ===== render trainings table ===== */
+document.getElementById('loginAdminBtn').addEventListener('click', ()=>{
+  const pwd=prompt("User: admin\nPassword:");
+  if(pwd===adminPwd){ isAdmin=true; setFormAccess(true); alert("مدیر وارد شد"); }
+});
+document.getElementById('loginUserBtn').addEventListener('click', ()=>{
+  const pwd=prompt("User: member\nPassword:");
+  if(pwd===userPwd){ isUser=true; setFormAccess(true); alert("کارشناس وارد شد"); }
+});
+
+/* Storage & Rendering */
+const KEY_TRAININGS='cb_trainings_final_v2';
+const KEY_CALLS='cb_calls_final_v2';
+
+function readTrainings(){ try{ return JSON.parse(localStorage.getItem(KEY_TRAININGS)||'[]'); }catch(e){return[];} }
+function writeTrainings(arr){ localStorage.setItem(KEY_TRAININGS, JSON.stringify(arr)); }
+function readCalls(){ try{ return JSON.parse(localStorage.getItem(KEY_CALLS)||'[]'); }catch(e){return[];} }
+function writeCalls(arr){ localStorage.setItem(KEY_CALLS, JSON.stringify(arr)); }
+
+/* File */
+async function fileToBase64(file){ return new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(r.result); r.onerror=e=>rej(e); r.readAsDataURL(file); }); }
+
+/* Render Tables */
 function renderTrainings(){
   const arr=readTrainings();
   trainingTableBody.innerHTML='';
   arr.forEach(item=>{
     const tr=document.createElement('tr');
-    tr.style.background=Number(item.score)>=60?'var(--yellow)':'var(--red)';
+    tr.style.background=Number(item.score)>=60? 'var(--yellow)' : 'var(--red)';
     const tdName=document.createElement('td'); tdName.textContent=item.name||'';
-    const tdScore=document.createElement('td'); tdScore.textContent=item.score||'';
-    const tdIssue=document.createElement('td'); tdIssue.className='problem'; tdIssue.textContent=item.issue||'';
+    const tdScore=document.createElement('td'); tdScore.textContent=item.score!=null?item.score:'';
+    const tdIssue=document.createElement('td'); tdIssue.textContent=item.issue||'';
     const tdFile=document.createElement('td');
-    if(item.fileName && item.fileData){
-      const span=document.createElement('div'); span.textContent=item.fileName; tdFile.appendChild(span);
-      if(isAdmin){
-        const audio=document.createElement('audio'); audio.controls=true; audio.src=item.fileData; tdFile.appendChild(audio);
-        const a=document.createElement('a'); a.href=item.fileData; a.download=item.fileName; a.className='download-link'; a.textContent='دانلود'; tdFile.appendChild(a);
-      }
-    } else tdFile.textContent='';
+    if(item.fileName && item.fileData && isAdmin){
+      const audio=document.createElement('audio'); audio.controls=true; audio.src=item.fileData; tdFile.appendChild(audio);
+      const a=document.createElement('a'); a.href=item.fileData; a.download=item.fileName; a.textContent='دانلود'; tdFile.appendChild(a);
+    }
     tr.appendChild(tdName); tr.appendChild(tdScore); tr.appendChild(tdIssue); tr.appendChild(tdFile);
     trainingTableBody.appendChild(tr);
   });
   updateChart();
-  renderRecordingsList();
 }
 
-/* ===== render calls table ===== */
 function renderCalls(){
-  const arr=readCalls(); agentsTableBody.innerHTML='';
+  const arr=readCalls();
+  agentsTableBody.innerHTML='';
   arr.forEach(item=>{
     const tr=document.createElement('tr');
     const td1=document.createElement('td'); td1.textContent=item.name||'';
     const td2=document.createElement('td'); td2.textContent=item.coord||'';
-    const td3=document.createElement('td'); td3.className='problem'; td3.textContent=item.note||'';
+    const td3=document.createElement('td'); td3.textContent=item.note||'';
     tr.appendChild(td1); tr.appendChild(td2); tr.appendChild(td3);
     agentsTableBody.appendChild(tr);
   });
 }
 
-/* ===== submit handlers ===== */
-submitTrainingBtn.addEventListener('click', async ()=>{
-  const name=trainingNameEl.value.trim();
-  let score=Number(trainingScoreEl.value);
-  const issue=trainingIssueEl.value.trim();
-  if(!name || !issue){ alert('نام و مشکلات را وارد کنید.'); return;}
-  if(isNaN(score)) score=0; if(score<0) score=0; if(score>80){ alert('امتیاز باید بین 0 تا 80 باشد'); return;}
+/* Submit */
+document.getElementById('submitTraining').addEventListener('click', async ()=>{
+  const name=document.getElementById('trainingName').value.trim();
+  let score=Number(document.getElementById('trainingScore').value);
+  const issue=document.getElementById('trainingIssue').value.trim();
+  const fileInput=document.getElementById('audioFile');
+  if(!name||!issue){ alert('نام و مشکلات الزامی است'); return; }
+  if(isNaN(score)) score=0;
+  if(score<0) score=0;
+  if(score>80){ alert('امتیاز باید بین 0 تا 80 باشد'); return; }
   let fileName='', fileData=null;
-  if(audioFileInput.files.length>0){ fileName=audioFileInput.files[0].name; fileData=await fileToBase64(audioFileInput.files[0]);}
-  const arr=readTrainings(); arr.push({name,score,issue,fileName,fileData,createdAt:new Date().toISOString()}); writeTrainings(arr); renderTrainings();
-  trainingNameEl.value=''; trainingScoreEl.value=''; trainingIssueEl.value=''; audioFileInput.value=''; fileLabel.textContent='Choose a file';
+  if(fileInput.files.length>0){ fileName=fileInput.files[0].name; fileData=await fileToBase64(fileInput.files[0]); }
+  const arr=readTrainings(); arr.push({name,score,issue,fileName,fileData,createdAt:new Date().toISOString()});
+  writeTrainings(arr); renderTrainings();
+  document.getElementById('trainingName').value=''; document.getElementById('trainingScore').value=''; document.getElementById('trainingIssue').value=''; fileInput.value='';
 });
 
-submitCallBtn.addEventListener('click', ()=>{
-  const name=agentNameEl.value.trim(); const coord=coordEl.value.trim(); const note=noteEl.value.trim();
-  if(!name){ alert('نام کارشناس الزامی است'); return;}
-  const arr=readCalls(); arr.push({name,coord,note,createdAt:new Date().toISOString()}); writeCalls(arr); renderCalls();
-  agentNameEl.value=''; coordEl.value=''; noteEl.value='';
+document.getElementById('submitCall').addEventListener('click', ()=>{
+  const name=document.getElementById('agentName').value.trim();
+  const coord=document.getElementById('coordinatorName2').value.trim();
+  const note=document.getElementById('note2').value.trim();
+  if(!name){ alert('نام کارشناس الزامی است'); return; }
+  const arr=readCalls(); arr.push({name,coord,note,createdAt:new Date().toISOString()});
+  writeCalls(arr); renderCalls();
 });
 
-/* ===== resets (admin only) ===== */
-resetTrainingBtn.addEventListener('click', ()=>{
-  if(!isAdmin){ alert('فقط مدیر می‌تواند ریست کند'); return;}
+/* Reset Admin */
+document.getElementById('resetTraining').addEventListener('click', ()=>{
+  if(!isAdmin){ alert('فقط مدیر می‌تواند ریست کند'); return; }
   if(!confirm('پاک شدن همه داده‌های آموزش؟')) return;
   writeTrainings([]); renderTrainings();
 });
-resetCallBtn.addEventListener('click', ()=>{
-  if(!isAdmin){ alert('فقط مدیر می‌تواند ریست کند'); return;}
+document.getElementById('resetCall').addEventListener('click', ()=>{
+  if(!isAdmin){ alert('فقط مدیر می‌تواند ریست کند'); return; }
   if(!confirm('پاک شدن همه داده‌های تماس؟')) return;
   writeCalls([]); renderCalls();
 });
 
-/* ===== chart setup ===== */
+/* Chart */
 const ctx=document.getElementById('performanceChart').getContext('2d');
 let chart=null;
 function updateChart(){
   const arr=readTrainings();
   const yellow=arr.filter(x=>Number(x.score)>=60).sort((a,b)=>b.score-a.score);
-  const red=arr.filter(x=>Number(x.score)<=59).sort((a,b)=>b.score-a.score);
+  const red=arr.filter(x=>Number(x.score)<60).sort((a,b)=>b.score-a.score);
   const sorted=[...yellow,...red];
   const labels=sorted.map(s=>s.name||'');
   const data=sorted.map(s=>Number(s.score||0));
-  const bg=sorted.map(s=>Number(s.score)>=60? '#fef3c7':'#e85c5c');
-  const border=sorted.map(s=>Number(s.score)>=60? 'goldenrod':'darkred');
+  const bg=sorted.map(s=>Number(s.score)>=60? '#fef3c7' : '#e05d64');
+  const border=sorted.map(s=>Number(s.score)>=60? 'goldenrod' : 'darkred');
   if(chart) chart.destroy();
   chart=new Chart(ctx,{type:'bar',data:{labels,datasets:[{label:'امتیاز',data,backgroundColor:bg,borderColor:border,borderWidth:1}]},options:{responsive:true,scales:{y:{beginAtZero:true,suggestedMax:80}}}});
 }
 
-/* ===== render recordings list ===== */
-function renderRecordingsList(){
-  const arr=readTrainings();
-  const map={};
-  arr.forEach(item=>{
-    if(!item.fileName || !item.fileData) return;
-    if(!map[item.name]) map[item.name]=[];
-    map[item.name].push({fileName:item.fileName,fileData:item.fileData,date:item.createdAt||new Date().toISOString()});
-  });
-  recordingsContainer.innerHTML='';
-  const names=Object.keys(map).sort();
-  if(names.length===0){ recordingsContainer.innerHTML='<div class="muted">هنوز هیچ فایل شنودی ثبت نشده</div>'; return;}
-  names.forEach(name=>{
-    const block=document.createElement('div'); block.className='agent-block';
-    const h=document.createElement('div'); h.style.fontWeight='700'; h.style.marginBottom='8px'; h.textContent=name;
-    block.appendChild(h);
-    const files=map[name].sort((a,b)=> (b.date||'').localeCompare(a.date||''));
-    files.forEach(f=>{
-      const fi=document.createElement('div'); fi.className='file-item';
-      const meta=document.createElement('div'); meta.className='meta'; meta.textContent=f.fileName+' · '+(new Date(f.date).toLocaleString());
-      fi.appendChild(meta);
-      if(isAdmin){
-        const audio=document.createElement('audio'); audio.controls=true; audio.src=f.fileData; audio.style.marginLeft='6px'; fi.appendChild(audio);
-        const a=document.createElement('a'); a.href=f.fileData; a.download=f.fileName; a.className='download-link'; a.textContent='دانلود'; fi.appendChild(a);
-      }
-      block.appendChild(fi);
-    });
-    recordingsContainer.appendChild(block);
-  });
-}
-
-/* ===== initial render ===== */
+/* Initial Render */
+const trainingTableBody=document.querySelector('#trainingTable tbody');
+const agentsTableBody=document.querySelector('#agentsTable tbody');
 renderTrainings(); renderCalls();
 </script>
 </body>
