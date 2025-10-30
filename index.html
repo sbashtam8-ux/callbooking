@@ -5,53 +5,54 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Callbooking Performance</title>
 <style>
-  :root{
-    --green1:#66d17a;
-    --green2:#0b7a3f;
-    --yellow:#fef3c7;
-    --red:#e05d64; /* قرمز کم‌رنگ */
-    --bg:#f0f2f5;
-  }
-  *{box-sizing:border-box}
-  body{font-family:Calibri, sans-serif;background:var(--bg);margin:0;padding:0;direction:rtl;color:#111}
-  header{
-    background:linear-gradient(90deg,var(--green1),var(--green2));
-    color:#fff;padding:20px;text-align:center;font-size:24px;font-weight:800;
-    box-shadow:0 4px 12px rgba(0,0,0,0.12)
-  }
-  main{max-width:1100px;margin:18px auto;padding:16px;display:flex;flex-direction:column;gap:16px}
-  .card{background:#fff;padding:14px;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
-  h2{margin:0 0 10px;color:var(--green2);font-size:18px}
-  .row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-  .row label{min-width:140px;text-align:right;font-weight:600}
-  .small-input{width:260px;padding:8px;border:1px solid #ccc;border-radius:8px;font-size:14px}
-  .full-input{flex:1;padding:8px;border:1px solid #ccc;border-radius:8px;font-size:14px}
-  .file-box{display:flex;align-items:center;gap:8px}
-  .file-btn{padding:8px 10px;border-radius:8px;border:1px solid #ccc;background:#d1d5db;cursor:pointer} /* خاکستری */
-  .file-name{font-size:14px;color:#333}
-  .controls{display:flex;gap:10px;align-items:center;margin-top:6px}
-  button.primary{background:#10b981;color:#fff;padding:8px 12px;border-radius:8px;border:none;cursor:pointer;font-weight:600} /* ثبت سبز */
-  button.danger{background:#dc2626;color:#fff;padding:8px 12px;border-radius:8px;border:none;display:none;cursor:pointer}
-  table{width:100%;border-collapse:collapse;margin-top:12px;text-align:right}
-  th,td{border:1px solid #e9e9e9;padding:10px;vertical-align:top}
-  th{background:#fafafa;color:#111;font-weight:700}
-  td.problem{max-width:420px;word-wrap:break-word}
-  tbody tr:hover{background:#fbfffb}
-  canvas{width:100% !important;height:360px !important;margin-top:10px}
-  .recordings-list{margin-top:10px}
-  .agent-block{border:1px solid #eee;padding:10px;border-radius:8px;margin-bottom:8px;background:#fff}
-  .file-item{display:flex;gap:10px;align-items:center;margin:6px 0}
-  .file-item .meta{font-size:13px;color:#333}
-  .muted{color:#666;font-size:13px}
-  a.download-link{color:#0645ad;text-decoration:none;font-weight:600}
-  audio{margin-left:8px}
-  .login-container{display:flex;gap:10px;justify-content:flex-start;margin-bottom:12px}
-  .login-btn{background:#fbbf24;color:#111;padding:6px 10px;border-radius:6px;border:none;cursor:pointer;font-size:14px}
-  @media(max-width:720px){
-    .row{flex-direction:column;align-items:stretch}
-    .row label{min-width:unset;text-align:left}
-    .small-input{width:100%}
-  }
+:root{
+  --green1:#66d17a;
+  --green2:#0b7a3f;
+  --yellow:#fef3c7;
+  --red:#e05d64; /* کم رنگ */
+  --bg:#f0f2f5;
+}
+*{box-sizing:border-box}
+body{font-family:Calibri, sans-serif;background:var(--bg);margin:0;padding:0;direction:rtl;color:#111}
+header{
+  background:linear-gradient(90deg,var(--green1),var(--green2));
+  color:#fff;padding:20px;text-align:center;font-size:24px;font-weight:800;
+  box-shadow:0 4px 12px rgba(0,0,0,0.12)
+}
+main{max-width:1100px;margin:18px auto;padding:16px;display:flex;flex-direction:column;gap:16px}
+.card{background:#fff;padding:14px;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
+h2{margin:0 0 10px;color:var(--green2);font-size:18px}
+.row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.row label{min-width:140px;text-align:right;font-weight:600}
+.small-input{width:260px;padding:8px;border:1px solid #ccc;border-radius:8px;font-size:14px}
+.full-input{flex:1;padding:8px;border:1px solid #ccc;border-radius:8px;font-size:14px}
+.file-box{display:flex;align-items:center;gap:8px}
+.file-btn{padding:8px 10px;border-radius:8px;border:1px solid #ccc;background:#d1d5db;cursor:pointer}
+.file-name{font-size:14px;color:#333}
+.controls{display:flex;gap:10px;align-items:center;margin-top:6px}
+button.primary{background:#10b981;color:#fff;padding:8px 12px;border-radius:8px;border:none;cursor:pointer;font-weight:600}
+button.danger{background:#dc2626;color:#fff;padding:8px 12px;border-radius:8px;border:none;display:none;cursor:pointer}
+table{width:100%;border-collapse:collapse;margin-top:12px;text-align:right}
+th,td{border:1px solid #e9e9e9;padding:10px;vertical-align:top}
+th{background:#fafafa;color:#111;font-weight:700}
+td.problem{max-width:420px;word-wrap:break-word}
+tbody tr:hover{background:#fbfffb}
+canvas{width:100% !important;height:360px !important;margin-top:10px}
+.recordings-list{margin-top:10px}
+.agent-block{border:1px solid #eee;padding:10px;border-radius:8px;margin-bottom:8px;background:#fff}
+.file-item{display:flex;gap:10px;align-items:center;margin:6px 0}
+.file-item .meta{font-size:13px;color:#333}
+.muted{color:#666;font-size:13px}
+a.download-link{color:#0645ad;text-decoration:none;font-weight:600}
+audio{margin-left:8px}
+.login-container{display:flex;gap:10px;justify-content:flex-start;margin-bottom:12px}
+.login-btn{background:#d1d5db;color:#111;padding:6px 10px;border-radius:6px;border:none;cursor:pointer;font-size:14px;display:flex;align-items:center;gap:6px}
+.login-btn span.lock{font-size:16px}
+@media(max-width:720px){
+  .row{flex-direction:column;align-items:stretch}
+  .row label{min-width:unset;text-align:left}
+  .small-input{width:100%}
+}
 </style>
 </head>
 <body>
@@ -59,8 +60,8 @@
 <main>
 
 <div class="login-container">
-  <button id="loginAdminBtn" class="login-btn">ورود مدیر 🔒</button>
-  <button id="loginUserBtn" class="login-btn">ورود کارشناس</button>
+  <button id="loginAdminBtn" class="login-btn"><span class="lock">🔒</span> ورود مدیر</button>
+  <button id="loginUserBtn" class="login-btn"><span class="lock">🔒</span> ورود کارشناس</button>
 </div>
 
 <!-- آموزش -->
@@ -130,10 +131,9 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 let isAdmin=false, isUser=false;
-
 const adminPwd="123456", userPwd="654321";
 
-const trainingFormEls=[ 'trainingName','trainingScore','trainingIssue','audioFile','submitTraining' ];
+const trainingFormEls=['trainingName','trainingScore','trainingIssue','audioFile','submitTraining'];
 const callFormEls=['agentName','coordinatorName2','note2','submitCall'];
 
 function setFormAccess(enable){
@@ -141,16 +141,32 @@ function setFormAccess(enable){
   callFormEls.forEach(id=>document.getElementById(id).disabled=!enable);
 }
 
+function setLockIcon(btn, open){
+  const span=btn.querySelector('.lock');
+  span.textContent=open?'🔓':'🔒';
+}
+
+/* Login */
 document.getElementById('loginAdminBtn').addEventListener('click', ()=>{
   const pwd=prompt("User: admin\nPassword:");
-  if(pwd===adminPwd){ isAdmin=true; setFormAccess(true); alert("مدیر وارد شد"); }
+  if(pwd===adminPwd){
+    isAdmin=true;
+    setFormAccess(true);
+    setLockIcon(document.getElementById('loginAdminBtn'), true);
+    alert("مدیر وارد شد");
+  }
 });
 document.getElementById('loginUserBtn').addEventListener('click', ()=>{
   const pwd=prompt("User: member\nPassword:");
-  if(pwd===userPwd){ isUser=true; setFormAccess(true); alert("کارشناس وارد شد"); }
+  if(pwd===userPwd){
+    isUser=true;
+    setFormAccess(true);
+    setLockIcon(document.getElementById('loginUserBtn'), true);
+    alert("کارشناس وارد شد");
+  }
 });
 
-/* Storage & Rendering */
+/* Storage */
 const KEY_TRAININGS='cb_trainings_final_v2';
 const KEY_CALLS='cb_calls_final_v2';
 
@@ -162,7 +178,10 @@ function writeCalls(arr){ localStorage.setItem(KEY_CALLS, JSON.stringify(arr)); 
 /* File */
 async function fileToBase64(file){ return new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(r.result); r.onerror=e=>rej(e); r.readAsDataURL(file); }); }
 
-/* Render Tables */
+/* Table Rendering */
+const trainingTableBody=document.querySelector('#trainingTable tbody');
+const agentsTableBody=document.querySelector('#agentsTable tbody');
+
 function renderTrainings(){
   const arr=readTrainings();
   trainingTableBody.innerHTML='';
@@ -170,7 +189,7 @@ function renderTrainings(){
     const tr=document.createElement('tr');
     tr.style.background=Number(item.score)>=60? 'var(--yellow)' : 'var(--red)';
     const tdName=document.createElement('td'); tdName.textContent=item.name||'';
-    const tdScore=document.createElement('td'); tdScore.textContent=item.score!=null?item.score:'';
+    const tdScore=document.createElement('td'); tdScore.textContent=item.score||'';
     const tdIssue=document.createElement('td'); tdIssue.textContent=item.issue||'';
     const tdFile=document.createElement('td');
     if(item.fileName && item.fileData && isAdmin){
@@ -208,8 +227,10 @@ document.getElementById('submitTraining').addEventListener('click', async ()=>{
   if(score>80){ alert('امتیاز باید بین 0 تا 80 باشد'); return; }
   let fileName='', fileData=null;
   if(fileInput.files.length>0){ fileName=fileInput.files[0].name; fileData=await fileToBase64(fileInput.files[0]); }
-  const arr=readTrainings(); arr.push({name,score,issue,fileName,fileData,createdAt:new Date().toISOString()});
-  writeTrainings(arr); renderTrainings();
+  const arr=readTrainings();
+  arr.push({name,score,issue,fileName,fileData,createdAt:new Date().toISOString()});
+  writeTrainings(arr);
+  renderTrainings();
   document.getElementById('trainingName').value=''; document.getElementById('trainingScore').value=''; document.getElementById('trainingIssue').value=''; fileInput.value='';
 });
 
@@ -222,7 +243,7 @@ document.getElementById('submitCall').addEventListener('click', ()=>{
   writeCalls(arr); renderCalls();
 });
 
-/* Reset Admin */
+/* Reset */
 document.getElementById('resetTraining').addEventListener('click', ()=>{
   if(!isAdmin){ alert('فقط مدیر می‌تواند ریست کند'); return; }
   if(!confirm('پاک شدن همه داده‌های آموزش؟')) return;
@@ -250,9 +271,7 @@ function updateChart(){
   chart=new Chart(ctx,{type:'bar',data:{labels,datasets:[{label:'امتیاز',data,backgroundColor:bg,borderColor:border,borderWidth:1}]},options:{responsive:true,scales:{y:{beginAtZero:true,suggestedMax:80}}}});
 }
 
-/* Initial Render */
-const trainingTableBody=document.querySelector('#trainingTable tbody');
-const agentsTableBody=document.querySelector('#agentsTable tbody');
+/* Initial */
 renderTrainings(); renderCalls();
 </script>
 </body>
