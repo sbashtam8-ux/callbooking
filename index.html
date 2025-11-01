@@ -1,11 +1,10 @@
 <!doctype html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Snapp! Learning & Assistance Platform — Callbooking</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Snapp! Learning & Assistance Platform</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <meta name="description" content="یک پلتفرم نمونه برای مدیریت آموزش‌ها، مربیان و همیاری کارشناسان — نسخه یک‌صفحه‌ای" />
   <style>
     :root{
       --snapp-green:#00E676;
@@ -21,8 +20,6 @@
     body{margin:0;font-family:'Montserrat',system-ui,Arial;background:var(--bg);color:#081218;-webkit-font-smoothing:antialiased}
     a{color:inherit}
     .app{max-width:var(--container);margin:18px auto;padding:14px}
-
-    /* Topbar */
     .top{display:flex;align-items:center;gap:14px}
     .brand{background:linear-gradient(90deg,var(--snapp-green),var(--accent));color:#fff;padding:10px 14px;border-radius:10px;font-weight:800}
     .title{font-size:1.25rem;font-weight:800}
@@ -30,167 +27,275 @@
     .actions{margin-inline-start:auto;display:flex;gap:8px}
     .btn{background:var(--snapp-green);color:#fff;padding:8px 12px;border-radius:8px;border:0;font-weight:700;cursor:pointer}
     .btn.ghost{background:transparent;border:1px solid rgba(0,0,0,0.06);color:var(--muted)}
-
-    /* layout */
     .layout{display:grid;grid-template-columns:220px 1fr;gap:18px;margin-top:18px}
     .sidebar{background:var(--card);border-radius:var(--radius);padding:12px;box-shadow:0 8px 30px rgba(11,23,32,0.06);position:sticky;top:18px;height:calc(100vh - 60px);overflow:auto}
     .nav{display:flex;flex-direction:column;gap:6px;margin-top:10px}
     .nav button{display:flex;align-items:center;gap:8px;padding:10px;border-radius:10px;background:transparent;border:0;text-align:right;font-weight:700;cursor:pointer}
     .nav button:hover{background:linear-gradient(90deg, rgba(0,0,0,0.03), transparent)}
     .nav button.active{background:linear-gradient(90deg, rgba(0,230,118,0.12), transparent)}
-
-    /* page container */
     .page{display:none}
     .page.active{display:block}
-
-    /* hero */
     .hero{background:linear-gradient(180deg, rgba(0,0,0,0.04), rgba(0,0,0,0.02)),var(--snapp-green);color:#fff;border-radius:16px;padding:28px;position:relative;overflow:hidden}
     .hero .brand-small{position:absolute;left:22px;top:18px;font-weight:800;font-size:18px}
     .hero-inner{text-align:center;padding:18px}
     .hero-title{font-weight:800;font-size:2.2rem;margin:6px 0}
     .hero-sub{opacity:0.95;margin:6px 0;font-weight:600}
     .hero-cta{margin-top:16px;display:flex;gap:12px;justify-content:center}
-
-    /* cards & grid */
     .grid{display:grid;grid-template-columns:1fr 360px;gap:18px;margin-top:18px}
     .card{background:var(--card);border-radius:12px;padding:14px;box-shadow:0 8px 24px rgba(11,23,32,0.06)}
-
-    /* trainers / forms */
     form label{display:block;font-weight:700;margin-bottom:6px}
     .field{margin-bottom:12px}
     input[type=text],select,input[type=date],textarea{width:100%;padding:10px;border-radius:10px;border:1px solid #e6e9ec;font-size:0.95rem}
     textarea{min-height:80px}
     .row{display:flex;gap:10px}
     .row .col{flex:1}
-
-    /* cards grid for trainers/coord */
     .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
-
     .trainer-card{background:linear-gradient(180deg,#fff,#fbfdff);border-radius:12px;padding:12px;border-left:6px solid var(--snapp-green);position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(11,23,32,0.04);transition:transform .18s ease,opacity .25s ease}
     .trainer-card:hover{transform:translateY(-6px)}
     .status-badge{position:absolute;top:12px;left:12px;background:var(--snapp-green);color:#fff;padding:6px 10px;border-radius:999px;font-weight:700;font-size:0.82rem}
-
-    /* coordination card colors */
     .state-pending{border-left-color:#9aa0a6}
     .state-review{border-left-color:#2196f3}
     .state-started{border-left-color:var(--snapp-green)}
     .state-complete{border-left-color:#f2b90f}
-
-    /* flip card */
     .flip-wrap{perspective:1000px}
     .flip-card{width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;position:relative}
     .flip-front,.flip-back{backface-visibility:hidden;position:relative;border-radius:10px;padding:12px}
     .flip-back{position:absolute;inset:0;transform:rotateY(180deg);background:linear-gradient(180deg,#fff,#fcfff7)}
     .flipped{transform:rotateY(180deg)}
-
-    /* progress */
     .progress{height:8px;background:#eef2f4;border-radius:999px;overflow:hidden;margin-top:8px}
     .progress > i{display:block;height:100%;background:linear-gradient(90deg,var(--snapp-green),#f2b90f);width:0%;transition:width .6s ease}
-
-    /* dashboard styles */
-    .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:12px}
     .kpi{background:var(--card);padding:12px;border-radius:12px;box-shadow:0 8px 18px rgba(11,23,32,0.04);display:flex;flex-direction:column;gap:6px}
     .kpi .num{font-weight:800;font-size:1.4rem}
-
     .charts{display:grid;grid-template-columns:1fr 420px;gap:12px;margin-top:12px}
     .chart-card{background:var(--card);padding:12px;border-radius:12px}
     canvas{width:100%!important;height:260px!important}
-
-    /* responsive */
     @media (max-width:1000px){.layout{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}.charts{grid-template-columns:1fr}.grid{grid-template-columns:1fr}}
-
     footer{margin-top:18px;text-align:center;color:var(--muted);font-size:0.95rem}
-
-    /* simple animations */
     .fade-in{animation:fadeIn .45s ease both}
     @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
   </style>
 </head>
 <body>
 <main class="app">
-  <header class="top">
-    <div class="brand">Snapp!</div>
-    <div>
-      <div class="title">Snapp! Learning & Assistance Platform</div>
-      <div class="sub">نمونهٔ سازمانی مدیریت آموزش، مربیان و فرآیند همیاری</div>
-    </div>
-    <div class="actions">
-      <button data-page="home" class="btn">صفحه اصلی</button>
-      <button data-page="trainers" class="btn ghost">مربیان</button>
-      <button data-page="dashboard" class="btn ghost">داشبورد</button>
-      <button data-page="coordination" class="btn ghost">Coordination</button>
-    </div>
-  </header>
+<header class="top">
+  <div class="brand">Snapp!</div>
+  <div>
+    <div class="title">Snapp! Learning & Assistance Platform</div>
+    <div class="sub">نمونهٔ سازمانی مدیریت آموزش، مربیان و فرآیند همیاری</div>
+  </div>
+  <div class="actions">
+    <button data-page="home" class="btn">صفحه اصلی</button>
+    <button data-page="trainers" class="btn ghost">مربیان</button>
+    <button data-page="dashboard" class="btn ghost">داشبورد</button>
+    <button data-page="coordination" class="btn ghost">Coordination</button>
+  </div>
+</header>
 
-  <div class="layout">
-    <aside class="sidebar">
-      <div style="font-weight:800">منوی سریع</div>
-      <nav class="nav">
-        <button data-page="home" class="active">🏠 خانه</button>
-        <button data-page="trainers">🎓 مربیان</button>
-        <button data-page="dashboard">📊 داشبورد</button>
-        <button data-page="coordination">🧭 Coordination</button>
-      </nav>
-      <hr style="margin:12px 0;border:none;border-top:1px solid #eef2f4">
-      <div class="muted" style="font-weight:700">نسخهٔ نمایشی — داده‌ها در مرورگر شما ذخیره می‌شود</div>
-    </aside>
+<div class="layout">
+<aside class="sidebar">
+  <div style="font-weight:800">منوی سریع</div>
+  <nav class="nav">
+    <button data-page="home" class="active">🏠 خانه</button>
+    <button data-page="trainers">🎓 مربیان</button>
+    <button data-page="dashboard">📊 داشبورد</button>
+    <button data-page="coordination">🧭 Coordination</button>
+  </nav>
+  <hr style="margin:12px 0;border:none;border-top:1px solid #eef2f4">
+  <div class="muted" style="font-weight:700">نسخهٔ نمایشی — داده‌ها در مرورگر شما ذخیره می‌شود</div>
+</aside>
 
-    <section>
-      <!-- HOME -->
-      <div id="page-home" class="page active fade-in">
-        <section class="hero">
-          <div class="brand-small">Snapp!</div>
-          <div class="hero-inner">
-            <h1 class="hero-title">Snapp! Learning & Assistance Platform</h1>
-            <p class="hero-sub">پلتفرمی برای مدیریت مربیان، Coordination و چرخه آموزش. آماده برای دمو و توسعه داخلی.</p>
-          </div>
-        </section>
-      </div>
-
-      <!-- TRAINERS -->
-      <div id="page-trainers" class="page fade-in">
-        <section class="hero"><div class="brand-small">Snapp!</div><div class="hero-inner"><h1 class="hero-title">ثبت مربیان</h1></div></section>
-      </div>
-
-      <!-- DASHBOARD -->
-      <div id="page-dashboard" class="page fade-in">
-        <section class="hero"><div class="brand-small">Snapp!</div><div class="hero-inner"><h1 class="hero-title">داشبورد مدیریتی</h1></div></section>
-      </div>
-
-      <!-- COORDINATION -->
-      <div id="page-coordination" class="page fade-in">
-        <section class="hero"><div class="brand-small">Snapp!</div><div class="hero-inner"><h1 class="hero-title">Coordination</h1></div></section>
+<section>
+  <!-- HOME -->
+  <div id="page-home" class="page active fade-in">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="brand-small">Snapp!</div>
+      <div class="hero-inner">
+        <h1 id="hero-title" class="hero-title">Snapp! Learning & Assistance Platform</h1>
+        <p class="hero-sub">پلتفرمی سبک و آماده برای مدیریت مربیان، هماهنگی‌ها و چرخه آموزش. طراحی شده برای دمو و آزمایش داخلی.</p>
+        <div class="hero-cta">
+          <button class="btn" onclick="showPage('trainers')">برو به مربیان</button>
+          <button class="btn ghost" onclick="showPage('dashboard')">باز کردن داشبورد</button>
+        </div>
       </div>
     </section>
   </div>
+
+  <!-- TRAINERS -->
+  <div id="page-trainers" class="page fade-in">
+    <section class="hero">
+      <div class="brand-small">Snapp!</div>
+      <div class="hero-inner">
+        <h1 class="hero-title">ثبت اطلاعات مربیان</h1>
+        <p class="hero-sub">از این فرم برای ثبت مربیان استفاده کنید.</p>
+      </div>
+    </section>
+    <div class="layout" style="grid-template-columns:520px 1fr;">
+      <section class="card">
+        <h2>فرم ثبت مربی</h2>
+        <form id="trainer-form">
+          <div class="field"><label>نام و نام خانوادگی</label><input type="text" id="t-name" required></div>
+          <div class="row">
+            <div class="col field"><label>واحد</label><select id="t-unit"><option>QC</option><option>Training</option><option>Call Center</option></select></div>
+            <div class="col field"><label>عنوان آموزشی</label><select id="t-course"><option>آموزش دوره اول</option><option>آموزش دوره دوم</option></select></div>
+          </div>
+          <div class="row">
+            <div class="col field"><label>تاریخ شروع</label><input type="date" id="t-start"></div>
+            <div class="col field"><label>وضعیت</label><select id="t-status"><option>در حال آموزش</option><option>تکمیل‌شده</option><option>در انتظار</option></select></div>
+          </div>
+          <div class="field"><label>توضیحات</label><textarea id="t-note"></textarea></div>
+          <div style="display:flex;gap:10px;align-items:center"><button class="btn" type="submit">ثبت مربی</button><button class="btn ghost" type="button" id="t-clear">پاک‌سازی</button></div>
+        </form>
+      </section>
+      <section>
+        <div class="card"><h3>مربیان در حال آموزش</h3><div id="t-active" class="cards"></div></div>
+        <div class="card" style="margin-top:12px"><h3>آموزش‌های تکمیل‌شده</h3><div id="t-completed" class="cards"></div></div>
+      </section>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="page-dashboard" class="page fade-in">
+    <section class="card">
+      <h2>داشبورد مدیریتی</h2>
+      <div class="kpis">
+        <div class="kpi"><div class="num" id="k-total">—</div><div class="label">تعداد کل مربیان</div></div>
+        <div class="kpi"><div class="num" id="k-active">—</div><div class="label">در حال آموزش</div></div>
+        <div class="kpi"><div class="num" id="k-completed">—</div><div class="label">تکمیل‌شده</div></div>
+        <div class="kpi"><div class="num" id="k-percent">—%</div><div class="label">درصد تکمیل</div></div>
+      </div>
+    </section>
+    <div class="charts">
+      <div class="chart-card"><canvas id="pie-status"></canvas></div>
+      <div class="chart-card"><canvas id="bar-courses"></canvas></div>
+    </div>
+  </div>
+
+  <!-- COORDINATION -->
+  <div id="page-coordination" class="page fade-in">
+    <section class="hero">
+      <div class="brand-small">Snapp!</div>
+      <div class="hero-inner">
+        <h1 class="hero-title">ثبت کارشناسان نیازمند همیاری</h1>
+      </div>
+    </section>
+    <div class="layout" style="grid-template-columns:520px 1fr;">
+      <section class="card">
+        <h3>فرم ثبت نیاز به همیاری</h3>
+        <form id="coord-form">
+          <div class="field"><label>نام کارشناس</label><input type="text" id="c-name" required></div>
+          <div class="field"><label>نام کوردیناتور</label><input type="text" id="c-coord" required></div>
+          <div class="field"><label>علت نیاز</label><select id="c-reason"><option>ضعف عملکرد تماس</option><option>نیاز به تمرین فرآیند</option></select></div>
+          <div class="row">
+            <div class="col field"><label>تاریخ</label><input type="date" id="c-date"></div>
+            <div class="col field"><label>وضعیت</label><select id="c-status"><option>در انتظار</option><option>در حال بررسی</option><option>همیاری شروع شده</option><option>تکمیل‌شده</option></select></div>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:8px"><button class="btn" type="submit">ثبت کارشناس</button><button class="btn ghost" type="button" id="c-clear">پاک‌سازی</button></div>
+        </form>
+      </section>
+      <section>
+        <div class="card"><h3>کارشناسان ثبت‌شده</h3><div id="coord-list" class="cards"></div></div>
+      </section>
+    </div>
+  </div>
+</section>
+</div>
 </main>
 
-<footer style="text-align:center;color:var(--muted);padding:18px">Prepared by your teammate — demo version.</footer>
+<footer style="text-align:center;color:var(--muted);padding:18px">نسخه نمایشی — آماده تولید</footer>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-  // --- NAVIGATION ---
-  const pages = ['home','trainers','dashboard','coordination'];
-  function showPage(p){
-    pages.forEach(pp=>{
-      const pageEl = document.getElementById('page-'+pp);
-      const btnEl = document.querySelector('[data-page="'+pp+'"]');
-      if(pageEl) pageEl.classList.remove('active');
-      if(btnEl) btnEl.classList.remove('active');
-    });
-    const pageToShow = document.getElementById('page-'+p);
-    const btnToActive = document.querySelector('[data-page="'+p+'"]');
-    if(pageToShow) pageToShow.classList.add('active');
-    if(btnToActive) btnToActive.classList.add('active');
-    window.scrollTo({top:0, behavior:'smooth'});
-  }
-
-  document.querySelectorAll('.nav button, .actions button').forEach(btn=>{
-    const page = btn.dataset.page;
-    btn.addEventListener('click', ()=> showPage(page));
+const pages = ['home','trainers','dashboard','coordination'];
+function showPage(p){
+  pages.forEach(pp=>{
+    document.querySelector('#page-'+pp).classList.remove('active');
+    const btn = document.querySelector('[data-page="'+pp+'"]');
+    if(btn) btn.classList.remove('active');
   });
+  document.querySelector('#page-'+p).classList.add('active');
+  const btn2 = document.querySelector('[data-page="'+p+'"]'); if(btn2) btn2.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(p==='dashboard') updateDashboard();
+}
+document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));
 
-  // نمایش اولیه
-  showPage('home');
+// storage
+const KEY_TRAINERS='cb_trainers_v1', KEY_COORD='cb_coord_v1';
+function escapeHtml(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"})[c])}
+
+// --- TRAINERS ---
+let trainers = JSON.parse(localStorage.getItem(KEY_TRAINERS)||'[]');
+const tForm=document.getElementById('trainer-form'), tActive=document.getElementById('t-active'), tCompleted=document.getElementById('t-completed'), tClear=document.getElementById('t-clear');
+function saveTr(){ localStorage.setItem(KEY_TRAINERS,JSON.stringify(trainers)); }
+function renderTr(){
+  tActive.innerHTML=''; tCompleted.innerHTML='';
+  trainers.forEach((t,idx)=>{
+    const card=document.createElement('div'); card.className='trainer-card fade-in';
+    const badge=document.createElement('div'); badge.className='status-badge'; badge.textContent=t.status;
+    card.appendChild(badge);
+    card.innerHTML+=`<strong>${escapeHtml(t.name)}</strong><div class="meta">واحد: ${escapeHtml(t.unit)} · ${escapeHtml(t.course)}<br/>شروع: ${t.start||'-'}</div><div>${escapeHtml(t.note)}</div>`;
+    const actions=document.createElement('div'); actions.style.display='flex'; actions.style.gap='8px'; actions.style.marginTop='10px';
+    if(t.status!=='تکمیل‌شده'){
+      const done=document.createElement('button'); done.className='btn'; done.textContent='تکمیل'; done.addEventListener('click',()=>{ trainers[idx].status='تکمیل‌شده'; saveTr(); renderTr(); }); actions.appendChild(done);
+    }
+    const del=document.createElement('button'); del.className='btn ghost'; del.textContent='حذف'; del.addEventListener('click',()=>{ trainers.splice(idx,1); saveTr(); renderTr(); }); actions.appendChild(del);
+    card.appendChild(actions);
+    if(t.status==='تکمیل‌شده') tCompleted.appendChild(card); else tActive.appendChild(card);
+  });
+}
+tForm.addEventListener('submit',e=>{ e.preventDefault(); trainers.unshift({name:tForm['t-name'].value, unit:tForm['t-unit'].value, course:tForm['t-course'].value, start:tForm['t-start'].value, status:tForm['t-status'].value, note:tForm['t-note'].value}); saveTr(); renderTr(); tForm.reset(); });
+tClear.addEventListener('click',()=>{ if(confirm('پاک‌سازی لیست مربیان؟')){ trainers=[]; saveTr(); renderTr(); } });
+renderTr();
+
+// --- COORDINATION ---
+let coords=JSON.parse(localStorage.getItem(KEY_COORD)||'[]');
+const cForm=document.getElementById('coord-form'), cList=document.getElementById('coord-list'), cClear=document.getElementById('c-clear');
+function saveCoord(){ localStorage.setItem(KEY_COORD,JSON.stringify(coords)); }
+function renderCoord(){
+  cList.innerHTML=''; coords.forEach((c,idx)=>{
+    const wrap=document.createElement('div'); wrap.className='flip-wrap';
+    const card3d=document.createElement('div'); card3d.className='flip-card';
+    const front=document.createElement('div'); front.className='flip-front trainer-card';
+    front.innerHTML=`<strong>${escapeHtml(c.name)}</strong><div>کوردیناتور: ${escapeHtml(c.coord)} · تاریخ: ${c.date||'-'}</div><div>${escapeHtml(c.reason)}</div>`;
+    if(c.status==='در انتظار') front.classList.add('state-pending');
+    if(c.status==='در حال بررسی') front.classList.add('state-review');
+    if(c.status==='همیاری شروع شده') front.classList.add('state-started');
+    if(c.status==='تکمیل‌شده') front.classList.add('state-complete');
+    const back=document.createElement('div'); back.className='flip-back trainer-card';
+    back.innerHTML=`<strong>وضعیت</strong><div>${escapeHtml(c.status)}</div>`;
+    card3d.appendChild(front); card3d.appendChild(back); wrap.appendChild(card3d);
+    wrap.addEventListener('click',()=>{ card3d.classList.toggle('flipped'); });
+    cList.appendChild(wrap);
+  });
+}
+cForm.addEventListener('submit',e=>{ e.preventDefault(); coords.unshift({name:cForm['c-name'].value, coord:cForm['c-coord'].value, reason:cForm['c-reason'].value, date:cForm['c-date'].value, status:cForm['c-status'].value}); saveCoord(); renderCoord(); cForm.reset(); });
+cClear.addEventListener('click',()=>{ if(confirm('پاک‌سازی رکوردها؟')){ coords=[]; saveCoord(); renderCoord(); } });
+renderCoord();
+
+// --- DASHBOARD ---
+function summarize(data){ const total=data.length; const active=data.filter(d=>d.status!=='تکمیل‌شده').length; const completed=data.filter(d=>d.status==='تکمیل‌شده').length; return {total,active,completed,percent:total?Math.round(completed/total*100):0}; }
+let pie, bar;
+function initCharts(){
+  pie=new Chart(document.getElementById('pie-status'),{type:'doughnut',data:{labels:['در حال آموزش','تکمیل‌شده','در انتظار'],datasets:[{data:[0,0,0],backgroundColor:['#00E676','#4caf50','#ffd54f']}]},options:{plugins:{legend:{position:'bottom'}}}});
+  bar=new Chart(document.getElementById('bar-courses'),{type:'bar',data:{labels:[],datasets:[{label:'تعداد',data:[],backgroundColor:'#00bfa5'}]},options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}});
+}
+initCharts();
+function updateDashboard(){
+  const s=summarize(trainers);
+  document.getElementById('k-total').textContent=s.total;
+  document.getElementById('k-active').textContent=s.active;
+  document.getElementById('k-completed').textContent=s.completed;
+  document.getElementById('k-percent').textContent=s.percent+'%';
+  // Pie
+  const pieData=[trainers.filter(d=>d.status==='در حال آموزش').length,trainers.filter(d=>d.status==='تکمیل‌شده').length,trainers.filter(d=>d.status==='در انتظار').length];
+  pie.data.datasets[0].data=pieData; pie.update();
+  // Bar per course
+  const courses={}, labels=[], data=[];
+  trainers.forEach(t=>{ courses[t.course]=(courses[t.course]||0)+1; });
+  for(const k in courses){ labels.push(k); data.push(courses[k]); }
+  bar.data.labels=labels; bar.data.datasets[0].data=data; bar.update();
+}
 </script>
 </body>
 </html>
