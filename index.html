@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Snapp! Learning & Assistance Platform — Callbooking</title>
+  <title>Callbooking Full — Fixed Final</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <meta name="description" content="یک پلتفرم نمونه برای مدیریت آموزش‌ها، مربیان و همیاری کارشناسان — نسخه یک‌صفحه‌ای" />
+  <meta name="description" content="نسخهٔ اصلاح‌شده و کامل Callbooking — SPA تک‌فایل" />
   <style>
     :root{
       --snapp-green:#00E676;
@@ -23,28 +23,29 @@
     .app{max-width:var(--container);margin:18px auto;padding:14px}
 
     /* Topbar */
-    .top{display:flex;align-items:center;gap:14px}
+    .top{display:flex;align-items:center;gap:14px;z-index:20}
     .brand{background:linear-gradient(90deg,var(--snapp-green),var(--accent));color:#fff;padding:10px 14px;border-radius:10px;font-weight:800}
     .title{font-size:1.25rem;font-weight:800}
     .sub{color:var(--muted);margin-top:4px}
     .actions{margin-inline-start:auto;display:flex;gap:8px}
     .btn{background:var(--snapp-green);color:#fff;padding:8px 12px;border-radius:8px;border:0;font-weight:700;cursor:pointer}
     .btn.ghost{background:transparent;border:1px solid rgba(0,0,0,0.06);color:var(--muted)}
+    .btn:focus{outline:3px solid rgba(0,230,118,0.18)}
 
     /* layout */
     .layout{display:grid;grid-template-columns:220px 1fr;gap:18px;margin-top:18px}
-    .sidebar{background:var(--card);border-radius:var(--radius);padding:12px;box-shadow:0 8px 30px rgba(11,23,32,0.06);position:sticky;top:18px;height:calc(100vh - 60px);overflow:auto}
+    .sidebar{background:var(--card);border-radius:var(--radius);padding:12px;box-shadow:0 8px 30px rgba(11,23,32,0.06);position:sticky;top:18px;height:calc(100vh - 60px);overflow:auto;z-index:5}
     .nav{display:flex;flex-direction:column;gap:6px;margin-top:10px}
     .nav button{display:flex;align-items:center;gap:8px;padding:10px;border-radius:10px;background:transparent;border:0;text-align:right;font-weight:700;cursor:pointer}
     .nav button:hover{background:linear-gradient(90deg, rgba(0,0,0,0.03), transparent)}
     .nav button.active{background:linear-gradient(90deg, rgba(0,230,118,0.12), transparent)}
 
     /* page container */
-    .page{display:none}
+    .page{display:none; pointer-events:auto}
     .page.active{display:block}
 
     /* hero */
-    .hero{background:linear-gradient(180deg, rgba(0,0,0,0.04), rgba(0,0,0,0.02)),var(--snapp-green);color:#fff;border-radius:16px;padding:28px;position:relative;overflow:hidden}
+    .hero{background:linear-gradient(180deg, rgba(0,0,0,0.04), rgba(0,0,0,0.02)),var(--snapp-green);color:#fff;border-radius:16px;padding:28px;position:relative;overflow:visible;z-index:1}
     .hero .brand-small{position:absolute;left:22px;top:18px;font-weight:800;font-size:18px}
     .hero-inner{text-align:center;padding:18px}
     .hero-title{font-weight:800;font-size:2.2rem;margin:6px 0}
@@ -53,7 +54,7 @@
 
     /* cards & grid */
     .grid{display:grid;grid-template-columns:1fr 360px;gap:18px;margin-top:18px}
-    .card{background:var(--card);border-radius:12px;padding:14px;box-shadow:0 8px 24px rgba(11,23,32,0.06)}
+    .card{background:var(--card);border-radius:12px;padding:14px;box-shadow:0 8px 24px rgba(11,23,32,0.06);position:relative;z-index:1}
 
     /* trainers / forms */
     form label{display:block;font-weight:700;margin-bottom:6px}
@@ -66,7 +67,7 @@
     /* cards grid for trainers/coord */
     .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
 
-    .trainer-card{background:linear-gradient(180deg,#fff,#fbfdff);border-radius:12px;padding:12px;border-left:6px solid var(--snapp-green);position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(11,23,32,0.04);transition:transform .18s ease,opacity .25s ease}
+    .trainer-card{background:linear-gradient(180deg,#fff,#fbfdff);border-radius:12px;padding:12px;border-left:6px solid var(--snapp-green);position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(11,23,32,0.04);transition:transform .18s ease,opacity .25s ease;cursor:default}
     .trainer-card:hover{transform:translateY(-6px)}
     .status-badge{position:absolute;top:12px;left:12px;background:var(--snapp-green);color:#fff;padding:6px 10px;border-radius:999px;font-weight:700;font-size:0.82rem}
 
@@ -103,32 +104,37 @@
     /* simple animations */
     .fade-in{animation:fadeIn .45s ease both}
     @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+    /* small fixes to ensure clicks pass through and no overlay blocks interactions */
+    .hero, .card, .trainer-card {pointer-events:auto}
+    /* ensure buttons inside hero are clickable */
+    .hero .btn {position:relative;z-index:5}
   </style>
 </head>
 <body>
   <main class="app">
-    <header class="top">
+    <header class="top" role="banner">
       <div class="brand">Snapp!</div>
       <div>
         <div class="title">Snapp! Learning & Assistance Platform</div>
         <div class="sub">نمونهٔ سازمانی مدیریت آموزش، مربیان و فرآیند همیاری</div>
       </div>
-      <div class="actions">
-        <button id="nav-home" class="btn">صفحه اصلی</button>
-        <button id="nav-trainers" class="btn ghost">مربیان</button>
-        <button id="nav-dashboard" class="btn ghost">داشبورد</button>
-        <button id="nav-coord" class="btn ghost">Coordination</button>
+      <div class="actions" role="navigation" aria-label="Top actions">
+        <button type="button" data-page="home" class="btn" id="top-home">صفحه اصلی</button>
+        <button type="button" data-page="trainers" class="btn ghost" id="top-trainers">مربیان</button>
+        <button type="button" data-page="dashboard" class="btn ghost" id="top-dashboard">داشبورد</button>
+        <button type="button" data-page="coordination" class="btn ghost" id="top-coord">Coordination</button>
       </div>
     </header>
 
     <div class="layout">
-      <aside class="sidebar">
+      <aside class="sidebar" aria-label="Primary">
         <div style="font-weight:800">منوی سریع</div>
-        <nav class="nav">
-          <button data-page="home" class="active">🏠 خانه</button>
-          <button data-page="trainers">🎓 مربیان</button>
-          <button data-page="dashboard">📊 داشبورد</button>
-          <button data-page="coordination">🧭 Coordination</button>
+        <nav class="nav" role="navigation" aria-label="main">
+          <button type="button" data-page="home" class="active">🏠 خانه</button>
+          <button type="button" data-page="trainers">🎓 مربیان</button>
+          <button type="button" data-page="dashboard">📊 داشبورد</button>
+          <button type="button" data-page="coordination">🧭 Coordination</button>
         </nav>
         <hr style="margin:12px 0;border:none;border-top:1px solid #eef2f4">
         <div class="muted" style="font-weight:700">نسخهٔ نمایشی — داده‌ها در مرورگر شما ذخیره می‌شود</div>
@@ -136,15 +142,15 @@
 
       <section>
         <!-- HOME -->
-        <div id="page-home" class="page active fade-in">
+        <div id="page-home" class="page active fade-in" aria-live="polite">
           <section class="hero" aria-labelledby="hero-title">
             <div class="brand-small" aria-hidden="true">Snapp!</div>
             <div class="hero-inner">
               <h1 id="hero-title" class="hero-title">Snapp! Learning & Assistance Platform</h1>
               <p class="hero-sub">A lightweight, enterprise-ready sample platform to manage trainers, coordination and training lifecycle. Designed for quick demos and internal rollouts.</p>
               <div class="hero-cta">
-                <button class="btn" onclick="showPage('trainers')">Go to Trainers</button>
-                <button class="btn ghost" onclick="showPage('dashboard')">Open Dashboard</button>
+                <button type="button" class="btn" data-goto="trainers">Go to Trainers</button>
+                <button type="button" class="btn ghost" data-goto="dashboard">Open Dashboard</button>
               </div>
             </div>
           </section>
@@ -165,9 +171,9 @@
             <aside class="card">
               <h3>Quick links</h3>
               <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
-                <button class="btn" onclick="showPage('trainers')">Trainers panel</button>
-                <button class="btn ghost" onclick="showPage('coordination')">Coordination panel</button>
-                <button class="btn ghost" onclick="showPage('dashboard')">View Dashboard</button>
+                <button type="button" class="btn" data-goto="trainers">Trainers panel</button>
+                <button type="button" class="btn ghost" data-goto="coordination">Coordination panel</button>
+                <button type="button" class="btn ghost" data-goto="dashboard">View Dashboard</button>
               </div>
             </aside>
           </div>
@@ -176,7 +182,7 @@
         </div>
 
         <!-- TRAINERS -->
-        <div id="page-trainers" class="page fade-in">
+        <div id="page-trainers" class="page fade-in" aria-hidden="false">
           <section class="hero" aria-labelledby="trainers-title">
             <div class="brand-small">Snapp!</div>
             <div class="hero-inner">
@@ -270,54 +276,77 @@
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
-    // --- Navigation ---
+    // --- Robust Navigation ---
     const pages = ['home','trainers','dashboard','coordination'];
     function showPage(p){
+      if(!pages.includes(p)) return;
+      // hide all
       pages.forEach(pp=>{
-        document.querySelector('#page-'+pp).classList.remove('active');
-        const btn = document.querySelector('.nav button[data-page="'+pp+'"]');
+        const el = document.getElementById('page-'+pp);
+        if(el) el.classList.remove('active');
+        const btn = document.querySelector('.nav button[data-page=\"'+pp+'\"]');
         if(btn) btn.classList.remove('active');
       });
-      document.querySelector('#page-'+p).classList.add('active');
-      const btn2 = document.querySelector('.nav button[data-page="'+p+'"]'); if(btn2) btn2.classList.add('active');
-      // scroll top of main
-      window.scrollTo({top:0,behavior:'smooth'});
-      // refresh dashboard when opened
+      // show requested
+      const target = document.getElementById('page-'+p);
+      if(target){
+        target.classList.add('active');
+        // ensure focus for accessibility
+        target.setAttribute('tabindex','-1');
+        target.focus({preventScroll:true});
+      }
+      const navBtn = document.querySelector('.nav button[data-page=\"'+p+'\"]');
+      if(navBtn) navBtn.classList.add('active');
+      // update top action highlight
+      document.querySelectorAll('.actions [data-page]').forEach(b=>b.classList.remove('active'));
+      const topBtn = document.querySelector('.actions [data-page=\"'+p+'\"]');
+      if(topBtn) topBtn.classList.add('active');
+      // scroll to top (instant to avoid interfering with smooth scroll while debugging)
+      window.scrollTo({top:0,behavior:'instant'});
       if(p==='dashboard') updateDashboard();
     }
-    document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));
-    // top actions
-    document.getElementById('nav-home').addEventListener('click',()=>showPage('home'));
-    document.getElementById('nav-trainers').addEventListener('click',()=>showPage('trainers'));
-    document.getElementById('nav-dashboard').addEventListener('click',()=>showPage('dashboard'));
-    document.getElementById('nav-coord').addEventListener('click',()=>showPage('coordination'));
+
+    // wire up nav buttons (sidebar)
+    document.querySelectorAll('.nav button[data-page]').forEach(b=>{
+      b.addEventListener('click', (e)=>{ e.preventDefault(); showPage(b.dataset.page); });
+    });
+    // wire up top actions
+    document.querySelectorAll('.actions [data-page]').forEach(b=>{
+      b.addEventListener('click', (e)=>{ e.preventDefault(); showPage(b.dataset.page); });
+    });
+
+    // wire up data-goto buttons inside content (hero / quick links)
+    document.querySelectorAll('[data-goto]').forEach(b=>{
+      b.addEventListener('click', ()=> showPage(b.dataset.goto));
+    });
 
     // --- Storage keys ---
     const KEY_TRAINERS = 'cb_trainers_v1';
     const KEY_COORD = 'cb_coord_v1';
 
     // --- Helpers ---
-    function escapeHtml(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[c]))}
+    function escapeHtml(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',\"'\":\"&#39;\"}[c]))}
 
-    // --- TRAINERS logic (from previous trainers.html) ---
+    // --- TRAINERS logic ---
     const tForm = document.getElementById('trainer-form');
     const tActive = document.getElementById('t-active');
     const tCompleted = document.getElementById('t-completed');
     const tClear = document.getElementById('t-clear');
-    let trainers = JSON.parse(localStorage.getItem(KEY_TRAINERS)||'[]');
+    let trainers = [];
+    try{ trainers = JSON.parse(localStorage.getItem(KEY_TRAINERS)||'[]'); }catch(e){ trainers = []; }
 
-    function saveTr(){ localStorage.setItem(KEY_TRAINERS,JSON.stringify(trainers)); }
+    function saveTr(){ try{ localStorage.setItem(KEY_TRAINERS,JSON.stringify(trainers)); }catch(e){ console.warn('localStorage set failed',e); } }
     function renderTr(){ tActive.innerHTML=''; tCompleted.innerHTML=''; trainers.forEach((t,idx)=>{
       const card = document.createElement('article'); card.className='trainer-card fade-in';
       const badge = document.createElement('div'); badge.className='status-badge'; badge.textContent=t.status;
-      const title = document.createElement('div'); title.innerHTML = `<strong style="font-size:1rem">${escapeHtml(t.name)}</strong>`;
+      const title = document.createElement('div'); title.innerHTML = `<strong style=\"font-size:1rem\">${escapeHtml(t.name)}</strong>`;
       const meta = document.createElement('div'); meta.className='meta'; meta.innerHTML=`واحد: ${escapeHtml(t.unit)} · ${escapeHtml(t.course)}<br/>شروع: ${t.start||'-'}`;
       const note = document.createElement('div'); note.className='meta'; note.style.marginTop='8px'; note.textContent=t.note||'';
       const actions = document.createElement('div'); actions.style.display='flex'; actions.style.gap='8px'; actions.style.marginTop='10px';
       if(t.status!=='تکمیل‌شده'){
-        const done = document.createElement('button'); done.className='btn'; done.textContent='علامت‌گذاری تکمیل'; done.addEventListener('click',()=>trainerMarkComplete(idx,card)); actions.appendChild(done);
+        const done = document.createElement('button'); done.className='btn'; done.type='button'; done.textContent='علامت‌گذاری تکمیل'; done.addEventListener('click',()=>trainerMarkComplete(idx,card)); actions.appendChild(done);
       }
-      const del = document.createElement('button'); del.className='btn ghost'; del.textContent='حذف'; del.addEventListener('click',()=>{ card.classList.add('fade-out'); setTimeout(()=>{ trainers.splice(idx,1); saveTr(); renderTr(); },340); }); actions.appendChild(del);
+      const del = document.createElement('button'); del.className='btn ghost'; del.type='button'; del.textContent='حذف'; del.addEventListener('click',()=>{ if(!confirm('حذف رکورد؟')) return; trainers.splice(idx,1); saveTr(); renderTr(); }); actions.appendChild(del);
       card.appendChild(badge); card.appendChild(title); card.appendChild(meta); card.appendChild(note); card.appendChild(actions);
       if(t.status==='تکمیل‌شده') tCompleted.appendChild(card); else tActive.appendChild(card);
     }); }
@@ -335,20 +364,22 @@
             <strong>${escapeHtml(trainers[idx].name)}</strong><br/><div class="meta">${escapeHtml(trainers[idx].course)} · شروع: ${trainers[idx].start||'-'}</div>
           </div>
         </div>
-      `; tCompleted.prepend(completedCard); },350); }
+      `; tCompleted.prepend(completedCard); },250); }
 
-    tForm.addEventListener('submit',e=>{ e.preventDefault(); const t={ name:document.getElementById('t-name').value.trim(), unit:document.getElementById('t-unit').value, course:document.getElementById('t-course').value, start:document.getElementById('t-start').value, status:document.getElementById('t-status').value, note:document.getElementById('t-note').value.trim() }; trainers.unshift(t); saveTr(); renderTr(); tForm.reset(); });
+    tForm.addEventListener('submit',e=>{ e.preventDefault(); const t={ name:document.getElementById('t-name').value.trim(), unit:document.getElementById('t-unit').value, course:document.getElementById('t-course').value, start:document.getElementById('t-start').value, status:document.getElementById('t-status').value, note:document.getElementById('t-note').value.trim() }; trainers.unshift(t); saveTr(); renderTr(); tForm.reset(); showPage('trainers'); });
     tClear.addEventListener('click',()=>{ if(!confirm('پاک‌سازی لیست مربیان؟')) return; trainers=[]; saveTr(); renderTr(); });
+
     renderTr();
 
     // --- COORDINATION logic ---
-    const cForm = document.getElementById('coord-form'); const cList = document.getElementById('coord-list'); const cClear = document.getElementById('c-clear'); let coords = JSON.parse(localStorage.getItem(KEY_COORD)||'[]');
-    function saveCoord(){ localStorage.setItem(KEY_COORD,JSON.stringify(coords)); }
+    const cForm = document.getElementById('coord-form'); const cList = document.getElementById('coord-list'); const cClear = document.getElementById('c-clear'); let coords = [];
+    try{ coords = JSON.parse(localStorage.getItem(KEY_COORD)||'[]'); }catch(e){ coords = []; }
+    function saveCoord(){ try{ localStorage.setItem(KEY_COORD,JSON.stringify(coords)); }catch(e){ console.warn('localStorage set failed',e); } }
     function renderCoord(){ cList.innerHTML=''; coords.forEach((c,idx)=>{
       const wrap = document.createElement('div'); wrap.className='flip-wrap';
       const card3d = document.createElement('div'); card3d.className='flip-card';
       const front = document.createElement('div'); front.className='flip-front trainer-card'; front.innerHTML = `<strong>${escapeHtml(c.name)}</strong><div class="meta">کوردیناتور: ${escapeHtml(c.coord)} · تاریخ: ${c.date||'-'}</div><div class="meta">علت: ${escapeHtml(c.reason)}</div>`;
-      const back = document.createElement('div'); back.className='flip-back trainer-card'; back.innerHTML = `<strong>وضعیت</strong><div class="meta">${escapeHtml(c.status)}</div><div class="progress"><i style="width:${statusPercent(c.status)}%"></i></div><div style="margin-top:8px;display:flex;gap:8px"><button class="btn" onclick="coordAdvance(${idx})">مرحله بعد</button><button class="btn ghost" onclick="coordDelete(${idx})">حذف</button></div>`;
+      const back = document.createElement('div'); back.className='flip-back trainer-card'; back.innerHTML = `<strong>وضعیت</strong><div class="meta">${escapeHtml(c.status)}</div><div class="progress"><i style="width:${statusPercent(c.status)}%"></i></div><div style="margin-top:8px;display:flex;gap:8px"><button class="btn" type="button" data-advance="${idx}">مرحله بعد</button><button class="btn ghost" type="button" data-delete="${idx}">حذف</button></div>`;
       // color by state
       if(c.status==='در انتظار') front.classList.add('state-pending');
       if(c.status==='در حال بررسی') front.classList.add('state-review');
@@ -357,8 +388,13 @@
 
       card3d.appendChild(front); card3d.appendChild(back);
       wrap.appendChild(card3d);
-      // flip on click
-      wrap.addEventListener('click',()=>{ card3d.classList.toggle('flipped'); });
+      // flip on click - but avoid flipping when clicking buttons on back
+      wrap.addEventListener('click',(ev)=>{
+        const path = ev.composedPath ? ev.composedPath() : (ev.path||[]);
+        // if clicked a button inside, don't flip
+        if(path.some(n=> n && n.tagName && n.tagName.toLowerCase()==='button')) return;
+        card3d.classList.toggle('flipped');
+      });
       cList.appendChild(wrap);
     }); }
 
@@ -366,7 +402,15 @@
     function coordAdvance(idx){ const order=['در انتظار','در حال بررسی','همیاری شروع شده','تکمیل‌شده']; const cur = coords[idx].status; const i = order.indexOf(cur); if(i<order.length-1) coords[idx].status = order[i+1]; saveCoord(); renderCoord(); }
     function coordDelete(idx){ if(!confirm('حذف رکورد؟')) return; coords.splice(idx,1); saveCoord(); renderCoord(); }
 
-    cForm.addEventListener('submit',e=>{ e.preventDefault(); const obj={ name:document.getElementById('c-name').value.trim(), coord:document.getElementById('c-coord').value.trim(), reason:document.getElementById('c-reason').value, date:document.getElementById('c-date').value, status:document.getElementById('c-status').value }; coords.unshift(obj); saveCoord(); renderCoord(); cForm.reset(); });
+    // delegate for buttons inside coord list (advance/delete)
+    cList.addEventListener('click',(e)=>{
+      const adv = e.target.closest('[data-advance]');
+      if(adv){ const idx = Number(adv.getAttribute('data-advance')); coordAdvance(idx); return; }
+      const del = e.target.closest('[data-delete]');
+      if(del){ const idx = Number(del.getAttribute('data-delete')); coordDelete(idx); return; }
+    });
+
+    cForm.addEventListener('submit',e=>{ e.preventDefault(); const obj={ name:document.getElementById('c-name').value.trim(), coord:document.getElementById('c-coord').value.trim(), reason:document.getElementById('c-reason').value, date:document.getElementById('c-date').value, status:document.getElementById('c-status').value }; coords.unshift(obj); saveCoord(); renderCoord(); cForm.reset(); showPage('coordination'); });
     cClear.addEventListener('click',()=>{ if(!confirm('پاک‌سازی رکوردهای Coordination؟')) return; coords=[]; saveCoord(); renderCoord(); });
     renderCoord();
 
@@ -375,27 +419,38 @@
 
     // charts
     let pie,bar,line;
-    function initCharts(){ const pctx=document.getElementById('pie-status').getContext('2d'); pie=new Chart(pctx,{type:'doughnut',data:{labels:['در حال آموزش','تکمیل‌شده','در انتظار'],datasets:[{data:[0,0,0],backgroundColor:['#00E676','#4caf50','#ffd54f']}],options:{plugins:{legend:{position:'bottom'}}}}); 
-      const bctx=document.getElementById('bar-courses').getContext('2d'); bar=new Chart(bctx,{type:'bar',data:{labels:[],datasets:[{label:'تعداد',data:[],backgroundColor:'#00bfa5'}]},options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}}); 
-      const lctx=document.getElementById('line-timeline').getContext('2d'); line=new Chart(lctx,{type:'line',data:{labels:[],datasets:[{label:'شروع‌های ثبت‌شده',data:[],borderColor:'#00E676',fill:true,backgroundColor:'rgba(0,230,118,0.12)'}]},options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}}); 
-    }
+    function initCharts(){ try{
+      const pctx=document.getElementById('pie-status').getContext('2d');
+      pie=new Chart(pctx,{type:'doughnut',data:{labels:['در حال آموزش','تکمیل‌شده','در انتظار'],datasets:[{data:[0,0,0],backgroundColor:['#00E676','#4caf50','#ffd54f']}],options:{plugins:{legend:{position:'bottom'}}}});
+      const bctx=document.getElementById('bar-courses').getContext('2d');
+      bar=new Chart(bctx,{type:'bar',data:{labels:[],datasets:[{label:'تعداد',data:[],backgroundColor:'#00bfa5'}]},options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}});
+      const lctx=document.getElementById('line-timeline').getContext('2d');
+      line=new Chart(lctx,{type:'line',data:{labels:[],datasets:[{label:'شروع‌های ثبت‌شده',data:[],borderColor:'#00E676',fill:true,backgroundColor:'rgba(0,230,118,0.12)'}]},options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}});
+    }catch(e){ console.warn('Chart init failed',e); } }
     initCharts();
 
-    function updateDashboard(){ const t=JSON.parse(localStorage.getItem(KEY_TRAINERS)||'[]'); const s=summarize(t); document.getElementById('k-total').textContent=s.total; document.getElementById('k-active').textContent=s.active; document.getElementById('k-completed').textContent=s.completed; document.getElementById('k-percent').textContent=s.percent+'%'; const statuses=[ t.filter(d=>d.status!=='تکمیل‌شده').length, t.filter(d=>d.status==='تکمیل‌شده').length, t.filter(d=>d.status==='در انتظار').length ]; pie.data.datasets[0].data=statuses; pie.update(); const courses=Object.keys(s.byCourse); bar.data.labels=courses; bar.data.datasets[0].data=courses.map(c=>s.byCourse[c]||0); bar.update(); const keys=Object.keys(s.timeline).filter(k=>k!=='نامشخص').sort(); line.data.labels=keys; line.data.datasets[0].data=keys.map(k=>s.timeline[k]); line.update(); // recent
-      const tbody=document.getElementById('recent-body'); tbody.innerHTML=''; t.slice(0,12).forEach(r=>{ const tr=document.createElement('tr'); tr.innerHTML=`<td style="padding:6px 8px">${escapeHtml(r.name)}</td><td>${escapeHtml(r.unit)}</td><td>${escapeHtml(r.course)}</td><td>${escapeHtml(r.start||'-')}</td><td>${escapeHtml(r.status)}</td>`; tbody.appendChild(tr); }); }
+    function updateDashboard(){ const t=JSON.parse(localStorage.getItem(KEY_TRAINERS)||'[]'); const s=summarize(t); document.getElementById('k-total').textContent=s.total; document.getElementById('k-active').textContent=s.active; document.getElementById('k-completed').textContent=s.completed; document.getElementById('k-percent').textContent=s.percent+'%'; const statuses=[ t.filter(d=>d.status!=='تکمیل‌شده').length, t.filter(d=>d.status==='تکمیل‌شده').length, t.filter(d=>d.status==='در انتظار').length ]; if(pie && pie.data) { pie.data.datasets[0].data=statuses; pie.update(); } const courses=Object.keys(s.byCourse); if(bar){ bar.data.labels=courses; bar.data.datasets[0].data=courses.map(c=>s.byCourse[c]||0); bar.update(); } const keys=Object.keys(s.timeline).filter(k=>k!=='نامشخص').sort(); if(line){ line.data.labels=keys; line.data.datasets[0].data=keys.map(k=>s.timeline[k]); line.update(); } // recent
+      const tbody=document.getElementById('recent-body'); tbody.innerHTML=''; t.slice(0,12).forEach(r=>{ const tr=document.createElement('tr'); tr.innerHTML=`<td style="padding:6px 8px">${escapeHtml(r.name)}</td><td>${escapeHtml(r.unit)}</td><td>${escapeHtml(r.course)}</td><td>${escapeHtml(r.start||'-')}</td><td>${escapeHtml(r.status)}</td>`; tbody.appendChild(tr); });
+    }
 
     // auto update when storage changes (other tabs)
     window.addEventListener('storage',()=>{ trainers = JSON.parse(localStorage.getItem(KEY_TRAINERS)||'[]'); renderTr(); renderCoord(); updateDashboard(); });
 
     // init dashboard values
     updateDashboard();
-    setInterval(updateDashboard,7000);
+    const dashboardInterval = setInterval(updateDashboard,7000);
 
-    // export CSV from dashboard
+    // export CSV from dashboard (top-left actions -> first button)
     function exportCSV(){ const data = JSON.parse(localStorage.getItem(KEY_TRAINERS)||'[]'); if(!data.length){alert('هیچ داده‌ای برای خروجی وجود ندارد.');return} const headers=['name','unit','course','start','status','note']; const rows=data.map(r=>headers.map(h=>`"${String(r[h]||'').replace(/"/g,'""')}"`).join(',')); const csv=[headers.join(','),...rows].join('\n'); const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='trainers_export.csv'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); }
-    document.getElementById('nav-dashboard').addEventListener('click',updateDashboard);
-    document.querySelector('.actions .btn')?.addEventListener('click',exportCSV);
 
+    // bind export to brand button double-click (conservative) to avoid accidental export
+    document.querySelector('.brand')?.addEventListener('dblclick', exportCSV);
+
+    // safety: stop intervals on unload
+    window.addEventListener('beforeunload', ()=>{ clearInterval(dashboardInterval); });
+
+    // ensure initial focusability for accessibility
+    document.querySelectorAll('.page').forEach(p=>p.setAttribute('tabindex','-1'));
   </script>
 </body>
 </html>
