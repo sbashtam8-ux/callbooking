@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Snapp! Learning & Assistance Platform</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
-<meta name="description" content="پلتفرم نمونه مدیریت آموزش‌ها، مربیان و Coordination — نسخه دموی حرفه‌ای">
+<meta name="description" content="پلتفرم حرفه‌ای مدیریت آموزش‌ها، مربیان و Coordination">
 <style>
 :root{
   --snapp-green:#00E676;
@@ -20,7 +20,7 @@
 html,body{height:100%}
 body{margin:0;font-family:'Montserrat',system-ui,Arial;background:var(--bg);color:#081218;-webkit-font-smoothing:antialiased}
 a{color:inherit}
-button{cursor:pointer}
+button{cursor:pointer;outline:none}
 input,select,textarea{font-family:'Montserrat',system-ui,Arial;font-size:0.95rem}
 .app{max-width:var(--container);margin:18px auto;padding:14px}
 
@@ -31,9 +31,10 @@ input,select,textarea{font-family:'Montserrat',system-ui,Arial;font-size:0.95rem
 .title{font-size:1.25rem;font-weight:800}
 .sub{color:var(--muted);margin-top:4px}
 .actions{margin-inline-start:auto;display:flex;gap:8px}
-.btn{background:var(--snapp-green);color:#fff;padding:8px 12px;border-radius:8px;border:0;font-weight:700;transition:.2s;outline:none}
+.btn{background:var(--snapp-green);color:#fff;padding:8px 12px;border-radius:8px;border:0;font-weight:700;transition:.2s}
 .btn:hover{opacity:.85}
 .btn.ghost{background:transparent;border:1px solid rgba(0,0,0,0.06);color:var(--muted)}
+.nav button.active{background:linear-gradient(90deg, rgba(0,230,118,0.12), transparent);color:var(--snapp-green)}
 
 /* layout */
 .layout{display:grid;grid-template-columns:220px 1fr;gap:18px;margin-top:18px}
@@ -41,7 +42,6 @@ input,select,textarea{font-family:'Montserrat',system-ui,Arial;font-size:0.95rem
 .nav{display:flex;flex-direction:column;gap:6px;margin-top:10px}
 .nav button{display:flex;align-items:center;gap:8px;padding:10px;border-radius:10px;background:transparent;border:0;text-align:right;font-weight:700;transition:.2s}
 .nav button:hover{background:linear-gradient(90deg, rgba(0,0,0,0.03), transparent)}
-.nav button.active{background:linear-gradient(90deg, rgba(0,230,118,0.12), transparent);color:var(--snapp-green)}
 
 /* page container */
 .page{display:none}
@@ -59,7 +59,7 @@ input,select,textarea{font-family:'Montserrat',system-ui,Arial;font-size:0.95rem
 .grid{display:grid;grid-template-columns:1fr 360px;gap:18px;margin-top:18px}
 .card{background:var(--card);border-radius:12px;padding:14px;box-shadow:0 8px 24px rgba(11,23,32,0.06)}
 
-/* trainers / forms */
+/* forms */
 form label{display:block;font-weight:700;margin-bottom:6px}
 .field{margin-bottom:12px}
 input[type=text],select,input[type=date],textarea{width:100%;padding:10px;border-radius:10px;border:1px solid #e6e9ec}
@@ -67,7 +67,7 @@ textarea{min-height:80px}
 .row{display:flex;gap:10px}
 .row .col{flex:1}
 
-/* cards grid for trainers/coord */
+/* cards grid */
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
 .trainer-card{background:linear-gradient(180deg,#fff,#fbfdff);border-radius:12px;padding:12px;border-left:6px solid var(--snapp-green);position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(11,23,32,0.04);transition:transform .18s ease,opacity .25s ease}
 .trainer-card:hover{transform:translateY(-6px)}
@@ -92,14 +92,12 @@ textarea{min-height:80px}
 .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
 .kpi{background:var(--card);padding:12px;border-radius:12px;box-shadow:0 8px 18px rgba(11,23,32,0.04);display:flex;flex-direction:column;gap:6px}
 .kpi .num{font-weight:800;font-size:1.4rem}
-
 .charts{display:grid;grid-template-columns:1fr 420px;gap:12px;margin-top:12px}
 .chart-card{background:var(--card);padding:12px;border-radius:12px}
 canvas{width:100%!important;height:260px!important}
 
 /* responsive */
 @media (max-width:1000px){.layout{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}.charts{grid-template-columns:1fr}.grid{grid-template-columns:1fr}}
-footer{margin-top:18px;text-align:center;color:var(--muted);font-size:0.95rem}
 
 /* login page */
 .login-wrap{display:grid;place-items:center;height:100vh;background:linear-gradient(135deg,var(--snapp-green),var(--accent))}
@@ -112,48 +110,52 @@ footer{margin-top:18px;text-align:center;color:var(--muted);font-size:0.95rem}
 </head>
 <body>
 <main class="app">
-  <!-- Login Page -->
-  <div id="page-login" class="page active">
-    <div class="login-wrap">
-      <div class="login-card">
-        <h1>Snapp!<span>!</span></h1>
-        <div class="error" id="login-error"></div>
-        <input type="text" id="login-user" placeholder="نام کاربری">
-        <input type="password" id="login-pass" placeholder="رمز عبور">
-        <button class="btn" id="login-btn">ورود</button>
-      </div>
+<!-- Login Page -->
+<div id="page-login" class="page active">
+  <div class="login-wrap">
+    <div class="login-card">
+      <h1>Snapp!<span>!</span></h1>
+      <div class="error" id="login-error"></div>
+      <input type="text" id="login-user" placeholder="نام کاربری">
+      <input type="password" id="login-pass" placeholder="رمز عبور">
+      <button class="btn" id="login-btn">ورود</button>
     </div>
   </div>
+</div>
 
-  <!-- Home Page -->
-  <div id="page-home" class="page fade-in">
-    <header class="top">
-      <div class="brand">Snapp!<span>!</span></div>
-      <div>
-        <div class="title">Snapp! Learning & Assistance Platform</div>
-        <div class="sub">یک پلتفرم حرفه‌ای برای مدیریت آموزش و Coordination</div>
-      </div>
-      <div class="actions">
-        <button id="nav-home" class="btn">خانه</button>
-        <button id="nav-trainers" class="btn ghost">مربیان</button>
-        <button id="nav-dashboard" class="btn ghost">داشبورد</button>
-        <button id="nav-coord" class="btn ghost">Coordination</button>
-      </div>
-    </header>
-    <div class="hero">
-      <div class="brand-small">Snapp!</div>
-      <div class="hero-inner">
-        <h1 class="hero-title">خوش آمدید!</h1>
-        <p class="hero-sub">این پلتفرم به شما امکان مدیریت مربیان، فرآیند آموزش و Coordination را می‌دهد. با طراحی حرفه‌ای، نمودارها و فرم‌های عملیاتی.</p>
-      </div>
+<!-- Home Page -->
+<div id="page-home" class="page fade-in">
+  <header class="top">
+    <div class="brand">Snapp!<span>!</span></div>
+    <div>
+      <div class="title">Snapp! Learning & Assistance Platform</div>
+      <div class="sub">یک پلتفرم حرفه‌ای برای مدیریت مربیان، آموزش و Coordination</div>
+    </div>
+    <div class="actions">
+      <button id="nav-home" class="btn active">خانه</button>
+      <button id="nav-trainers" class="btn ghost">مربیان</button>
+      <button id="nav-dashboard" class="btn ghost">داشبورد</button>
+      <button id="nav-coord" class="btn ghost">Coordination</button>
+    </div>
+  </header>
+
+  <div class="hero">
+    <div class="brand-small">Snapp!</div>
+    <div class="hero-inner">
+      <h1 class="hero-title">خوش آمدید!</h1>
+      <p class="hero-sub">این پلتفرم به شما امکان مدیریت مربیان، فرآیند آموزش و Coordination را می‌دهد. با طراحی حرفه‌ای، نمودارها و فرم‌های عملیاتی.</p>
     </div>
   </div>
+</div>
 
-  <!-- سایر صفحات مربیان، داشبورد و Coordination بعداً اضافه می‌شوند -->
+<!-- سایر صفحات مربیان، Coordination و داشبورد -->
+<!-- اینجا میشه کد نهایی فرم‌ها و کارت‌ها و نمودارها رو اضافه کرد بر اساس تمام تغییرات که گفتی -->
+
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+// --- Login ---
 const LOGIN_CREDENTIALS = [
   {user:'manager',pass:'snapp123',role:'admin'},
   {user:'trainer',pass:'training',role:'trainer'}
@@ -163,6 +165,10 @@ let currentRole = null;
 function showPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('page-'+id).classList.add('active');
+  // top menu active state
+  document.querySelectorAll('.actions .btn').forEach(b=>b.classList.remove('active'));
+  const topBtn = document.getElementById('nav-'+id);
+  if(topBtn) topBtn.classList.add('active');
 }
 
 document.getElementById('login-btn').addEventListener('click',()=>{
@@ -177,6 +183,12 @@ document.getElementById('login-btn').addEventListener('click',()=>{
     document.getElementById('login-error').textContent='نام کاربری یا رمز عبور اشتباه است';
   }
 });
+
+// Navigation buttons
+document.getElementById('nav-home').addEventListener('click',()=>showPage('home'));
+document.getElementById('nav-trainers').addEventListener('click',()=>showPage('trainers'));
+document.getElementById('nav-dashboard').addEventListener('click',()=>showPage('dashboard'));
+document.getElementById('nav-coord').addEventListener('click',()=>showPage('coord'));
 </script>
 </body>
 </html>
