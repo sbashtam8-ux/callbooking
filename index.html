@@ -5,423 +5,251 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>QA / Training Platform</title>
 <style>
-    body {
-        font-family: 'Calibri', sans-serif;
-        margin: 0;
-        padding: 0;
-        background: linear-gradient(135deg, #f5f5f5, #e0e0e0);
-        color: #333;
-    }
-    header {
-        background: #1e1e2f;
-        color: #fff;
-        padding: 15px 30px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    }
-    header h1 {
-        margin: 0;
-        font-size: 28px;
-        font-weight: bold;
-    }
-    nav a {
-        color: #fff;
-        text-decoration: none;
-        margin-left: 20px;
-        padding: 5px 10px;
-        border-radius: 5px;
-    }
-    nav a.active, nav a:hover {
-        background: #4caf50;
-    }
-    .container {
-        padding: 30px;
-    }
-    /* صفحه ورود */
-    .login-container {
-        max-width: 400px;
-        margin: 100px auto;
-        background: #fff;
-        padding: 30px;
-        border-radius: 15px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    }
-    .login-container h2 {
-        text-align: center;
-        margin-bottom: 20px;
-        color: #1e1e2f;
-    }
-    .login-container input {
-        width: 100%;
-        padding: 12px;
-        margin: 10px 0;
-        border-radius: 8px;
-        border: 1px solid #ccc;
-    }
-    .login-container button {
-        width: 100%;
-        padding: 12px;
-        background: #1e1e2f;
-        color: #fff;
-        font-weight: bold;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-    }
-    .login-container button:hover {
-        background: #4caf50;
-    }
-    /* صفحه Home */
-    .home-text {
-        background: #fff;
-        padding: 30px;
-        border-radius: 15px;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        line-height: 1.8;
-        font-size: 18px;
-    }
-    /* فرم‌ها */
-    .form-container {
-        background: #fff;
-        padding: 25px;
-        border-radius: 15px;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        margin-bottom: 30px;
-    }
-    .form-container label {
-        display: block;
-        margin: 10px 0 5px;
-        font-weight: bold;
-    }
-    .form-container input, 
-    .form-container select, 
-    .form-container textarea {
-        width: 100%;
-        padding: 10px;
-        border-radius: 8px;
-        border: 1px solid #ccc;
-        margin-bottom: 10px;
-    }
-    .form-container textarea::placeholder {
-        color: #888;
-    }
-    .form-container button {
-        padding: 12px 25px;
-        background: #1e1e2f;
-        color: #fff;
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-    }
-    .form-container button:hover {
-        background: #4caf50;
-    }
-    /* داشبورد */
-    .dashboard {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 20px;
-        margin-top: 30px;
-    }
-    .dashboard-card {
-        background: #fff;
-        border-radius: 15px;
-        padding: 20px;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        text-align: center;
-    }
-    canvas {
-        width: 100% !important;
-        height: 250px !important;
-    }
-    .form-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 15px;
-    }
-    .form-table th, .form-table td {
-        border: 1px solid #ccc;
-        padding: 8px;
-        text-align: center;
-    }
-    .form-table th {
-        background-color: #f0f0f0;
-    }
-    .status-approved {color: green; font-weight:bold;}
-    .status-rejected {color: red; font-weight:bold;}
+    body {font-family: Calibri, sans-serif; background: #f3f4f6; margin:0; padding:0;}
+    header {background:#0b3d91; color:white; padding:15px; display:flex; justify-content:space-between; align-items:center;}
+    header h1 {margin:0; font-size:28px;}
+    nav a {margin-left:15px; text-decoration:none; color:white; font-weight:bold; padding:5px 10px; border-radius:5px;}
+    nav a.active, nav a:hover {background:#0f7c5c;}
+    .container {padding:20px;}
+    .card {background:white; padding:20px; margin-bottom:20px; border-radius:12px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);}
+    input, select, textarea, button {padding:10px; margin-top:5px; width:100%; border-radius:6px; border:1px solid #ccc; box-sizing:border-box;}
+    button {background:#0f7c5c; color:white; border:none; cursor:pointer; font-weight:bold;}
+    button:hover {background:#0b5d45;}
+    table {width:100%; border-collapse: collapse;}
+    th, td {border:1px solid #ddd; padding:10px; text-align:center;}
+    th {background:#0b3d91; color:white;}
+    .hidden {display:none;}
+    .chart-container {display:flex; gap:20px; flex-wrap:wrap;}
+    .chart-card {flex:1; min-width:200px; padding:20px; border-radius:12px; background:white; box-shadow: 0 8px 20px rgba(0,0,0,0.1);}
 </style>
 </head>
 <body>
 
-<!-- صفحه ورود -->
-<div class="login-container" id="loginPage">
-    <h2>ورود به QA / Training Platform</h2>
-    <input type="text" id="username" placeholder="نام کاربری">
-    <input type="password" id="password" placeholder="رمز عبور">
-    <button onclick="login()">ورود</button>
-</div>
+<header>
+    <h1>QA / Training Platform</h1>
+    <nav>
+        <a href="#" class="nav-link active" data-page="home">خانه</a>
+        <a href="#" class="nav-link" data-page="trainer">مربیان</a>
+        <a href="#" class="nav-link" data-page="coordination">Coordination</a>
+        <a href="#" class="nav-link" data-page="dashboard">داشبورد مدیریتی</a>
+    </nav>
+</header>
 
-<!-- صفحه اصلی -->
-<div id="mainPage" style="display:none;">
-    <header>
-        <h1>QA / Training</h1>
-        <nav>
-            <a href="#" class="active" onclick="showHome()">خانه</a>
-            <a href="#" onclick="showForm('trainer')">مربی</a>
-            <a href="#" onclick="showForm('coordination')">Coordination</a>
-            <a href="#" onclick="showDashboard()">داشبورد مدیریتی</a>
-        </nav>
-    </header>
-
-    <div class="container" id="homePage">
-        <div class="home-text">
-            <p>این پلتفرم حرفه‌ای برای مدیریت تیم آموزش طراحی شده است.  
-            از این پس تمامی فرایندهای آموزشی توسط مربیان در این سامانه ثبت می‌شود.  
-            مدیران قادر خواهند بود تمامی فرم‌ها را مشاهده، تایید یا رد کنند و وضعیت هر ثبت برای مربیان مشخص خواهد شد.  
-            فرم‌ها و داشبوردها با طراحی مدرن، سه‌بعدی و سازمانی و فونت Calibri ارائه شده‌اند.</p>
-        </div>
+<div class="container">
+    <!-- صفحه ورود -->
+    <div id="loginPage" class="card">
+        <h2>ورود به سیستم</h2>
+        <input type="text" id="username" placeholder="نام کاربری">
+        <input type="password" id="password" placeholder="رمز عبور">
+        <button onclick="login()">ورود</button>
     </div>
 
-    <!-- فرم مربی -->
-    <div class="container form-container" id="trainerForm" style="display:none;">
+    <!-- صفحه Home -->
+    <div id="home" class="card hidden">
+        <h2>صفحه اصلی</h2>
+        <p>این پلتفرم حرفه‌ای برای مدیریت تیم آموزش، ثبت و پیگیری دوره‌های آموزشی مربیان و هماهنگی کارشناسان طراحی شده است. تمامی فرایندهای آموزش از این پس توسط مربیان در این پنل ثبت می‌شود و مدیران می‌توانند وضعیت هر دوره را تایید یا رد کنند. این سامانه با فرم‌های شیک و کارت‌های تعاملی، به مدیران امکان می‌دهد روند پیشرفت آموزش‌ها را به صورت نموداری و دقیق مشاهده کنند.</p>
+    </div>
+
+    <!-- صفحه مربیان -->
+    <div id="trainer" class="card hidden">
         <h2>ثبت فرم مربی</h2>
-        <label>نام و نام خانوادگی:</label>
-        <input type="text" id="trainerName">
-        
-        <label>سمت:</label>
-        <input type="text" value="CS_Specialist_QA/Training" disabled>
-        
-        <label>عنوان آموزشی:</label>
+        <input type="text" id="trainerName" placeholder="نام و نام خانوادگی">
         <select id="trainingTitle">
-            <option>آموزش دوره اول</option>
-            <option>آموزش دوره دوم</option>
-            <option>آموزش دوره‌ای</option>
-            <option>آموزش همراهی</option>
+            <option value="آموزش دوره اول">آموزش دوره اول</option>
+            <option value="آموزش دوره دوم">آموزش دوره دوم</option>
+            <option value="آموزش دوره‌ای">آموزش دوره‌ای</option>
+            <option value="آموزش همراهی">آموزش همراهی</option>
         </select>
-        
-        <label>توضیحات:</label>
-        <textarea placeholder="اختیاری" id="trainingDesc"></textarea>
-
-        <label>تعداد نیوجوینرها:</label>
-        <input type="number" id="newJoiners">
-
+        <textarea id="trainingDesc" placeholder="توضیحات اختیاری"></textarea>
+        <input type="number" id="newJoiners" placeholder="تعداد نیوجوینرها">
         <button onclick="submitTrainerForm()">ثبت فرم</button>
-
-        <table class="form-table" id="trainerTable">
-            <thead>
-                <tr>
-                    <th>نام مربی</th>
-                    <th>عنوان آموزشی</th>
-                    <th>تعداد</th>
-                    <th>توضیحات</th>
-                    <th>عملیات</th>
-                </tr>
-            </thead>
+        <h3>لیست مربیان ثبت شده</h3>
+        <table id="trainerTable">
+            <thead><tr><th>نام مربی</th><th>عنوان آموزشی</th><th>توضیحات</th><th>نیوجوینرها</th><th>حذف</th></tr></thead>
             <tbody></tbody>
         </table>
     </div>
 
-    <!-- فرم Coordination -->
-    <div class="container form-container" id="coordinationForm" style="display:none;">
+    <!-- صفحه Coordination -->
+    <div id="coordination" class="card hidden">
         <h2>ثبت فرم Coordination</h2>
-        <label>نام و نام خانوادگی کوردیناتور:</label>
-        <input type="text" id="coordName">
-
-        <label>نام و نام خانوادگی کارشناس:</label>
-        <input type="text" id="expertName">
-
-        <label>تاریخ ثبت درخواست:</label>
-        <input type="date" id="coordDate">
-
-        <label>تعداد اعضا دوره:</label>
-        <input type="number" id="courseMembers">
-
+        <input type="text" id="coordName" placeholder="نام و نام خانوادگی کوردیناتور">
+        <input type="text" id="expertName" placeholder="نام و نام خانوادگی کارشناس">
+        <input type="date" id="coordDate" placeholder="تاریخ ثبت درخواست">
+        <input type="number" id="courseMembers" placeholder="تعداد اعضای دوره">
         <button onclick="submitCoordForm()">ثبت فرم</button>
-
-        <table class="form-table" id="coordTable">
-            <thead>
-                <tr>
-                    <th>نام کوردیناتور</th>
-                    <th>نام کارشناس</th>
-                    <th>تاریخ</th>
-                    <th>تعداد اعضا</th>
-                    <th>وضعیت</th>
-                    <th>عملیات</th>
-                </tr>
-            </thead>
+        <h3>لیست Coordination ثبت شده</h3>
+        <table id="coordTable">
+            <thead><tr><th>کوردیناتور</th><th>کارشناس</th><th>تاریخ</th><th>اعضا</th><th>وضعیت</th><th>حذف</th><th>عملیات مدیر</th></tr></thead>
             <tbody></tbody>
         </table>
     </div>
 
-    <!-- داشبورد مدیریتی -->
-    <div class="container" id="dashboardPage" style="display:none;">
+    <!-- صفحه داشبورد -->
+    <div id="dashboard" class="card hidden">
         <h2>داشبورد مدیریتی</h2>
-        <div class="dashboard">
-            <div class="dashboard-card">
-                <h3>آموزش دوره اول</h3>
-                <canvas id="chart1"></canvas>
-            </div>
-            <div class="dashboard-card">
-                <h3>آموزش دوره دوم</h3>
-                <canvas id="chart2"></canvas>
-            </div>
-            <div class="dashboard-card">
-                <h3>آموزش دوره‌ای</h3>
-                <canvas id="chart3"></canvas>
-            </div>
-            <div class="dashboard-card">
-                <h3>آموزش همراهی</h3>
-                <canvas id="chart4"></canvas>
-            </div>
+        <div class="chart-container">
+            <div class="chart-card" id="chart1"><h4>آموزش دوره اول</h4><div id="chart1Content"></div></div>
+            <div class="chart-card" id="chart2"><h4>آموزش دوره دوم</h4><div id="chart2Content"></div></div>
+            <div class="chart-card" id="chart3"><h4>آموزش دوره‌ای</h4><div id="chart3Content"></div></div>
+            <div class="chart-card" id="chart4"><h4>آموزش همراهی</h4><div id="chart4Content"></div></div>
         </div>
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    let users = {manager:"snapp123", trainer:"trainer"};
-    let trainerData = [];
-    let coordData = [];
+let trainerData = [];
+let coordData = [];
+let currentUserRole = "";
 
-    function login(){
-        const user = document.getElementById('username').value;
-        const pass = document.getElementById('password').value;
-        if(users[user] && users[user]===pass){
-            document.getElementById('loginPage').style.display='none';
-            document.getElementById('mainPage').style.display='block';
-        } else {
-            alert("نام کاربری یا رمز عبور اشتباه است!");
-        }
-    }
+// --- Login ---
+function login(){
+    const user=document.getElementById('username').value.trim();
+    const pass=document.getElementById('password').value.trim();
+    if(user==="manager" && pass==="snapp123"){
+        currentUserRole="manager";
+        showPage("home");
+    } else if(user==="trainer" && pass==="trainer"){
+        currentUserRole="trainer";
+        showPage("home");
+    } else { alert("نام کاربری یا رمز اشتباه است!"); return; }
+    document.getElementById('loginPage').classList.add('hidden');
+}
 
-    function showForm(type){
-        showHome(false);
-        if(type==='trainer'){
-            document.getElementById('trainerForm').style.display='block';
-            document.getElementById('coordinationForm').style.display='none';
-        } else {
-            document.getElementById('coordinationForm').style.display='block';
-            document.getElementById('trainerForm').style.display='none';
-        }
-    }
+// --- Navigation ---
+const links=document.querySelectorAll('.nav-link');
+links.forEach(link=>{
+    link.addEventListener('click',e=>{
+        e.preventDefault();
+        showPage(link.dataset.page);
+        links.forEach(l=>l.classList.remove('active'));
+        link.classList.add('active');
+    });
+});
 
-    function showDashboard(){
-        showHome(false);
-        document.getElementById('trainerForm').style.display='none';
-        document.getElementById('coordinationForm').style.display='none';
-        document.getElementById('dashboardPage').style.display='block';
-        updateCharts();
-    }
+function showPage(page){
+    ['home','trainer','coordination','dashboard'].forEach(p=>{
+        document.getElementById(p).classList.add('hidden');
+    });
+    document.getElementById(page).classList.remove('hidden');
+    updateCharts();
+}
 
-    function showHome(show=true){
-        document.getElementById('homePage').style.display = show ? 'block' : 'none';
-        document.getElementById('trainerForm').style.display='none';
-        document.getElementById('coordinationForm').style.display='none';
-        document.getElementById('dashboardPage').style.display='none';
-    }
+// --- LocalStorage ---
+function saveData(){
+    localStorage.setItem('trainerData', JSON.stringify(trainerData));
+    localStorage.setItem('coordData', JSON.stringify(coordData));
+}
 
-    function submitTrainerForm(){
-        let name=document.getElementById('trainerName').value;
-        let title=document.getElementById('trainingTitle').value;
-        let desc=document.getElementById('trainingDesc').value;
-        let nj=document.getElementById('newJoiners').value;
-        trainerData.push({name,title,desc,nj});
-        updateTrainerTable();
-        updateCharts();
-        alert("فرم مربی ثبت شد!");
-    }
+function loadData(){
+    trainerData=JSON.parse(localStorage.getItem('trainerData')||'[]');
+    coordData=JSON.parse(localStorage.getItem('coordData')||'[]');
+    updateTrainerTable();
+    updateCoordTable();
+    updateCharts();
+}
 
-    function submitCoordForm(){
-        let coordName=document.getElementById('coordName').value;
-        let expertName=document.getElementById('expertName').value;
-        let date=document.getElementById('coordDate').value;
-        let members=document.getElementById('courseMembers').value;
-        coordData.push({coordName,expertName,date,members,status:"در انتظار"});
-        updateCoordTable();
-        updateCharts();
-        alert("فرم Coordination ثبت شد!");
-    }
+// --- Trainer Form ---
+function submitTrainerForm(){
+    let name=document.getElementById('trainerName').value;
+    let title=document.getElementById('trainingTitle').value;
+    let desc=document.getElementById('trainingDesc').value;
+    let nj=document.getElementById('newJoiners').value;
+    trainerData.push({name,title,desc,nj});
+    saveData();
+    updateTrainerTable();
+    updateCharts();
+    alert("فرم مربی ثبت شد!");
+}
 
-    function deleteTrainer(idx){
+function updateTrainerTable(){
+    const tbody=document.querySelector("#trainerTable tbody");
+    tbody.innerHTML="";
+    trainerData.forEach((t,i)=>{
+        tbody.innerHTML+=`<tr>
+        <td>${t.name}</td>
+        <td>${t.title}</td>
+        <td>${t.desc}</td>
+        <td>${t.nj}</td>
+        <td><button onclick="deleteTrainer(${i})">حذف</button></td>
+        </tr>`;
+    });
+}
+
+function deleteTrainer(idx){
+    if(confirm("آیا مطمئن هستید میخواید این فرم را حذف کنید؟")){
         trainerData.splice(idx,1);
+        saveData();
         updateTrainerTable();
         updateCharts();
     }
+}
 
-    function approveCoord(idx){
-        coordData[idx].status="تایید شد";
-        updateCoordTable();
-    }
+// --- Coordination Form ---
+function submitCoordForm(){
+    let coordName=document.getElementById('coordName').value;
+    let expertName=document.getElementById('expertName').value;
+    let date=document.getElementById('coordDate').value;
+    let members=document.getElementById('courseMembers').value;
+    coordData.push({coordName,expertName,date,members,status:"در انتظار"});
+    saveData();
+    updateCoordTable();
+    updateCharts();
+    alert("فرم Coordination ثبت شد!");
+}
 
-    function rejectCoord(idx){
-        coordData[idx].status="رد شد";
-        updateCoordTable();
-    }
+function updateCoordTable(){
+    const tbody=document.querySelector("#coordTable tbody");
+    tbody.innerHTML="";
+    coordData.forEach((c,i)=>{
+        let ops="";
+        if(currentUserRole==="manager"){
+            ops=`<button onclick="approveCoord(${i})">تایید</button>
+            <button onclick="rejectCoord(${i})">رد</button>`;
+        }
+        let delBtn=currentUserRole==="manager" || currentUserRole==="trainer"?`<button onclick="coordDelete(${i})">حذف</button>`:"";
+        tbody.innerHTML+=`<tr>
+        <td>${c.coordName}</td>
+        <td>${c.expertName}</td>
+        <td>${c.date}</td>
+        <td>${c.members}</td>
+        <td>${c.status}</td>
+        <td>${delBtn}</td>
+        <td>${ops}</td>
+        </tr>`;
+    });
+}
 
-    function updateTrainerTable(){
-        let tbody=document.getElementById('trainerTable').querySelector('tbody');
-        tbody.innerHTML="";
-        trainerData.forEach((t,i)=>{
-            tbody.innerHTML+=`<tr>
-                <td>${t.name}</td>
-                <td>${t.title}</td>
-                <td>${t.nj}</td>
-                <td>${t.desc}</td>
-                <td><button onclick="deleteTrainer(${i})">حذف</button></td>
-            </tr>`;
-        });
-    }
-
-    function updateCoordTable(){
-        let tbody=document.getElementById('coordTable').querySelector('tbody');
-        tbody.innerHTML="";
-        coordData.forEach((c,i)=>{
-            tbody.innerHTML+=`<tr>
-                <td>${c.coordName}</td>
-                <td>${c.expertName}</td>
-                <td>${c.date}</td>
-                <td>${c.members}</td>
-                <td class="${c.status==='تایید شد'?'status-approved':c.status==='رد شد'?'status-rejected':''}">${c.status}</td>
-                <td>
-                    <button onclick="approveCoord(${i})">تایید</button>
-                    <button onclick="rejectCoord(${i})">رد</button>
-                    <button onclick="coordDelete(${i})">حذف</button>
-                </td>
-            </tr>`;
-        });
-    }
-
-    function coordDelete(idx){
+function coordDelete(idx){
+    if(confirm("آیا مطمئن هستید میخواید این فرم را حذف کنید؟")){
         coordData.splice(idx,1);
+        saveData();
         updateCoordTable();
         updateCharts();
     }
+}
 
-    const ctx1=document.getElementById('chart1').getContext('2d');
-    const ctx2=document.getElementById('chart2').getContext('2d');
-    const ctx3=document.getElementById('chart3').getContext('2d');
-    const ctx4=document.getElementById('chart4').getContext('2d');
+function approveCoord(idx){ coordData[idx].status="تایید شد"; saveData(); updateCoordTable(); }
+function rejectCoord(idx){ coordData[idx].status="رد شد"; saveData(); updateCoordTable(); }
 
-    let chart1=new Chart(ctx1,{type:'bar',data:{labels:['تعداد'],datasets:[{label:'آموزش دوره اول',data:[0],backgroundColor:'#4caf50'}]}});
-    let chart2=new Chart(ctx2,{type:'bar',data:{labels:['تعداد'],datasets:[{label:'آموزش دوره دوم',data:[0],backgroundColor:'#2196f3'}]}});
-    let chart3=new Chart(ctx3,{type:'bar',data:{labels:['تعداد'],datasets:[{label:'آموزش دوره‌ای',data:[0],backgroundColor:'#ff9800'}]}});
-    let chart4=new Chart(ctx4,{type:'bar',data:{labels:['تعداد'],datasets:[{label:'آموزش همراهی',data:[0],backgroundColor:'#9c27b0'}]}});
-    
-    function updateCharts(){
-        let counts=[0,0,0,0];
-        trainerData.forEach(t=>{
-            if(t.title==='آموزش دوره اول') counts[0]+=parseInt(t.nj||0);
-            else if(t.title==='آموزش دوره دوم') counts[1]+=parseInt(t.nj||0);
-            else if(t.title==='آموزش دوره‌ای') counts[2]+=parseInt(t.nj||0);
-            else if(t.title==='آموزش همراهی') counts[3]+=parseInt(t.nj||0);
-        });
-        chart1.data.datasets[0].data=[counts[0]]; chart1.update();
-        chart2.data.datasets[0].data=[counts[1]]; chart2.update();
-        chart3.data.datasets[0].data=[counts[2]]; chart3.update();
-        chart4.data.datasets[0].data=[counts[3]]; chart4.update();
-    }
+// --- Charts ---
+function updateCharts(){
+    const chartData=[0,0,0,0]; // دوره اول، دوم، دوره‌ای، همراهی
+    trainerData.forEach(t=>{
+        if(t.title==="آموزش دوره اول") chartData[0]+=parseInt(t.nj||0);
+        else if(t.title==="آموزش دوره دوم") chartData[1]+=parseInt(t.nj||0);
+        else if(t.title==="آموزش دوره‌ای") chartData[2]+=parseInt(t.nj||0);
+        else if(t.title==="آموزش همراهی") chartData[3]+=parseInt(t.nj||0);
+    });
+    document.getElementById("chart1Content").innerText=`تعداد ثبت شده: ${chartData[0]}`;
+    document.getElementById("chart2Content").innerText=`تعداد ثبت شده: ${chartData[1]}`;
+    document.getElementById("chart3Content").innerText=`تعداد ثبت شده: ${chartData[2]}`;
+    document.getElementById("chart4Content").innerText=`تعداد ثبت شده: ${chartData[3]}`;
+}
+
+// --- Initialize ---
+window.onload=loadData;
 </script>
+
 </body>
 </html>
