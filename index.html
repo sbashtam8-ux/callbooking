@@ -3,253 +3,254 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QA / Training Platform</title>
+<title>QA TEAM Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Calibri&display=swap" rel="stylesheet">
 <style>
-    body {font-family: Calibri, sans-serif; background: #f3f4f6; margin:0; padding:0;}
-    header {background:#0b3d91; color:white; padding:15px; display:flex; justify-content:space-between; align-items:center;}
-    header h1 {margin:0; font-size:28px;}
-    nav a {margin-left:15px; text-decoration:none; color:white; font-weight:bold; padding:5px 10px; border-radius:5px;}
-    nav a.active, nav a:hover {background:#0f7c5c;}
-    .container {padding:20px;}
-    .card {background:white; padding:20px; margin-bottom:20px; border-radius:12px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);}
-    input, select, textarea, button {padding:10px; margin-top:5px; width:100%; border-radius:6px; border:1px solid #ccc; box-sizing:border-box;}
-    button {background:#0f7c5c; color:white; border:none; cursor:pointer; font-weight:bold;}
-    button:hover {background:#0b5d45;}
-    table {width:100%; border-collapse: collapse;}
-    th, td {border:1px solid #ddd; padding:10px; text-align:center;}
-    th {background:#0b3d91; color:white;}
-    .hidden {display:none;}
-    .chart-container {display:flex; gap:20px; flex-wrap:wrap;}
-    .chart-card {flex:1; min-width:200px; padding:20px; border-radius:12px; background:white; box-shadow: 0 8px 20px rgba(0,0,0,0.1);}
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Calibri',sans-serif; }
+body { background:#f0f2f5; color:#333; }
+header { background:#1f2937; color:#fff; padding:20px; display:flex; justify-content:space-between; align-items:center; }
+header h1 { font-size:28px; }
+nav a { margin-left:20px; text-decoration:none; color:#fff; padding:5px 10px; border-radius:5px; transition:0.3s; }
+nav a.active, nav a:hover { background:#3b82f6; }
+.container { max-width:1200px; margin:20px auto; padding:20px; }
+.card { background:#fff; border-radius:15px; padding:20px; margin-bottom:20px; box-shadow:0 10px 25px rgba(0,0,0,0.1); transform:perspective(1000px) rotateY(0deg); transition:0.4s; }
+.card:hover { transform:perspective(1000px) rotateY(5deg); }
+.login-container { display:flex; justify-content:center; align-items:center; height:80vh; }
+.login-box { background:#fff; padding:40px; border-radius:15px; box-shadow:0 10px 25px rgba(0,0,0,0.2); width:350px; }
+.login-box h2 { margin-bottom:20px; text-align:center; }
+.login-box input { width:100%; padding:10px; margin-bottom:15px; border-radius:5px; border:1px solid #ccc; }
+.login-box button { width:100%; padding:10px; border:none; border-radius:5px; background:#3b82f6; color:#fff; font-size:16px; cursor:pointer; transition:0.3s; }
+.login-box button:hover { background:#2563eb; }
+.dashboard { display:grid; grid-template-columns:repeat(2,1fr); gap:20px; }
+.dashboard canvas { background:#fff; border-radius:15px; padding:20px; box-shadow:0 10px 25px rgba(0,0,0,0.1); }
+form input, form select, form textarea { width:100%; padding:10px; margin-bottom:15px; border-radius:5px; border:1px solid #ccc; }
+form textarea::placeholder { color:#aaa; }
+form button { padding:10px 20px; border:none; border-radius:5px; background:#10b981; color:#fff; cursor:pointer; transition:0.3s; }
+form button:hover { background:#059669; }
+.list-entry { background:#e0f2fe; padding:10px; margin-bottom:10px; border-radius:8px; display:flex; justify-content:space-between; align-items:center; }
+.list-entry button { background:#ef4444; color:#fff; border:none; border-radius:5px; padding:5px 10px; cursor:pointer; }
+.status-approved { color:#10b981; font-weight:bold; }
+.status-rejected { color:#ef4444; font-weight:bold; }
+.status-pending { color:#f59e0b; font-weight:bold; }
 </style>
 </head>
 <body>
 
 <header>
-    <h1>QA / Training Platform</h1>
-    <nav>
-        <a href="#" class="nav-link active" data-page="home">خانه</a>
-        <a href="#" class="nav-link" data-page="trainer">مربیان</a>
-        <a href="#" class="nav-link" data-page="coordination">Coordination</a>
-        <a href="#" class="nav-link" data-page="dashboard">داشبورد مدیریتی</a>
-    </nav>
+<h1>QA TEAM Platform</h1>
+<nav>
+<a href="#" class="active" data-page="home">خانه</a>
+<a href="#" data-page="trainers">مربیان</a>
+<a href="#" data-page="coordination">Coordination</a>
+<a href="#" data-page="dashboard">داشبورد مدیریتی</a>
+</nav>
 </header>
 
-<div class="container">
-    <!-- صفحه ورود -->
-    <div id="loginPage" class="card">
-        <h2>ورود به سیستم</h2>
-        <input type="text" id="username" placeholder="نام کاربری">
-        <input type="password" id="password" placeholder="رمز عبور">
-        <button onclick="login()">ورود</button>
-    </div>
-
-    <!-- صفحه Home -->
-    <div id="home" class="card hidden">
-        <h2>صفحه اصلی</h2>
-        <p>این پلتفرم حرفه‌ای برای مدیریت تیم آموزش، ثبت و پیگیری دوره‌های آموزشی مربیان و هماهنگی کارشناسان طراحی شده است. تمامی فرایندهای آموزش از این پس توسط مربیان در این پنل ثبت می‌شود و مدیران می‌توانند وضعیت هر دوره را تایید یا رد کنند. این سامانه با فرم‌های شیک و کارت‌های تعاملی، به مدیران امکان می‌دهد روند پیشرفت آموزش‌ها را به صورت نموداری و دقیق مشاهده کنند.</p>
-    </div>
-
-    <!-- صفحه مربیان -->
-    <div id="trainer" class="card hidden">
-        <h2>ثبت فرم مربی</h2>
-        <input type="text" id="trainerName" placeholder="نام و نام خانوادگی">
-        <select id="trainingTitle">
-            <option value="آموزش دوره اول">آموزش دوره اول</option>
-            <option value="آموزش دوره دوم">آموزش دوره دوم</option>
-            <option value="آموزش دوره‌ای">آموزش دوره‌ای</option>
-            <option value="آموزش همراهی">آموزش همراهی</option>
-        </select>
-        <textarea id="trainingDesc" placeholder="توضیحات اختیاری"></textarea>
-        <input type="number" id="newJoiners" placeholder="تعداد نیوجوینرها">
-        <button onclick="submitTrainerForm()">ثبت فرم</button>
-        <h3>لیست مربیان ثبت شده</h3>
-        <table id="trainerTable">
-            <thead><tr><th>نام مربی</th><th>عنوان آموزشی</th><th>توضیحات</th><th>نیوجوینرها</th><th>حذف</th></tr></thead>
-            <tbody></tbody>
-        </table>
-    </div>
-
-    <!-- صفحه Coordination -->
-    <div id="coordination" class="card hidden">
-        <h2>ثبت فرم Coordination</h2>
-        <input type="text" id="coordName" placeholder="نام و نام خانوادگی کوردیناتور">
-        <input type="text" id="expertName" placeholder="نام و نام خانوادگی کارشناس">
-        <input type="date" id="coordDate" placeholder="تاریخ ثبت درخواست">
-        <input type="number" id="courseMembers" placeholder="تعداد اعضای دوره">
-        <button onclick="submitCoordForm()">ثبت فرم</button>
-        <h3>لیست Coordination ثبت شده</h3>
-        <table id="coordTable">
-            <thead><tr><th>کوردیناتور</th><th>کارشناس</th><th>تاریخ</th><th>اعضا</th><th>وضعیت</th><th>حذف</th><th>عملیات مدیر</th></tr></thead>
-            <tbody></tbody>
-        </table>
-    </div>
-
-    <!-- صفحه داشبورد -->
-    <div id="dashboard" class="card hidden">
-        <h2>داشبورد مدیریتی</h2>
-        <div class="chart-container">
-            <div class="chart-card" id="chart1"><h4>آموزش دوره اول</h4><div id="chart1Content"></div></div>
-            <div class="chart-card" id="chart2"><h4>آموزش دوره دوم</h4><div id="chart2Content"></div></div>
-            <div class="chart-card" id="chart3"><h4>آموزش دوره‌ای</h4><div id="chart3Content"></div></div>
-            <div class="chart-card" id="chart4"><h4>آموزش همراهی</h4><div id="chart4Content"></div></div>
-        </div>
-    </div>
+<div class="container" id="home">
+<div class="card">
+<h2>تیم آموزش QA</h2>
+<p>این پلتفرم سازمانی برای مدیریت مربیان، هماهنگی کارشناسان و پیگیری آموزش‌ها طراحی شده است. از این پس تمامی فرآیندهای آموزش توسط مربیان و کوردیناتورها ثبت می‌شود. مدیر می‌تواند تمام فعالیت‌ها را به صورت نموداری، تایید یا رد، و پیگیری دقیق مشاهده کند. هدف افزایش شفافیت، دقت و کارایی تیم آموزش است.</p>
+</div>
 </div>
 
+<div class="container" id="trainers" style="display:none;">
+<div class="card">
+<h2>فرم ثبت مربی</h2>
+<form id="trainerForm">
+<input type="text" placeholder="نام و نام خانوادگی" name="trainerName" required>
+<input type="text" placeholder="سمت" value="CS_Specialist_QA/Training" readonly>
+<select name="trainingTitle" required>
+<option value="آموزش دوره اول">آموزش دوره اول</option>
+<option value="آموزش دوره دوم">آموزش دوره دوم</option>
+<option value="آموزش دوره‌ای">آموزش دوره‌ای</option>
+<option value="آموزش همراهی">آموزش همراهی</option>
+</select>
+<textarea placeholder="توضیحات (اختیاری)" name="desc"></textarea>
+<input type="number" placeholder="تعداد نیوجوینرها" name="newJoiners" required>
+<input type="date" name="date" required>
+<button type="submit">ثبت</button>
+</form>
+<div id="trainerList"></div>
+</div>
+</div>
+
+<div class="container" id="coordination" style="display:none;">
+<div class="card">
+<h2>Coordination</h2>
+<form id="coordForm">
+<input type="text" placeholder="نام و نام خانوادگی کوردیناتور" name="coordName" required>
+<input type="text" placeholder="نام و نام خانوادگی کارشناس" name="expertName" required>
+<select name="trainingTitle" required>
+<option value="آموزش دوره اول">آموزش دوره اول</option>
+<option value="آموزش دوره دوم">آموزش دوره دوم</option>
+<option value="آموزش دوره‌ای">آموزش دوره‌ای</option>
+<option value="آموزش همراهی">آموزش همراهی</option>
+</select>
+<textarea placeholder="توضیحات (اختیاری)" name="desc"></textarea>
+<input type="number" placeholder="تعداد اعضا دوره" name="members" required>
+<input type="date" name="date" required>
+<button type="submit">ثبت</button>
+</form>
+<div id="coordList"></div>
+</div>
+</div>
+
+<div class="container" id="dashboard" style="display:none;">
+<div class="dashboard">
+<canvas id="chart1"></canvas>
+<canvas id="chart2"></canvas>
+<canvas id="chart3"></canvas>
+<canvas id="chart4"></canvas>
+</div>
+<h3>لیست فرم‌ها و وضعیت تایید/رد</h3>
+<div id="allForms"></div>
+</div>
+
+<div class="login-container" id="login">
+<div class="login-box">
+<h2>ورود</h2>
+<input type="text" id="username" placeholder="نام کاربری">
+<input type="password" id="password" placeholder="رمز عبور">
+<button onclick="login()">ورود</button>
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-let trainerData = [];
-let coordData = [];
-let currentUserRole = "";
-
-// --- Login ---
-function login(){
-    const user=document.getElementById('username').value.trim();
-    const pass=document.getElementById('password').value.trim();
-    if(user==="manager" && pass==="snapp123"){
-        currentUserRole="manager";
-        showPage("home");
-    } else if(user==="trainer" && pass==="trainer"){
-        currentUserRole="trainer";
-        showPage("home");
-    } else { alert("نام کاربری یا رمز اشتباه است!"); return; }
-    document.getElementById('loginPage').classList.add('hidden');
-}
-
-// --- Navigation ---
-const links=document.querySelectorAll('.nav-link');
-links.forEach(link=>{
-    link.addEventListener('click',e=>{
-        e.preventDefault();
-        showPage(link.dataset.page);
-        links.forEach(l=>l.classList.remove('active'));
-        link.classList.add('active');
-    });
+let currentPage = 'home';
+let role = ''; // trainer یا manager
+const pages = ['home','trainers','coordination','dashboard'];
+const navLinks = document.querySelectorAll('nav a');
+navLinks.forEach(link=>{
+link.addEventListener('click', (e)=>{
+e.preventDefault();
+pages.forEach(p=>document.getElementById(p).style.display='none');
+const page = link.getAttribute('data-page');
+document.getElementById(page).style.display='block';
+navLinks.forEach(l=>l.classList.remove('active'));
+link.classList.add('active');
+});
 });
 
-function showPage(page){
-    ['home','trainer','coordination','dashboard'].forEach(p=>{
-        document.getElementById(p).classList.add('hidden');
-    });
-    document.getElementById(page).classList.remove('hidden');
-    updateCharts();
+let trainerData=[], coordData=[];
+
+function renderLists(){
+const trainerList = document.getElementById('trainerList');
+trainerList.innerHTML='';
+trainerData.forEach((d,i)=>{
+const div = document.createElement('div');
+div.className='list-entry';
+div.innerHTML=`${d.trainerName} - ${d.trainingTitle} - ${d.date} <span class="status-${d.status || 'pending'}">${d.status || 'در حال بررسی'}</span>`;
+if(role==='trainer') { 
+const btn = document.createElement('button'); 
+btn.textContent='حذف'; 
+btn.onclick=()=>{trainerData.splice(i,1); renderLists(); updateCharts(); renderAllForms();}
+div.appendChild(btn);}
+trainerList.appendChild(div);
+});
+
+const coordList = document.getElementById('coordList');
+coordList.innerHTML='';
+coordData.forEach((d,i)=>{
+const div = document.createElement('div');
+div.className='list-entry';
+div.innerHTML=`${d.coordName} / ${d.expertName} - ${d.trainingTitle} - ${d.date} <span class="status-${d.status || 'pending'}">${d.status || 'در حال بررسی'}</span>`;
+if(role==='trainer') { 
+const btn = document.createElement('button'); 
+btn.textContent='حذف'; 
+btn.onclick=()=>{coordData.splice(i,1); renderLists(); updateCharts(); renderAllForms();}
+div.appendChild(btn);}
+coordList.appendChild(div);
+});
 }
 
-// --- LocalStorage ---
-function saveData(){
-    localStorage.setItem('trainerData', JSON.stringify(trainerData));
-    localStorage.setItem('coordData', JSON.stringify(coordData));
+function renderAllForms(){
+const allForms = document.getElementById('allForms');
+allForms.innerHTML='';
+trainerData.forEach((d,i)=>{
+const div = document.createElement('div');
+div.className='list-entry';
+div.innerHTML=`مربی: ${d.trainerName} - ${d.trainingTitle} - ${d.date} <span class="status-${d.status || 'pending'}">${d.status || 'در حال بررسی'}</span>`;
+if(role==='manager'){
+const approve = document.createElement('button'); approve.textContent='تایید'; approve.onclick=()=>{d.status='تایید'; renderLists(); renderAllForms();}
+const reject = document.createElement('button'); reject.textContent='رد'; reject.onclick=()=>{d.status='رد'; renderLists(); renderAllForms();}
+div.appendChild(approve); div.appendChild(reject);
+}
+allForms.appendChild(div);
+});
+coordData.forEach((d,i)=>{
+const div = document.createElement('div');
+div.className='list-entry';
+div.innerHTML=`Coord: ${d.coordName} / ${d.expertName} - ${d.trainingTitle} - ${d.date} <span class="status-${d.status || 'pending'}">${d.status || 'در حال بررسی'}</span>`;
+if(role==='manager'){
+const approve = document.createElement('button'); approve.textContent='تایید'; approve.onclick=()=>{d.status='تایید'; renderLists(); renderAllForms();}
+const reject = document.createElement('button'); reject.textContent='رد'; reject.onclick=()=>{d.status='رد'; renderLists(); renderAllForms();}
+div.appendChild(approve); div.appendChild(reject);
+}
+allForms.appendChild(div);
+});
 }
 
-function loadData(){
-    trainerData=JSON.parse(localStorage.getItem('trainerData')||'[]');
-    coordData=JSON.parse(localStorage.getItem('coordData')||'[]');
-    updateTrainerTable();
-    updateCoordTable();
-    updateCharts();
-}
+const charts = [];
+const ctxIds = ['chart1','chart2','chart3','chart4'];
+ctxIds.forEach((id,i)=>{
+const ctx = document.getElementById(id).getContext('2d');
+charts.push(new Chart(ctx,{
+type:'bar',
+data:{labels:['تعداد ثبت‌ها'], datasets:[{label:id,data:[0], backgroundColor:['#3b82f6','#10b981','#f59e0b','#ef4444'][i]}]},
+options:{responsive:true, plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true}}}
+}));
+});
 
-// --- Trainer Form ---
-function submitTrainerForm(){
-    let name=document.getElementById('trainerName').value;
-    let title=document.getElementById('trainingTitle').value;
-    let desc=document.getElementById('trainingDesc').value;
-    let nj=document.getElementById('newJoiners').value;
-    trainerData.push({name,title,desc,nj});
-    saveData();
-    updateTrainerTable();
-    updateCharts();
-    alert("فرم مربی ثبت شد!");
-}
-
-function updateTrainerTable(){
-    const tbody=document.querySelector("#trainerTable tbody");
-    tbody.innerHTML="";
-    trainerData.forEach((t,i)=>{
-        tbody.innerHTML+=`<tr>
-        <td>${t.name}</td>
-        <td>${t.title}</td>
-        <td>${t.desc}</td>
-        <td>${t.nj}</td>
-        <td><button onclick="deleteTrainer(${i})">حذف</button></td>
-        </tr>`;
-    });
-}
-
-function deleteTrainer(idx){
-    if(confirm("آیا مطمئن هستید میخواید این فرم را حذف کنید؟")){
-        trainerData.splice(idx,1);
-        saveData();
-        updateTrainerTable();
-        updateCharts();
-    }
-}
-
-// --- Coordination Form ---
-function submitCoordForm(){
-    let coordName=document.getElementById('coordName').value;
-    let expertName=document.getElementById('expertName').value;
-    let date=document.getElementById('coordDate').value;
-    let members=document.getElementById('courseMembers').value;
-    coordData.push({coordName,expertName,date,members,status:"در انتظار"});
-    saveData();
-    updateCoordTable();
-    updateCharts();
-    alert("فرم Coordination ثبت شد!");
-}
-
-function updateCoordTable(){
-    const tbody=document.querySelector("#coordTable tbody");
-    tbody.innerHTML="";
-    coordData.forEach((c,i)=>{
-        let ops="";
-        if(currentUserRole==="manager"){
-            ops=`<button onclick="approveCoord(${i})">تایید</button>
-            <button onclick="rejectCoord(${i})">رد</button>`;
-        }
-        let delBtn=currentUserRole==="manager" || currentUserRole==="trainer"?`<button onclick="coordDelete(${i})">حذف</button>`:"";
-        tbody.innerHTML+=`<tr>
-        <td>${c.coordName}</td>
-        <td>${c.expertName}</td>
-        <td>${c.date}</td>
-        <td>${c.members}</td>
-        <td>${c.status}</td>
-        <td>${delBtn}</td>
-        <td>${ops}</td>
-        </tr>`;
-    });
-}
-
-function coordDelete(idx){
-    if(confirm("آیا مطمئن هستید میخواید این فرم را حذف کنید؟")){
-        coordData.splice(idx,1);
-        saveData();
-        updateCoordTable();
-        updateCharts();
-    }
-}
-
-function approveCoord(idx){ coordData[idx].status="تایید شد"; saveData(); updateCoordTable(); }
-function rejectCoord(idx){ coordData[idx].status="رد شد"; saveData(); updateCoordTable(); }
-
-// --- Charts ---
 function updateCharts(){
-    const chartData=[0,0,0,0]; // دوره اول، دوم، دوره‌ای، همراهی
-    trainerData.forEach(t=>{
-        if(t.title==="آموزش دوره اول") chartData[0]+=parseInt(t.nj||0);
-        else if(t.title==="آموزش دوره دوم") chartData[1]+=parseInt(t.nj||0);
-        else if(t.title==="آموزش دوره‌ای") chartData[2]+=parseInt(t.nj||0);
-        else if(t.title==="آموزش همراهی") chartData[3]+=parseInt(t.nj||0);
-    });
-    document.getElementById("chart1Content").innerText=`تعداد ثبت شده: ${chartData[0]}`;
-    document.getElementById("chart2Content").innerText=`تعداد ثبت شده: ${chartData[1]}`;
-    document.getElementById("chart3Content").innerText=`تعداد ثبت شده: ${chartData[2]}`;
-    document.getElementById("chart4Content").innerText=`تعداد ثبت شده: ${chartData[3]}`;
+const labels = ['آموزش دوره اول','آموزش دوره دوم','آموزش دوره‌ای','آموزش همراهی'];
+const counts = labels.map(l=>trainerData.filter(d=>d.trainingTitle===l).length + coordData.filter(d=>d.trainingTitle===l).length);
+charts.forEach((chart,i)=>{ chart.data.datasets[0].data=[counts[i]]; chart.update(); });
 }
 
-// --- Initialize ---
-window.onload=loadData;
-</script>
+document.getElementById('trainerForm').addEventListener('submit', function(e){
+e.preventDefault();
+const f=e.target;
+trainerData.push({
+trainerName:f.trainerName.value,
+trainingTitle:f.trainingTitle.value,
+desc:f.desc.value,
+newJoiners:f.newJoiners.value,
+date:f.date.value,
+status:'pending'
+});
+f.reset(); updateCharts(); renderLists(); renderAllForms(); alert('ثبت مربی با موفقیت انجام شد.');
+});
 
+document.getElementById('coordForm').addEventListener('submit', function(e){
+e.preventDefault();
+const f=e.target;
+coordData.push({
+coordName:f.coordName.value,
+expertName:f.expertName.value,
+trainingTitle:f.trainingTitle.value,
+desc:f.desc.value,
+members:f.members.value,
+date:f.date.value,
+status:'pending'
+});
+f.reset(); updateCharts(); renderLists(); renderAllForms(); alert('ثبت Coordination با موفقیت انجام شد.');
+});
+
+function login(){
+const u=document.getElementById('username').value;
+const p=document.getElementById('password').value;
+if(u==='manager' && p==='snapp123'){role='manager'; showAfterLogin();}
+else if(u==='trainer' && p==='trainer'){role='trainer'; showAfterLogin();}
+else alert('نام کاربری یا رمز عبور اشتباه است');
+}
+
+function showAfterLogin(){
+document.getElementById('login').style.display='none';
+document.getElementById(currentPage).style.display='block';
+alert('ورود موفق');
+}
+
+</script>
 </body>
 </html>
