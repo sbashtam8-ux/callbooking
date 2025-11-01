@@ -1,309 +1,328 @@
 <!doctype html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>QA TEAM Platform</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <meta name="description" content="پنل حرفه‌ای سازمانی مدیریت مربیان و هماهنگی کارشناسان" />
-  <style>
-    :root{
-      --primary:#0f4c81;
-      --accent:#1abc9c;
-      --bg:#f5f7fa;
-      --card:#fff;
-      --muted:#6b757b;
-      --container:1200px;
-      --radius:14px;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%;margin:0;font-family:'Montserrat',system-ui,Arial;background:var(--bg);color:#081218;-webkit-font-smoothing:antialiased}
-    a{color:inherit;text-decoration:none}
-    button{cursor:pointer}
-    .app{max-width:var(--container);margin:18px auto;padding:14px}
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>QA TEAM Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+<meta name="description" content="پنل حرفه‌ای سازمانی تیم آموزش برای مدیریت مربیان و هماهنگی کارشناسان" />
+<style>
+:root{
+  --primary:#1e3a8a;
+  --secondary:#2563eb;
+  --accent:#10b981;
+  --bg:#f0f4f8;
+  --card:#ffffff;
+  --muted:#6b7280;
+  --radius:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:'Montserrat',sans-serif;background:var(--bg);color:#081218;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer}
+.app{max-width:1300px;margin:0 auto;padding:20px}
 
-    /* login overlay */
-    .login-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:1000}
-    .login-box{background:#fff;border-radius:16px;padding:32px 28px;width:320px;box-shadow:0 10px 30px rgba(0,0,0,0.12);display:flex;flex-direction:column;gap:16px}
-    .login-box h2{text-align:center;margin:0;font-weight:800;color:var(--primary)}
-    .login-box input{width:100%;padding:10px;border-radius:10px;border:1px solid #e6e9ec;font-size:0.95rem;margin-bottom:8px}
-    .login-box button{background:var(--primary);color:#fff;padding:10px;border-radius:10px;border:0;font-weight:700;transition:0.2s}
-    .login-box button:hover{background:var(--accent)}
-    .hidden{display:none !important}
+/* LOGIN */
+#login-screen{position:fixed;inset:0;background:linear-gradient(135deg,var(--primary),var(--secondary));display:flex;justify-content:center;align-items:center;z-index:999}
+#login-box{background:#fff;padding:32px;border-radius:20px;box-shadow:0 8px 24px rgba(0,0,0,0.2);width:320px;text-align:center;animation:fadeIn 0.5s ease}
+#login-box h2{margin-bottom:24px;color:var(--primary)}
+#login-box input{width:100%;padding:10px 12px;margin-bottom:16px;border:1px solid #e2e8f0;border-radius:10px;font-size:1rem}
+#login-box button{width:100%;padding:10px 12px;background:var(--accent);color:#fff;border:0;border-radius:10px;font-weight:700;transition:0.3s}
+#login-box button:hover{background:#059669}
 
-    /* Topbar */
-    .top{display:flex;align-items:center;gap:14px;padding-bottom:12px}
-    .brand{background:linear-gradient(90deg,var(--primary),var(--accent));color:#fff;padding:12px 18px;border-radius:12px;font-weight:800;font-size:1.3rem}
-    .title{font-size:1.3rem;font-weight:800}
-    .sub{color:var(--muted);margin-top:4px}
-    .actions{margin-inline-start:auto;display:flex;gap:8px}
-    .btn{background:var(--primary);color:#fff;padding:8px 14px;border-radius:10px;border:0;font-weight:700;transition:0.2s}
-    .btn:hover{opacity:0.9}
-    .btn.ghost{background:transparent;border:1px solid rgba(0,0,0,0.06);color:var(--muted)}
+/* Topbar */
+.top{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.brand{background:linear-gradient(90deg,var(--primary),var(--secondary));color:#fff;padding:10px 14px;border-radius:10px;font-weight:800;font-size:1.2rem}
+.title{font-size:1.25rem;font-weight:800}
+.sub{color:var(--muted);margin-top:4px}
+.actions{margin-inline-start:auto;display:flex;gap:8px}
+.btn{background:var(--accent);color:#fff;padding:8px 12px;border-radius:8px;border:0;font-weight:700;transition:0.3s}
+.btn:hover{opacity:0.85}
+.btn.ghost{background:transparent;border:1px solid rgba(0,0,0,0.06);color:var(--muted)}
 
-    /* layout */
-    .layout{display:grid;grid-template-columns:220px 1fr;gap:18px;margin-top:18px}
-    .sidebar{background:var(--card);border-radius:var(--radius);padding:12px;box-shadow:0 8px 30px rgba(11,23,32,0.06);position:sticky;top:18px;height:calc(100vh - 60px);overflow:auto}
-    .nav{display:flex;flex-direction:column;gap:6px;margin-top:10px}
-    .nav button{display:flex;align-items:center;gap:8px;padding:10px;border-radius:10px;background:transparent;border:0;text-align:right;font-weight:700;transition:0.2s}
-    .nav button:hover{background:linear-gradient(90deg, rgba(0,0,0,0.03), transparent)}
-    .nav button.active{background:linear-gradient(90deg, rgba(26,188,156,0.25), transparent)}
+/* layout */
+.layout{display:grid;grid-template-columns:220px 1fr;gap:18px;margin-top:18px}
+.sidebar{background:var(--card);border-radius:var(--radius);padding:12px;box-shadow:0 8px 30px rgba(11,23,32,0.06);position:sticky;top:18px;height:calc(100vh - 60px);overflow:auto}
+.nav{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.nav button{display:flex;align-items:center;gap:8px;padding:10px;border-radius:10px;background:transparent;border:0;text-align:right;font-weight:700;cursor:pointer}
+.nav button:hover{background:linear-gradient(90deg, rgba(0,230,118,0.12), transparent)}
+.nav button.active{background:var(--accent);color:#fff}
 
-    /* page container */
-    .page{display:none}
-    .page.active{display:block}
+/* page container */
+.page{display:none}
+.page.active{display:block}
 
-    /* hero */
-    .hero{background:linear-gradient(180deg, rgba(0,0,0,0.04), rgba(0,0,0,0.02)),var(--primary);color:#fff;border-radius:16px;padding:28px;position:relative;overflow:hidden;text-align:center}
-    .hero-title{font-weight:800;font-size:2.2rem;margin:6px 0}
-    .hero-sub{opacity:0.95;margin:6px 0;font-weight:600;line-height:1.4rem}
+/* hero */
+.hero{background:linear-gradient(180deg, rgba(0,0,0,0.04), rgba(0,0,0,0.02)),var(--accent);color:#fff;border-radius:16px;padding:28px;position:relative;overflow:hidden}
+.hero-inner{text-align:center;padding:18px}
+.hero-title{font-weight:800;font-size:2.2rem;margin:6px 0}
+.hero-sub{opacity:0.95;margin:6px 0;font-weight:600}
 
-    /* cards & grid */
-    .grid{display:grid;grid-template-columns:1fr 360px;gap:18px;margin-top:18px}
-    .card{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 8px 24px rgba(11,23,32,0.06)}
+/* cards & grid */
+.grid{display:grid;grid-template-columns:1fr 360px;gap:18px;margin-top:18px}
+.card{background:var(--card);border-radius:12px;padding:14px;box-shadow:0 8px 24px rgba(11,23,32,0.06)}
 
-    /* trainers / forms */
-    form label{display:block;font-weight:700;margin-bottom:6px}
-    .field{margin-bottom:12px}
-    input[type=text],select,input[type=date],textarea{width:100%;padding:10px;border-radius:10px;border:1px solid #e6e9ec;font-size:0.95rem}
-    textarea{min-height:80px}
-    .row{display:flex;gap:10px}
-    .row .col{flex:1}
+/* trainers / forms */
+form label{display:block;font-weight:700;margin-bottom:6px}
+.field{margin-bottom:12px}
+input[type=text],select,input[type=date],textarea{width:100%;padding:10px;border-radius:10px;border:1px solid #e6e9ec;font-size:0.95rem}
+textarea{min-height:80px}
+.row{display:flex;gap:10px}
+.row .col{flex:1}
 
-    .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
-    .trainer-card{background:linear-gradient(180deg,#fff,#f4f6f8);border-radius:12px;padding:14px;border-left:6px solid var(--primary);position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(11,23,32,0.04);transition:transform .18s ease,opacity .25s ease}
-    .trainer-card:hover{transform:translateY(-6px)}
-    .status-badge{position:absolute;top:12px;left:12px;background:var(--primary);color:#fff;padding:6px 10px;border-radius:999px;font-weight:700;font-size:0.82rem}
+/* cards grid for trainers/coord */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.trainer-card{background:linear-gradient(180deg,#fff,#fbfdff);border-radius:12px;padding:12px;border-left:6px solid var(--accent);position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(11,23,32,0.04);transition:transform .18s ease,opacity .25s ease}
+.trainer-card:hover{transform:translateY(-6px)}
+.status-badge{position:absolute;top:12px;left:12px;background:var(--accent);color:#fff;padding:6px 10px;border-radius:999px;font-weight:700;font-size:0.82rem}
 
-    /* coordination card colors */
-    .state-pending{border-left-color:#9aa0a6}
-    .state-review{border-left-color:#2196f3}
-    .state-started{border-left-color:var(--accent)}
-    .state-complete{border-left-color:#f2b90f}
+/* flip card */
+.flip-wrap{perspective:1000px}
+.flip-card{width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;position:relative}
+.flip-front,.flip-back{backface-visibility:hidden;position:relative;border-radius:10px;padding:12px}
+.flip-back{position:absolute;inset:0;transform:rotateY(180deg);background:linear-gradient(180deg,#fff,#fcfff7)}
+.flipped{transform:rotateY(180deg)}
 
-    /* flip card */
-    .flip-wrap{perspective:1000px}
-    .flip-card{width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;position:relative}
-    .flip-front,.flip-back{backface-visibility:hidden;position:relative;border-radius:10px;padding:12px}
-    .flip-back{position:absolute;inset:0;transform:rotateY(180deg);background:linear-gradient(180deg,#fff,#fcfff7)}
-    .flipped{transform:rotateY(180deg)}
+/* progress */
+.progress{height:8px;background:#eef2f4;border-radius:999px;overflow:hidden;margin-top:8px}
+.progress > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#f59e0b);width:0%;transition:width .6s ease}
 
-    /* progress */
-    .progress{height:8px;background:#eef2f4;border-radius:999px;overflow:hidden;margin-top:8px}
-    .progress > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#f2b90f);width:0%;transition:width .6s ease}
+/* dashboard styles */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.kpi{background:var(--card);padding:12px;border-radius:12px;box-shadow:0 8px 18px rgba(11,23,32,0.04);display:flex;flex-direction:column;gap:6px}
+.kpi .num{font-weight:800;font-size:1.4rem}
 
-    /* dashboard styles */
-    .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-    .kpi{background:var(--card);padding:12px;border-radius:12px;box-shadow:0 8px 18px rgba(11,23,32,0.04);display:flex;flex-direction:column;gap:6px}
-    .kpi .num{font-weight:800;font-size:1.4rem}
-    .charts{display:grid;grid-template-columns:1fr 420px;gap:12px;margin-top:12px}
-    .chart-card{background:var(--card);padding:12px;border-radius:12px}
-    canvas{width:100%!important;height:260px!important}
-
-    /* responsive */
-    @media (max-width:1000px){.layout{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}.charts{grid-template-columns:1fr}.grid{grid-template-columns:1fr}}
-  </style>
+/* responsive */
+@media (max-width:1000px){.layout{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}.charts{grid-template-columns:1fr}.grid{grid-template-columns:1fr}}
+.fade-in{animation:fadeIn .45s ease both}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+</style>
 </head>
 <body>
-  <!-- login overlay -->
-  <div class="login-overlay" id="loginOverlay">
-    <div class="login-box">
-      <h2>QA TEAM Platform</h2>
-      <input type="text" id="loginUser" placeholder="نام کاربری" />
-      <input type="password" id="loginPass" placeholder="رمز عبور" />
-      <button id="loginBtn">ورود</button>
-      <div id="loginError" style="color:red;font-size:0.85rem;text-align:center;display:none">نام کاربری یا رمز عبور اشتباه است</div>
-    </div>
+<!-- LOGIN SCREEN -->
+<div id="login-screen">
+  <div id="login-box">
+    <h2>ورود به پنل QA TEAM</h2>
+    <input type="text" id="login-user" placeholder="نام کاربری">
+    <input type="password" id="login-pass" placeholder="رمز عبور">
+    <button id="login-btn">ورود</button>
+    <div id="login-error" style="color:red;margin-top:12px;display:none;font-weight:700">نام کاربری یا رمز عبور اشتباه است</div>
   </div>
+</div>
 
-  <main class="app hidden">
-    <header class="top">
-      <div class="brand">QA TEAM</div>
-      <div>
-        <div class="title">QA TEAM Platform</div>
-        <div class="sub">یک پنل حرفه‌ای سازمانی برای مدیریت مربیان و هماهنگی کارشناسان و پیگیری آموزش‌ها. تمام فرایندهای آموزش توسط مربیان در این پنل ثبت می‌شوند.</div>
+<main class="app" style="display:none">
+  <header class="top">
+    <div class="brand">QA TEAM</div>
+    <div>
+      <div class="title">QA TEAM Platform</div>
+      <div class="sub">یک پلتفرم حرفه‌ای سازمانی برای مدیریت مربیان، هماهنگی کارشناسان و پیگیری آموزش‌ها. تمام فرآیندهای آموزش از این پس توسط مربیان ثبت خواهد شد.</div>
+    </div>
+    <div class="actions">
+      <button id="nav-home" class="btn">خانه</button>
+      <button id="nav-trainers" class="btn ghost">مربیان</button>
+      <button id="nav-dashboard" class="btn ghost">داشبورد</button>
+      <button id="nav-coord" class="btn ghost">Coordination</button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="nav">
+        <button class="active" data-page="home">خانه</button>
+        <button data-page="trainers">مربیان</button>
+        <button data-page="dashboard">داشبورد</button>
+        <button data-page="coord">Coordination</button>
       </div>
-      <div class="actions">
-        <button id="nav-home" class="btn active">خانه</button>
-        <button id="nav-trainers" class="btn ghost">مربیان</button>
-        <button id="nav-dashboard" class="btn ghost">داشبورد</button>
-        <button id="nav-coord" class="btn ghost">Coordination</button>
-      </div>
-    </header>
+    </aside>
 
-    <div class="layout">
-      <aside class="sidebar">
-        <div style="font-weight:800">منوی سریع</div>
-        <nav class="nav">
-          <button data-page="home" class="active">🏠 خانه</button>
-          <button data-page="trainers">🎓 مربیان</button>
-          <button data-page="dashboard">📊 داشبورد</button>
-          <button data-page="coordination">🧭 Coordination</button>
-        </nav>
-      </aside>
-
-      <section>
-        <!-- HOME -->
-        <div id="page-home" class="page active">
-          <section class="hero" aria-labelledby="hero-title">
-            <h1 id="hero-title" class="hero-title">QA TEAM Platform</h1>
-            <p class="hero-sub">یک پنل حرفه‌ای سازمانی برای مدیریت فرآیندهای آموزشی، ثبت فعالیت مربیان و هماهنگی کارشناسان. این پلتفرم با فرم‌ها و کارت‌های تعاملی 3D طراحی شده است تا مدیریت آموزش‌ها آسان و دقیق باشد.</p>
-          </section>
-        </div>
-
-        <!-- TRAINERS -->
-        <div id="page-trainers" class="page">
-          <div class="cards" id="trainersCards">
-            <!-- trainers cards dynamically added here -->
+    <section class="content">
+      <!-- Home -->
+      <div class="page active" id="home">
+        <div class="hero">
+          <div class="hero-inner">
+            <div class="hero-title">QA / Training</div>
+            <div class="hero-sub">مرکز مدیریت آموزش تیم QA. تمامی فرآیندهای آموزش از این به بعد توسط مربیان ثبت خواهد شد و قابل پیگیری است.</div>
           </div>
-          <form id="trainerForm" class="card" style="margin-top:18px">
-            <h3>ثبت مربی</h3>
+        </div>
+      </div>
+
+      <!-- Trainers -->
+      <div class="page" id="trainers">
+        <div class="card">
+          <form id="trainer-form">
             <div class="field">
               <label>نام و نام خانوادگی مربی</label>
-              <input type="text" id="trainerName" placeholder="نام و نام خانوادگی" />
+              <input type="text" name="trainer_name" placeholder="وارد کنید" required>
             </div>
             <div class="field">
               <label>سمت</label>
-              <input type="text" value="CS_Specialist_QA/Training" disabled />
+              <input type="text" value="CS_Specialist_QA/Training" readonly>
             </div>
             <div class="field">
               <label>عنوان آموزشی</label>
-              <select id="trainingTitle">
-                <option value="دوره‌ای">آموزش دوره‌ای</option>
-                <option value="همراهی">آموزش همراهی</option>
+              <select name="course_title" required>
+                <option>آموزش دوره اول</option>
+                <option>آموزش دوره دوم</option>
+                <option>آموزش دوره‌ای</option>
+                <option>آموزش همراهی</option>
               </select>
             </div>
             <div class="field">
               <label>توضیحات (اختیاری)</label>
-              <textarea id="trainingDesc" placeholder="اختیاری"></textarea>
+              <textarea placeholder="اختیاری"></textarea>
             </div>
-            <button type="button" id="submitTrainer" class="btn">ثبت</button>
+            <button type="submit" class="btn">ثبت مربی</button>
           </form>
+          <div class="cards" id="trainer-cards"></div>
         </div>
+      </div>
 
-        <!-- DASHBOARD -->
-        <div id="page-dashboard" class="page">
-          <div class="kpis">
-            <div class="kpi"><div>تعداد مربیان</div><div class="num" id="kpiTrainers">0</div></div>
-            <div class="kpi"><div>فرم‌های ثبت شده</div><div class="num" id="kpiForms">0</div></div>
-            <div class="kpi"><div>فرم‌های اشتباه</div><div class="num" id="kpiErrors">0</div></div>
-            <div class="kpi"><div>در حال بررسی</div><div class="num" id="kpiPending">0</div></div>
-          </div>
+      <!-- Dashboard -->
+      <div class="page" id="dashboard">
+        <div class="kpis">
+          <div class="kpi"><div class="num" id="total-trainers">0</div>مربیان ثبت شده</div>
+          <div class="kpi"><div class="num" id="total-coord">0</div>فرم‌های Coordination</div>
         </div>
+      </div>
 
-        <!-- COORDINATION -->
-        <div id="page-coordination" class="page">
-          <form id="coordForm" class="card">
-            <h3>ثبت Coordination</h3>
+      <!-- Coordination -->
+      <div class="page" id="coord">
+        <div class="card">
+          <form id="coord-form">
             <div class="field">
               <label>نام و نام خانوادگی کوردیناتور</label>
-              <input type="text" id="coordName" placeholder="نام و نام خانوادگی" />
+              <input type="text" name="coord_name" placeholder="وارد کنید" required>
             </div>
             <div class="field">
               <label>نام و نام خانوادگی کارشناس</label>
-              <input type="text" id="expertName" placeholder="نام و نام خانوادگی" />
+              <input type="text" name="expert_name" placeholder="وارد کنید" required>
+            </div>
+            <div class="field row">
+              <div class="col">
+                <label>تاریخ ثبت درخواست</label>
+                <input type="date" name="req_date" required>
+              </div>
+              <div class="col">
+                <label>وضعیت</label>
+                <select name="status">
+                  <option>در حال بررسی</option>
+                  <option>تکمیل شده</option>
+                  <option>رد شده</option>
+                </select>
+              </div>
             </div>
             <div class="field">
-              <label>تاریخ ثبت درخواست</label>
-              <input type="date" id="coordDate" />
+              <label>توضیحات (اختیاری)</label>
+              <textarea placeholder="اختیاری"></textarea>
             </div>
-            <div class="field">
-              <label>وضعیت</label>
-              <select id="coordStatus">
-                <option value="در حال تکمیل">در حال تکمیل</option>
-                <option value="در حال بررسی">در حال بررسی</option>
-                <option value="شروع شده">شروع شده</option>
-                <option value="تکمیل شده">تکمیل شده</option>
-              </select>
-            </div>
-            <button type="button" id="submitCoord" class="btn">ثبت</button>
+            <button type="submit" class="btn">ثبت فرم Coordination</button>
           </form>
+          <div class="cards" id="coord-cards"></div>
         </div>
-      </section>
-    </div>
-  </main>
+      </div>
 
-  <script>
-    // Login logic
-    const loginOverlay = document.getElementById('loginOverlay');
-    const loginBtn = document.getElementById('loginBtn');
-    const loginUser = document.getElementById('loginUser');
-    const loginPass = document.getElementById('loginPass');
-    const loginError = document.getElementById('loginError');
-    const app = document.querySelector('.app');
+    </section>
+  </div>
+</main>
 
-    loginBtn.addEventListener('click',()=>{
-      const user=loginUser.value.trim();
-      const pass=loginPass.value.trim();
-      if((user==='manager'&&pass==='snapp123')||(user==='trainer'&&pass==='trainer')){
-        loginOverlay.classList.add('hidden');
-        app.classList.remove('hidden');
-        loginError.style.display='none';
-      }else{
-        loginError.style.display='block';
-      }
-    });
+<script>
+const loginScreen=document.getElementById('login-screen');
+const app=document.querySelector('.app');
+const loginBtn=document.getElementById('login-btn');
+const loginUser=document.getElementById('login-user');
+const loginPass=document.getElementById('login-pass');
+const loginError=document.getElementById('login-error');
 
-    // Page navigation
-    const navButtons=document.querySelectorAll('.nav button');
-    const pages=document.querySelectorAll('.page');
+const users=[
+  {user:'manager',pass:'snapp123',role:'manager'},
+  {user:'trainer',pass:'trainer',role:'trainer'}
+];
 
-    navButtons.forEach(btn=>{
-      btn.addEventListener('click',()=>{
-        navButtons.forEach(b=>b.classList.remove('active'));
-        btn.classList.add('active');
-        const target=btn.dataset.page;
-        pages.forEach(p=>p.classList.remove('active'));
-        document.getElementById('page-'+target).classList.add('active');
-      });
-    });
+loginBtn.addEventListener('click',()=>{
+  const u=loginUser.value.trim();
+  const p=loginPass.value.trim();
+  const valid=users.find(e=>e.user===u && e.pass===p);
+  if(valid){
+    loginScreen.style.display='none';
+    app.style.display='block';
+  }else{
+    loginError.style.display='block';
+  }
+});
 
-    // Trainers form
-    const trainersCards = document.getElementById('trainersCards');
-    const submitTrainer = document.getElementById('submitTrainer');
-    const trainerForm = document.getElementById('trainerForm');
-    submitTrainer.addEventListener('click',()=>{
-      const name = document.getElementById('trainerName').value.trim();
-      const title = document.getElementById('trainingTitle').value;
-      const desc = document.getElementById('trainingDesc').value;
-      if(!name){alert('نام مربی را وارد کنید');return;}
-      const card = document.createElement('div');
-      card.className='trainer-card';
-      card.innerHTML=`<div class="status-badge">${title}</div><h4>${name}</h4><p>${desc}</p><button class="btn ghost removeTrainer">حذف</button>`;
-      trainersCards.appendChild(card);
-      updateKPIs();
-      trainerForm.reset();
-    });
+/* navigation */
+const navBtns=document.querySelectorAll('.sidebar .nav button');
+const pages=document.querySelectorAll('.page');
+navBtns.forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    navBtns.forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const page=btn.dataset.page;
+    pages.forEach(p=>p.id===page?p.classList.add('active'):p.classList.remove('active'));
+  });
+});
 
-    // Remove trainer
-    trainersCards.addEventListener('click',e=>{
-      if(e.target.classList.contains('removeTrainer')){
-        e.target.closest('.trainer-card').remove();
-        updateKPIs();
-      }
-    });
+/* trainer form */
+const trainerForm=document.getElementById('trainer-form');
+const trainerCards=document.getElementById('trainer-cards');
+let trainers=[];
+trainerForm.addEventListener('submit',e=>{
+  e.preventDefault();
+  const name=trainerForm.trainer_name.value;
+  const course=trainerForm.course_title.value;
+  const desc=trainerForm.querySelector('textarea').value;
+  const card={name,course,desc};
+  trainers.push(card);
+  renderTrainers();
+  trainerForm.reset();
+});
+function renderTrainers(){
+  trainerCards.innerHTML='';
+  trainers.forEach((t,i)=>{
+    const div=document.createElement('div');
+    div.className='trainer-card';
+    div.innerHTML=`<strong>${t.name}</strong><div>${t.course}</div><div>${t.desc}</div>
+    <button onclick="deleteTrainer(${i})" class="btn ghost" style="margin-top:6px;">حذف</button>`;
+    trainerCards.appendChild(div);
+  });
+  document.getElementById('total-trainers').textContent=trainers.length;
+}
+function deleteTrainer(idx){
+  trainers.splice(idx,1);
+  renderTrainers();
+}
 
-    function updateKPIs(){
-      document.getElementById('kpiTrainers').textContent = trainersCards.children.length;
-      document.getElementById('kpiForms').textContent = trainersCards.children.length;
-      document.getElementById('kpiErrors').textContent =0;
-      document.getElementById('kpiPending').textContent =0;
-    }
-
-    // Coordination form
-    const coordForm = document.getElementById('coordForm');
-    coordForm.addEventListener('submit', e=>{
-      e.preventDefault();
-    });
-    document.getElementById('submitCoord').addEventListener('click',()=>{
-      const coordName = document.getElementById('coordName').value.trim();
-      const expertName = document.getElementById('expertName').value.trim();
-      const date = document.getElementById('coordDate').value;
-      const status = document.getElementById('coordStatus').value;
-      if(!coordName||!expertName||!date){alert('تمام فیلدها الزامی هستند');return;}
-      alert(`Coordination ثبت شد: ${coordName} / ${expertName} / ${date} / ${status}`);
-      coordForm.reset();
-    });
-  </script>
+/* coord form */
+const coordForm=document.getElementById('coord-form');
+const coordCards=document.getElementById('coord-cards');
+let coords=[];
+coordForm.addEventListener('submit',e=>{
+  e.preventDefault();
+  const name=coordForm.coord_name.value;
+  const expert=coordForm.expert_name.value;
+  const date=coordForm.req_date.value;
+  const status=coordForm.status.value;
+  const desc=coordForm.querySelector('textarea').value;
+  const card={name,expert,date,status,desc};
+  coords.push(card);
+  renderCoords();
+  coordForm.reset();
+});
+function renderCoords(){
+  coordCards.innerHTML='';
+  coords.forEach((c,i)=>{
+    const div=document.createElement('div');
+    div.className='trainer-card';
+    div.innerHTML=`<strong>کوردیناتور: ${c.name}</strong><br>کارشناس: ${c.expert}<br>تاریخ: ${c.date}<br>وضعیت: ${c.status}<br>${c.desc}
+    <button onclick="deleteCoord(${i})" class="btn ghost" style="margin-top:6px;">حذف</button>`;
+    coordCards.appendChild(div);
+  });
+  document.getElementById('total-coord').textContent=coords.length;
+}
+function deleteCoord(idx){
+  coords.splice(idx,1);
+  renderCoords();
+}
+</script>
 </body>
 </html>
