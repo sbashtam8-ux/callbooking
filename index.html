@@ -1,289 +1,200 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>QA TEAM Platform</title>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --primary:#4a90e2;
-    --accent:#50e3c2;
-    --bg:#f4f6f8;
-    --card:#ffffff;
-    --muted:#7a7a7a;
-    --radius:12px;
-    --container:1200px;
-  }
-  *{box-sizing:border-box}
-  body{margin:0;font-family:'Montserrat',sans-serif;background:var(--bg);color:#111}
-  a{color:inherit;text-decoration:none}
-  button{cursor:pointer;font-family:'Montserrat',sans-serif}
-  .hidden{display:none}
+:root{
+  --primary:#1E88E5;
+  --accent:#43A047;
+  --bg:#f4f6f8;
+  --card:#fff;
+  --muted:#6b757b;
+  --container:1200px;
+  --radius:12px;
+}
+*{box-sizing:border-box;}
+html,body{height:100%;margin:0;font-family:'Montserrat',system-ui,Arial;background:var(--bg);color:#081218;-webkit-font-smoothing:antialiased;}
+a{color:inherit;text-decoration:none;}
+button{cursor:pointer;}
+.app{max-width:var(--container);margin:18px auto;padding:14px}
 
-  /* LOGIN PAGE */
-  #login-page{display:flex;justify-content:center;align-items:center;height:100vh;background:linear-gradient(135deg,#50e3c2,#4a90e2)}
-  #login-box{background:#fff;padding:36px;border-radius:16px;box-shadow:0 8px 30px rgba(0,0,0,0.12);width:320px;text-align:center}
-  #login-box h1{margin-bottom:24px;font-weight:800;color:var(--primary)}
-  #login-box input{width:100%;padding:12px;border-radius:8px;border:1px solid #ddd;margin-bottom:14px;font-size:0.95rem}
-  #login-box button{width:100%;padding:12px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-weight:700;font-size:1rem;transition:0.2s}
-  #login-box button:hover{background:var(--accent);color:#111}
-  .error{color:#ff4d4f;margin-bottom:12px;font-weight:700}
+/* Topbar */
+.top{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.brand{background:linear-gradient(90deg,var(--primary),var(--accent));color:#fff;padding:10px 14px;border-radius:10px;font-weight:800;font-size:1.2rem}
+.title{font-size:1.25rem;font-weight:800}
+.sub{color:var(--muted);margin-top:4px}
+.actions{margin-inline-start:auto;display:flex;gap:8px;flex-wrap:wrap}
+.btn{background:var(--primary);color:#fff;padding:8px 12px;border-radius:8px;border:0;font-weight:700;transition:.2s}
+.btn:hover{opacity:.9}
+.btn.ghost{background:transparent;border:1px solid rgba(0,0,0,0.06);color:var(--muted)}
 
-  /* APP LAYOUT */
-  .app{max-width:var(--container);margin:0 auto;padding:18px}
-  header.top{display:flex;align-items:center;gap:16px;padding:12px;background:var(--card);border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.05);position:sticky;top:0;z-index:1000}
-  .brand{font-weight:800;font-size:1.5rem;color:var(--primary)}
-  .nav{margin-right:auto;display:flex;gap:12px}
-  .nav button{background:transparent;border:none;padding:8px 12px;border-radius:8px;font-weight:700;transition:0.2s}
-  .nav button.active{background:var(--primary);color:#fff}
-  .nav button:hover{background:rgba(74,144,226,0.1)}
+/* layout */
+.layout{display:grid;grid-template-columns:220px 1fr;gap:18px;margin-top:18px}
+.sidebar{background:var(--card);border-radius:var(--radius);padding:12px;box-shadow:0 8px 30px rgba(11,23,32,0.06);position:sticky;top:18px;height:calc(100vh - 60px);overflow:auto}
+.nav{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.nav button{display:flex;align-items:center;gap:8px;padding:10px;border-radius:10px;background:transparent;border:0;text-align:right;font-weight:700;transition:.2s}
+.nav button:hover{background:linear-gradient(90deg, rgba(0,0,0,0.03), transparent)}
+.nav button.active{background:linear-gradient(90deg, rgba(67,160,71,0.2), transparent)}
 
-  /* GENERAL */
-  .layout{display:grid;grid-template-columns:240px 1fr;gap:18px;margin-top:18px}
-  .sidebar{background:var(--card);padding:16px;border-radius:12px;box-shadow:0 6px 24px rgba(0,0,0,0.06);position:sticky;top:20px;max-height:calc(100vh - 40px);overflow:auto}
-  .page{display:none}
-  .page.active{display:block}
-  section.card{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 6px 24px rgba(0,0,0,0.06);margin-bottom:18px}
-  h2,h3{margin-top:0;margin-bottom:12px}
+/* page container */
+.page{display:none}
+.page.active{display:block}
 
-  /* FORM */
-  form label{display:block;font-weight:700;margin-bottom:6px}
-  input,select,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;margin-bottom:12px;font-size:0.95rem}
-  textarea{min-height:80px}
-  .row{display:flex;gap:10px}
-  .row .col{flex:1}
-  .btn{padding:10px 14px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-weight:700;transition:0.2s}
-  .btn.ghost{background:#fff;border:1px solid #ddd;color:#111}
-  .btn:hover{opacity:0.9}
+/* hero */
+.hero{background:linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.01)),var(--primary);color:#fff;border-radius:16px;padding:28px;position:relative;overflow:hidden}
+.hero-inner{text-align:center;padding:18px}
+.hero-title{font-weight:800;font-size:2rem;margin:6px 0}
+.hero-sub{opacity:0.95;margin:6px 0;font-weight:600}
 
-  /* CARDS */
-  .trainer-card{background:linear-gradient(180deg,#fff,#f9fbff);border-radius:12px;padding:14px;border-left:6px solid var(--accent);position:relative;overflow:hidden;transition:transform .18s ease}
-  .trainer-card:hover{transform:translateY(-4px)}
-  .status-badge{position:absolute;top:12px;left:12px;background:var(--accent);color:#fff;padding:6px 10px;border-radius:999px;font-weight:700;font-size:0.82rem}
+/* cards & grid */
+.grid{display:grid;grid-template-columns:1fr 360px;gap:18px;margin-top:18px}
+.card{background:var(--card);border-radius:12px;padding:14px;box-shadow:0 8px 24px rgba(11,23,32,0.06);transition:.3s}
+.card:hover{transform:translateY(-3px)}
 
-  /* flip card */
-  .flip-wrap{perspective:1000px}
-  .flip-card{width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;position:relative}
-  .flip-front,.flip-back{backface-visibility:hidden;position:relative;border-radius:10px;padding:12px}
-  .flip-back{position:absolute;inset:0;transform:rotateY(180deg);background:linear-gradient(180deg,#fff,#fcfff7)}
-  .flipped{transform:rotateY(180deg)}
+/* trainers / forms */
+form label{display:block;font-weight:700;margin-bottom:6px}
+.field{margin-bottom:12px}
+input[type=text],select,input[type=date],textarea{width:100%;padding:10px;border-radius:10px;border:1px solid #e6e9ec;font-size:0.95rem}
+textarea{min-height:80px}
+.row{display:flex;gap:10px}
+.row .col{flex:1}
 
-  /* CHARTS */
-  canvas{width:100%!important;height:260px!important}
+/* cards grid for trainers/coord */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+
+.trainer-card{background:linear-gradient(180deg,#fff,#fbfdff);border-radius:12px;padding:12px;border-left:6px solid var(--accent);position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(11,23,32,0.04);transition:transform .18s ease,opacity .25s ease}
+.trainer-card:hover{transform:translateY(-6px)}
+.status-badge{position:absolute;top:12px;left:12px;background:var(--accent);color:#fff;padding:6px 10px;border-radius:999px;font-weight:700;font-size:0.82rem}
+
+/* coordination card colors */
+.state-pending{border-left-color:#9aa0a6}
+.state-review{border-left-color:#2196f3}
+.state-started{border-left-color:var(--accent)}
+.state-complete{border-left-color:#f2b90f}
+
+/* flip card */
+.flip-wrap{perspective:1000px}
+.flip-card{width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;position:relative}
+.flip-front,.flip-back{backface-visibility:hidden;position:relative;border-radius:10px;padding:12px}
+.flip-back{position:absolute;inset:0;transform:rotateY(180deg);background:linear-gradient(180deg,#fff,#fcfff7)}
+.flipped{transform:rotateY(180deg)}
+
+/* progress */
+.progress{height:8px;background:#eef2f4;border-radius:999px;overflow:hidden;margin-top:8px}
+.progress > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#f2b90f);width:0%;transition:width .6s ease}
+
+/* dashboard styles */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.kpi{background:var(--card);padding:12px;border-radius:12px;box-shadow:0 8px 18px rgba(11,23,32,0.04);display:flex;flex-direction:column;gap:6px}
+.kpi .num{font-weight:800;font-size:1.4rem}
+
+.charts{display:grid;grid-template-columns:1fr 420px;gap:12px;margin-top:12px}
+.chart-card{background:var(--card);padding:12px;border-radius:12px}
+canvas{width:100%!important;height:260px!important}
+
+/* responsive */
+@media (max-width:1000px){.layout{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}.charts{grid-template-columns:1fr}.grid{grid-template-columns:1fr}}
+
+footer{margin-top:18px;text-align:center;color:var(--muted);font-size:0.95rem}
+
+/* simple animations */
+.fade-in{animation:fadeIn .45s ease both}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 </style>
 </head>
 <body>
-<!-- LOGIN PAGE -->
-<div id="login-page">
-  <div id="login-box">
-    <h1>QA TEAM</h1>
-    <div class="error hidden" id="login-error">نام کاربری یا رمز اشتباه است</div>
-    <input type="text" id="login-user" placeholder="نام کاربری">
-    <input type="password" id="login-pass" placeholder="رمز عبور">
-    <button id="login-btn">ورود</button>
-  </div>
-</div>
 
-<!-- APP -->
-<main class="app hidden" id="app">
-  <header class="top">
-    <div class="brand">QA TEAM</div>
+<main class="app">
+
+<!-- TOPBAR -->
+<header class="top">
+  <div class="brand">QA TEAM</div>
+  <div>
+    <div class="title">QA TEAM Platform</div>
+    <div class="sub">پنل مدیریت حرفه‌ای آموزش، هماهنگی کارشناسان و پیگیری فرآیندها</div>
+  </div>
+  <div class="actions">
+    <button id="nav-home" class="btn active">خانه</button>
+    <button id="nav-trainers" class="btn ghost">مربیان</button>
+    <button id="nav-dashboard" class="btn ghost">داشبورد</button>
+    <button id="nav-coord" class="btn ghost">Coordination</button>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div style="font-weight:800">منوی سریع</div>
     <nav class="nav">
-      <button data-page="home" class="active">خانه</button>
-      <button data-page="trainers">مربیان</button>
-      <button data-page="coordination">Coordination</button>
-      <button data-page="dashboard">داشبورد</button>
+      <button data-page="home" class="active">🏠 خانه</button>
+      <button data-page="trainers">🎓 مربیان</button>
+      <button data-page="dashboard">📊 داشبورد</button>
+      <button data-page="coordination">🧭 Coordination</button>
     </nav>
-  </header>
+    <hr style="margin:12px 0;border:none;border-top:1px solid #eef2f4">
+    <div class="muted" style="font-weight:700">نسخهٔ نمایشی — داده‌ها در مرورگر شما ذخیره می‌شود</div>
+  </aside>
 
-  <div class="layout">
-    <aside class="sidebar">
-      <div style="font-weight:800">منوی سریع</div>
-      <nav class="nav">
-        <button data-page="home" class="active">🏠 خانه</button>
-        <button data-page="trainers">🎓 مربیان</button>
-        <button data-page="coordination">🧭 Coordination</button>
-        <button data-page="dashboard">📊 داشبورد</button>
-      </nav>
-    </aside>
+  <section>
+    <!-- HOME -->
+    <div id="page-home" class="page active fade-in">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-inner">
+          <h1 id="hero-title" class="hero-title">QA TEAM Platform</h1>
+          <p class="hero-sub">این پنل سازمانی امکان ثبت و مدیریت تمامی فرآیندهای آموزش را برای مربیان فراهم می‌کند. از ثبت اطلاعات مربیان گرفته تا هماهنگی کارشناسان و پیگیری دوره‌ها، همه چیز در یک محیط حرفه‌ای و تعاملی انجام می‌شود.</p>
+        </div>
+      </section>
+    </div>
 
-    <section>
-      <!-- HOME -->
-      <div id="page-home" class="page active">
-        <section class="card">
-          <h2>به QA TEAM خوش آمدید</h2>
-          <p>پنل QA TEAM یک سامانه سازمانی حرفه‌ای برای مدیریت فرآیندهای آموزش و پیگیری عملکرد تیم آموزش است. از این پس تمامی فرآیندهای آموزشی، ثبت مربیان، وضعیت دوره‌ها و هماهنگی کارشناسان، به صورت متمرکز و شفاف از طریق این پنل انجام خواهد شد. این سامانه با فرم‌های کاربرپسند و کارت‌های تعاملی طراحی شده تا تجربه‌ای حرفه‌ای و قابل اتکا برای مدیران و مربیان فراهم کند.</p>
-        </section>
-      </div>
+    <!-- TRAINERS -->
+    <div id="page-trainers" class="page fade-in">
+      <section class="hero" aria-labelledby="trainers-title">
+        <div class="hero-inner">
+          <h1 id="trainers-title" class="hero-title">ثبت اطلاعات مربیان دوره‌های آموزشی</h1>
+          <p class="hero-sub">تمامی مربیان ثبت‌شده از این پنل قابل مدیریت هستند. مربیان می‌توانند فرم‌های خود را ثبت و در صورت اشتباه، حذف و دوباره ثبت کنند.</p>
+        </div>
+      </section>
+    </div>
 
-      <!-- TRAINERS -->
-      <div id="page-trainers" class="page">
-        <section class="card">
-          <h2>ثبت مربیان</h2>
-          <form id="trainer-form">
-            <div class="field">
-              <label for="t-name">نام و نام خانوادگی</label>
-              <input id="t-name" type="text" placeholder="" required>
-            </div>
-            <div class="field">
-              <label for="t-side">سمت</label>
-              <input id="t-side" type="text" value="QA / Training" readonly>
-            </div>
-            <div class="field">
-              <label for="t-course">عنوان آموزشی</label>
-              <select id="t-course">
-                <option>آموزش دوره اول</option>
-                <option>آموزش دوره دوم</option>
-                <option>آموزش دوره‌ای</option>
-                <option>آموزش همراهی</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="t-start">تاریخ شروع</label>
-              <input id="t-start" type="date">
-            </div>
-            <div class="field">
-              <label for="t-status">وضعیت</label>
-              <select id="t-status">
-                <option>در حال آموزش</option>
-                <option>تکمیل شده</option>
-                <option>در انتظار</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="t-desc">توضیحات (اختیاری)</label>
-              <textarea id="t-desc" placeholder="اختیاری"></textarea>
-            </div>
-            <button class="btn" type="submit">ثبت مربی</button>
-          </form>
-          <div id="trainer-list" style="margin-top:16px"></div>
-        </section>
-      </div>
+    <!-- DASHBOARD -->
+    <div id="page-dashboard" class="page fade-in">
+      <section class="hero-inner">
+        <h2>داشبورد مدیریتی</h2>
+      </section>
+    </div>
 
-      <!-- COORDINATION -->
-      <div id="page-coordination" class="page">
-        <section class="card">
-          <h2>Coordination</h2>
-          <form id="coord-form">
-            <div class="field">
-              <label for="c-name">نام درخواست دهنده</label>
-              <input id="c-name" type="text" required>
-            </div>
-            <div class="field">
-              <label for="c-coord">Coordination</label>
-              <input id="c-coord" type="text" placeholder="نام کوردیناتور" required>
-            </div>
-            <div class="field">
-              <label for="c-date">تاریخ ثبت درخواست</label>
-              <input id="c-date" type="date" required>
-            </div>
-            <div class="field">
-              <label for="c-status">وضعیت</label>
-              <select id="c-status">
-                <option>در حال تکمیل</option>
-                <option>تکمیل شده</option>
-                <option>در انتظار</option>
-              </select>
-            </div>
-            <button class="btn" type="submit">ثبت Coordination</button>
-          </form>
-          <div id="coord-list" style="margin-top:16px"></div>
-        </section>
-      </div>
-
-      <!-- DASHBOARD -->
-      <div id="page-dashboard" class="page">
-        <section class="card">
-          <h2>داشبورد</h2>
-          <p>نمودارها و آمارهای مرتبط با آموزش‌ها و فعالیت مربیان نمایش داده می‌شود.</p>
-          <canvas id="chart"></canvas>
-        </section>
-      </div>
-    </section>
-  </div>
+    <!-- COORDINATION -->
+    <div id="page-coordination" class="page fade-in">
+      <section class="hero-inner">
+        <h2>ثبت کارشناسان نیازمند دوره همراهی</h2>
+      </section>
+    </div>
+  </section>
+</div>
 </main>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<footer style="text-align:center;color:var(--muted);padding:18px">Prepared by QA TEAM — demo version.</footer>
+
 <script>
-  const loginPage=document.getElementById('login-page');
-  const app=document.getElementById('app');
-  const loginBtn=document.getElementById('login-btn');
-  const loginError=document.getElementById('login-error');
-
-  const users=[
-    {user:'manager',pass:'snapp123',role:'manager'},
-    {user:'trainer',pass:'trainer',role:'trainer'}
-  ];
-
-  loginBtn.addEventListener('click',()=>{
-    const u=document.getElementById('login-user').value.trim();
-    const p=document.getElementById('login-pass').value.trim();
-    const found=users.find(x=>x.user===u && x.pass===p);
-    if(found){
-      loginPage.classList.add('hidden');
-      app.classList.remove('hidden');
-      loginError.classList.add('hidden');
-    }else{
-      loginError.classList.remove('hidden');
-    }
+const pages = ['home','trainers','dashboard','coordination'];
+function showPage(p){
+  pages.forEach(pp=>{
+    document.querySelector('#page-'+pp).classList.remove('active');
+    const btn = document.querySelector('.nav button[data-page="'+pp+'"]');
+    if(btn) btn.classList.remove('active');
   });
-
-  // NAVIGATION
-  document.querySelectorAll('.nav button').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');
-      const page=btn.dataset.page;
-      document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-      document.getElementById('page-'+page).classList.add('active');
-    });
-  });
-
-  // TRAINER FORM
-  const trainerForm=document.getElementById('trainer-form');
-  const trainerList=document.getElementById('trainer-list');
-  trainerForm.addEventListener('submit',e=>{
-    e.preventDefault();
-    const name=document.getElementById('t-name').value;
-    const side=document.getElementById('t-side').value;
-    const course=document.getElementById('t-course').value;
-    const start=document.getElementById('t-start').value;
-    const status=document.getElementById('t-status').value;
-    const desc=document.getElementById('t-desc').value;
-    const card=document.createElement('div');
-    card.className='trainer-card';
-    card.innerHTML=`<strong>${name}</strong><br>سمت: ${side}<br>دوره: ${course}<br>شروع: ${start}<br>وضعیت: ${status}<br>توضیحات: ${desc}`;
-    trainerList.appendChild(card);
-    trainerForm.reset();
-  });
-
-  // COORD FORM
-  const coordForm=document.getElementById('coord-form');
-  const coordList=document.getElementById('coord-list');
-  coordForm.addEventListener('submit',e=>{
-    e.preventDefault();
-    const name=document.getElementById('c-name').value;
-    const coord=document.getElementById('c-coord').value;
-    const date=document.getElementById('c-date').value;
-    const status=document.getElementById('c-status').value;
-    const card=document.createElement('div');
-    card.className='trainer-card';
-    card.innerHTML=`<strong>${name}</strong><br>Coordination: ${coord}<br>تاریخ: ${date}<br>وضعیت: ${status}`;
-    coordList.appendChild(card);
-    coordForm.reset();
-  });
-
-  // SAMPLE CHART
-  const ctx=document.getElementById('chart').getContext('2d');
-  new Chart(ctx,{
-    type:'bar',
-    data:{
-      labels:['دوره 1','دوره 2','دوره 3','دوره 4'],
-      datasets:[{label:'تعداد مربیان',data:[0,0,0,0],backgroundColor: 'rgba(74,144,226,0.6)'}]
-    },
-    options:{responsive:true,plugins:{legend:{display:true}}}
-  });
+  document.querySelector('#page-'+p).classList.add('active');
+  const btn2 = document.querySelector('.nav button[data-page="'+p+'"]'); 
+  if(btn2) btn2.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));
+document.getElementById('nav-home').addEventListener('click',()=>showPage('home'));
+document.getElementById('nav-trainers').addEventListener('click',()=>showPage('trainers'));
+document.getElementById('nav-dashboard').addEventListener('click',()=>showPage('dashboard'));
+document.getElementById('nav-coord').addEventListener('click',()=>showPage('coordination'));
 </script>
 </body>
 </html>
