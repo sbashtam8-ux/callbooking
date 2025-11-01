@@ -115,10 +115,10 @@
         <div class="sub">نمونهٔ سازمانی مدیریت آموزش، مربیان و فرآیند همیاری</div>
       </div>
       <div class="actions">
-        <button id="nav-home" class="btn">صفحه اصلی</button>
-        <button id="nav-trainers" class="btn ghost">مربیان</button>
-        <button id="nav-dashboard" class="btn ghost">داشبورد</button>
-        <button id="nav-coord" class="btn ghost">Coordination</button>
+        <button id="nav-home" class="btn" data-page="home">صفحه اصلی</button>
+        <button id="nav-trainers" class="btn ghost" data-page="trainers">مربیان</button>
+        <button id="nav-dashboard" class="btn ghost" data-page="dashboard">داشبورد</button>
+        <button id="nav-coord" class="btn ghost" data-page="coordination">Coordination</button>
       </div>
     </header>
 
@@ -137,43 +137,18 @@
 
       <section>
         <!-- HOME -->
-        <div id="page-home" class="page active fade-in">
+        <div id="page-home" class="page fade-in">
           <section class="hero" aria-labelledby="hero-title">
             <div class="brand-small" aria-hidden="true">Snapp!</div>
             <div class="hero-inner">
               <h1 id="hero-title" class="hero-title">Snapp! Learning & Assistance Platform</h1>
-              <p class="hero-sub">A lightweight, enterprise-ready sample platform to manage trainers, coordination and training lifecycle. Designed for quick demos and internal rollouts.</p>
+              <p class="hero-sub">یک پلتفرم نمونه برای مدیریت مربیان، هماهنگی و آموزش‌ها</p>
               <div class="hero-cta">
-                <button class="btn" onclick="showPage('trainers')">Go to Trainers</button>
-                <button class="btn ghost" onclick="showPage('dashboard')">Open Dashboard</button>
+                <button class="btn" onclick="showPage('trainers')">برو به مربیان</button>
+                <button class="btn ghost" onclick="showPage('dashboard')">باز کردن داشبورد</button>
               </div>
             </div>
           </section>
-
-          <div class="grid">
-            <section class="card">
-              <h2>Why this project?</h2>
-              <p>This compact platform demonstrates an end-to-end flow: register trainers, monitor active trainings, mark completions, and visualize metrics — all from GitHub Pages without backend dependencies.</p>
-
-              <h3>Use cases</h3>
-              <ul>
-                <li>Manager demos and internal approvals</li>
-                <li>Training coordination and attendance tracking</li>
-                <li>Export reports and hand over to HR</li>
-              </ul>
-            </section>
-
-            <aside class="card">
-              <h3>Quick links</h3>
-              <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
-                <button class="btn" onclick="showPage('trainers')">Trainers panel</button>
-                <button class="btn ghost" onclick="showPage('coordination')">Coordination panel</button>
-                <button class="btn ghost" onclick="showPage('dashboard')">View Dashboard</button>
-              </div>
-            </aside>
-          </div>
-
-          <footer>Designed for demos — ready to be extended to React/Next.js and backed by real APIs.</footer>
         </div>
 
         <!-- TRAINERS -->
@@ -181,86 +156,29 @@
           <section class="hero" aria-labelledby="trainers-title">
             <div class="brand-small">Snapp!</div>
             <div class="hero-inner">
-              <h1 id="trainers-title" class="hero-title">ثبت اطلاعات مربیان دوره‌های آموزشی</h1>
-              <p class="hero-sub">Use this form to register trainers. Trainers in "In Progress" appear above; completed trainings move to the completed section with a celebration tick.</p>
+              <h1 id="trainers-title" class="hero-title">ثبت اطلاعات مربیان</h1>
             </div>
           </section>
-
-          <div class="layout" style="grid-template-columns:520px 1fr;">
-            <section class="card">
-              <h2>فرم ثبت مربی</h2>
-              <form id="trainer-form">
-                <div class="field"><label for="t-name">نام و نام خانوادگی</label><input id="t-name" type="text" placeholder="مثال: علی رضایی" required></div>
-                <div class="row">
-                  <div class="col field"><label for="t-unit">واحد / بخش</label><select id="t-unit"><option>QC</option><option>Training</option><option>Call Center</option><option>سایر</option></select></div>
-                  <div class="col field"><label for="t-course">عنوان آموزشی</label><select id="t-course"><option>آموزش دوره اول</option><option>آموزش دوره دوم</option><option>آموزش دوره‌ای</option><option>آموزش همیاری</option></select></div>
-                </div>
-                <div class="row">
-                  <div class="col field"><label for="t-start">تاریخ شروع</label><input id="t-start" type="date"></div>
-                  <div class="col field"><label for="t-status">وضعیت</label><select id="t-status"><option>در حال آموزش</option><option>تکمیل‌شده</option><option>در انتظار</option></select></div>
-                </div>
-                <div class="field"><label for="t-note">توضیحات</label><textarea id="t-note" placeholder="(اختیاری)"></textarea></div>
-                <div style="display:flex;gap:10px;align-items:center"><button class="btn" type="submit">ثبت مربی</button><button type="button" id="t-clear" class="btn ghost">پاک‌سازی</button></div>
-              </form>
-            </section>
-
-            <section>
-              <div class="card"><h3 class="list-title">مربیان در حال آموزش</h3><div id="t-active" class="cards" aria-live="polite"></div></div>
-              <div class="card" style="margin-top:12px"><h3 class="list-title">آموزش‌های تکمیل‌شده</h3><div id="t-completed" class="cards" aria-live="polite"></div></div>
-            </section>
-          </div>
         </div>
 
         <!-- DASHBOARD -->
         <div id="page-dashboard" class="page fade-in">
-          <header style="display:flex;align-items:center;gap:12px"><div class="brand-small">Snapp!</div><div><h2 style="margin:0">داشبورد مدیریتی</h2><div class="muted">نمایش KPIها و آخرین ثبت‌ها</div></div></header>
-
-          <div style="margin-top:12px">
-            <div class="kpis">
-              <div class="kpi"><div class="num" id="k-total">—</div><div class="label">تعداد کل مربیان</div></div>
-              <div class="kpi"><div class="num" id="k-active">—</div><div class="label">مربیان در حال آموزش</div></div>
-              <div class="kpi"><div class="num" id="k-completed">—</div><div class="label">آموزش‌های تکمیل‌شده</div></div>
-              <div class="kpi"><div class="num" id="k-percent">—%</div><div class="label">درصد تکمیل</div></div>
+          <section class="hero" aria-labelledby="dashboard-title">
+            <div class="brand-small">Snapp!</div>
+            <div class="hero-inner">
+              <h1 id="dashboard-title" class="hero-title">داشبورد مدیریتی</h1>
             </div>
-
-            <div class="charts" id="charts">
-              <div class="chart-card"><canvas id="pie-status"></canvas></div>
-              <div class="chart-card"><canvas id="bar-courses"></canvas></div>
-            </div>
-
-            <div class="charts">
-              <div class="chart-card"><canvas id="line-timeline"></canvas></div>
-              <div class="chart-card card">
-                <div style="display:flex;justify-content:space-between;align-items:center"><div style="font-weight:800">آخرین ثبت‌ها</div><div class="muted">داده‌ها از localStorage</div></div>
-                <table style="width:100%;margin-top:8px;border-collapse:collapse"><thead><tr style="text-align:right"><th>نام</th><th>واحد</th><th>عنوان</th><th>شروع</th><th>وضعیت</th></tr></thead><tbody id="recent-body"></tbody></table>
-              </div>
-            </div>
-          </div>
+          </section>
         </div>
 
         <!-- COORDINATION -->
         <div id="page-coordination" class="page fade-in">
           <section class="hero" aria-labelledby="coord-title">
             <div class="brand-small">Snapp!</div>
-            <div class="hero-inner"><h1 id="coord-title" class="hero-title">ثبت کارشناسان نیازمند دوره همراهی</h1><p class="hero-sub">Coordination panel — سرپرستان اینجا کارشناسانی که نیاز به همراهی دارند را ثبت می‌کنند. کارت‌ها با افکت flip و رنگ‌بندی حالت‌ها نمایش داده می‌شوند.</p></div>
+            <div class="hero-inner">
+              <h1 id="coord-title" class="hero-title">ثبت کارشناسان نیازمند همراهی</h1>
+            </div>
           </section>
-
-          <div class="grid" style="margin-top:14px">
-            <section class="card">
-              <h3>فرم ثبت نیاز به همیاری</h3>
-              <form id="coord-form">
-                <div class="field"><label for="c-name">نام و نام خانوادگی کارشناس</label><input id="c-name" type="text" placeholder="مثال: سارا حسینی" required></div>
-                <div class="field"><label for="c-coord">نام و نام خانوادگی کوردیناتور</label><input id="c-coord" type="text" placeholder="مثال: محمد موسوی" required></div>
-                <div class="field"><label for="c-reason">علت نیاز به دوره</label><select id="c-reason"><option>ضعف در عملکرد تماس</option><option>نیاز به تمرین فرآیند‌ها</option><option>بازخورد منفی مشتری</option><option>نیاز به آموزش مجدد</option></select></div>
-                <div class="row"><div class="col field"><label for="c-date">تاریخ پیشنهاد</label><input id="c-date" type="date"></div><div class="col field"><label for="c-status">وضعیت فعلی</label><select id="c-status"><option>در انتظار</option><option>در حال بررسی</option><option>همیاری شروع شده</option><option>تکمیل‌شده</option></select></div></div>
-                <div style="display:flex;gap:10px;margin-top:8px"><button class="btn" type="submit">ثبت کارشناس</button><button type="button" id="c-clear" class="btn ghost">پاک‌سازی لیست</button></div>
-              </form>
-            </section>
-
-            <section>
-              <div class="card"><h3 class="list-title">کارشناسان ثبت‌شده</h3><div id="coord-list" class="cards"></div></div>
-            </section>
-          </div>
         </div>
 
       </section>
@@ -269,122 +187,35 @@
 
   <footer style="text-align:center;color:var(--muted);padding:18px">Prepared by your teammate — demo version. Ready for production hardening.</footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
-    // --- Navigation ---
+    // --- Navigation اصلاح شده ---
     const pages = ['home','trainers','dashboard','coordination'];
+
     function showPage(p){
-      pages.forEach(pp=>{
-        document.querySelector('#page-'+pp).classList.remove('active');
-        const btn = document.querySelector('.nav button[data-page="'+pp+'"]');
-        if(btn) btn.classList.remove('active');
+      pages.forEach(pp => {
+        const pageEl = document.getElementById('page-' + pp);
+        const btnEl = document.querySelector('[data-page="'+pp+'"]');
+        if(pageEl) pageEl.classList.remove('active');
+        if(btnEl) btnEl.classList.remove('active');
       });
-      document.querySelector('#page-'+p).classList.add('active');
-      const btn2 = document.querySelector('.nav button[data-page="'+p+'"]'); if(btn2) btn2.classList.add('active');
-      // scroll top of main
-      window.scrollTo({top:0,behavior:'smooth'});
-      // refresh dashboard when opened
-      if(p==='dashboard') updateDashboard();
+
+      const pageToShow = document.getElementById('page-' + p);
+      const btnToActive = document.querySelector('[data-page="'+p+'"]');
+
+      if(pageToShow) pageToShow.classList.add('active');
+      if(btnToActive) btnToActive.classList.add('active');
+
+      window.scrollTo({top:0, behavior:'smooth'});
     }
-    document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));
-    // top actions
-    document.getElementById('nav-home').addEventListener('click',()=>showPage('home'));
-    document.getElementById('nav-trainers').addEventListener('click',()=>showPage('trainers'));
-    document.getElementById('nav-dashboard').addEventListener('click',()=>showPage('dashboard'));
-    document.getElementById('nav-coord').addEventListener('click',()=>showPage('coordination'));
 
-    // --- Storage keys ---
-    const KEY_TRAINERS = 'cb_trainers_v1';
-    const KEY_COORD = 'cb_coord_v1';
+    // اضافه کردن event listener به همه دکمه‌ها
+    document.querySelectorAll('.nav button, .actions button').forEach(btn=>{
+      const page = btn.dataset.page || btn.id.replace('nav-','');
+      btn.addEventListener('click', ()=> showPage(page));
+    });
 
-    // --- Helpers ---
-    function escapeHtml(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"})[c])}
-
-    // --- TRAINERS logic (from previous trainers.html) ---
-    const tForm = document.getElementById('trainer-form');
-    const tActive = document.getElementById('t-active');
-    const tCompleted = document.getElementById('t-completed');
-    const tClear = document.getElementById('t-clear');
-    let trainers = JSON.parse(localStorage.getItem(KEY_TRAINERS)||'[]');
-
-    function saveTr(){ localStorage.setItem(KEY_TRAINERS,JSON.stringify(trainers)); }
-    function renderTr(){ tActive.innerHTML=''; tCompleted.innerHTML=''; trainers.forEach((t,idx)=>{
-      const card = document.createElement('article'); card.className='trainer-card fade-in';
-      const badge = document.createElement('div'); badge.className='status-badge'; badge.textContent=t.status;
-      const title = document.createElement('div'); title.innerHTML=`<strong style=\"font-size:1rem\">${escapeHtml(t.name)}</strong>`;
-      const meta = document.createElement('div'); meta.className='meta'; meta.innerHTML=`واحد: ${escapeHtml(t.unit)} · ${escapeHtml(t.course)}<br/>شروع: ${t.start||'-'}`;
-      const note = document.createElement('div'); note.className='meta'; note.style.marginTop='8px'; note.textContent=t.note||'';
-      const actions = document.createElement('div'); actions.style.display='flex'; actions.style.gap='8px'; actions.style.marginTop='10px';
-      if(t.status!=='تکمیل‌شده'){
-        const done = document.createElement('button'); done.className='btn'; done.textContent='علامت‌گذاری تکمیل'; done.addEventListener('click',()=>trainerMarkComplete(idx,card)); actions.appendChild(done);
-      }
-      const del = document.createElement('button'); del.className='btn ghost'; del.textContent='حذف'; del.addEventListener('click',()=>{ card.classList.add('fade-out'); setTimeout(()=>{ trainers.splice(idx,1); saveTr(); renderTr(); },340); }); actions.appendChild(del);
-      card.appendChild(badge); card.appendChild(title); card.appendChild(meta); card.appendChild(note); card.appendChild(actions);
-      if(t.status==='تکمیل‌شده') tCompleted.appendChild(card); else tActive.appendChild(card);
-    }); }
-
-    function trainerMarkComplete(idx,card){ card.classList.add('fade-out'); setTimeout(()=>{ trainers[idx].status='تکمیل‌شده'; saveTr(); renderTr(); // celebration card
-      const completedCard = document.createElement('article'); completedCard.className='trainer-card fade-in'; completedCard.innerHTML = `\n        <div style=\"display:flex;align-items:center;gap:12px\">\n          <div class=\"tick\" aria-hidden=\"true\" style=\"width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:#fff;box-shadow:0 6px 18px rgba(11,23,32,0.12)\">\n            <svg viewBox=\"0 0 24 24\" width=\"28\" height=\"28\" fill=\"none\">\n              <circle cx=\"12\" cy=\"12\" r=\"11\" stroke=\"var(--snapp-green)\" stroke-width=2></circle>\n              <path d=\"M7.5 12.5L10.5 15.5L16.5 9.5\" stroke=\"var(--snapp-green)\" stroke-width=2.4" stroke-linecap="round" stroke-linejoin="round"></path>\n            </svg>\n          </div>\n          <div>\n            <strong>${escapeHtml(trainers[idx].name)}</strong><br/><div class=\"meta\">${escapeHtml(trainers[idx].course)} · شروع: ${trainers[idx].start||'-'}</div>\n          </div>\n        </div>\n      `; tCompleted.prepend(completedCard); },350); }
-
-    tForm.addEventListener('submit',e=>{ e.preventDefault(); const t={ name:document.getElementById('t-name').value.trim(), unit:document.getElementById('t-unit').value, course:document.getElementById('t-course').value, start:document.getElementById('t-start').value, status:document.getElementById('t-status').value, note:document.getElementById('t-note').value.trim() }; trainers.unshift(t); saveTr(); renderTr(); tForm.reset(); });
-    tClear.addEventListener('click',()=>{ if(!confirm('پاک‌سازی لیست مربیان؟')) return; trainers=[]; saveTr(); renderTr(); });
-    renderTr();
-
-    // --- COORDINATION logic ---
-    const cForm = document.getElementById('coord-form'); const cList = document.getElementById('coord-list'); const cClear = document.getElementById('c-clear'); let coords = JSON.parse(localStorage.getItem(KEY_COORD)||'[]');
-    function saveCoord(){ localStorage.setItem(KEY_COORD,JSON.stringify(coords)); }
-    function renderCoord(){ cList.innerHTML=''; coords.forEach((c,idx)=>{
-      const wrap = document.createElement('div'); wrap.className='flip-wrap';
-      const card3d = document.createElement('div'); card3d.className='flip-card';
-      const front = document.createElement('div'); front.className='flip-front trainer-card'; front.innerHTML = `<strong>${escapeHtml(c.name)}</strong><div class=\"meta\">کوردیناتور: ${escapeHtml(c.coord)} · تاریخ: ${c.date||'-'}</div><div class=\"meta\">علت: ${escapeHtml(c.reason)}</div>`;
-      const back = document.createElement('div'); back.className='flip-back trainer-card'; back.innerHTML = `<strong>وضعیت</strong><div class=\"meta\">${escapeHtml(c.status)}</div><div class=\"progress\"><i style=\"width:${statusPercent(c.status)}%\"></i></div><div style=\"margin-top:8px;display:flex;gap:8px\"><button class=\"btn\" onclick=\"coordAdvance(${idx})\">مرحله بعد</button><button class=\"btn ghost\" onclick=\"coordDelete(${idx})\">حذف</button></div>`;
-      // color by state
-      if(c.status==='در انتظار') front.classList.add('state-pending');
-      if(c.status==='در حال بررسی') front.classList.add('state-review');
-      if(c.status==='همیاری شروع شده') front.classList.add('state-started');
-      if(c.status==='تکمیل‌شده') front.classList.add('state-complete');
-
-      card3d.appendChild(front); card3d.appendChild(back);
-      wrap.appendChild(card3d);
-      // flip on click
-      wrap.addEventListener('click',()=>{ card3d.classList.toggle('flipped'); });
-      cList.appendChild(wrap);
-    }); }
-
-    function statusPercent(s){ if(s==='در انتظار') return 20; if(s==='در حال بررسی') return 50; if(s==='همیاری شروع شده') return 80; if(s==='تکمیل‌شده') return 100; return 0; }
-    function coordAdvance(idx){ const order=['در انتظار','در حال بررسی','همیاری شروع شده','تکمیل‌شده']; const cur = coords[idx].status; const i = order.indexOf(cur); if(i<order.length-1) coords[idx].status = order[i+1]; saveCoord(); renderCoord(); }
-    function coordDelete(idx){ if(!confirm('حذف رکورد؟')) return; coords.splice(idx,1); saveCoord(); renderCoord(); }
-
-    cForm.addEventListener('submit',e=>{ e.preventDefault(); const obj={ name:document.getElementById('c-name').value.trim(), coord:document.getElementById('c-coord').value.trim(), reason:document.getElementById('c-reason').value, date:document.getElementById('c-date').value, status:document.getElementById('c-status').value }; coords.unshift(obj); saveCoord(); renderCoord(); cForm.reset(); });
-    cClear.addEventListener('click',()=>{ if(!confirm('پاک‌سازی رکوردهای Coordination؟')) return; coords=[]; saveCoord(); renderCoord(); });
-    renderCoord();
-
-    // --- DASHBOARD logic ---
-    function summarize(data){ const total=data.length; const active=data.filter(d=>d.status!=='تکمیل‌شده').length; const completed=data.filter(d=>d.status==='تکمیل‌شده').length; const percent = total? Math.round((completed/total)*100):0; const byCourse={}; const timeline={}; data.forEach(d=>{ byCourse[d.course]=(byCourse[d.course]||0)+1; const day=d.start||'نامشخص'; timeline[day]=(timeline[day]||0)+1; }); return {total,active,completed,percent,byCourse,timeline}; }
-
-    // charts
-    let pie,bar,line;
-    function initCharts(){ const pctx=document.getElementById('pie-status').getContext('2d'); pie=new Chart(pctx,{type:'doughnut',data:{labels:['در حال آموزش','تکمیل‌شده','در انتظار'],datasets:[{data:[0,0,0],backgroundColor:['#00E676','#4caf50','#ffd54f']}],options:{plugins:{legend:{position:'bottom'}}}});
-      const bctx=document.getElementById('bar-courses').getContext('2d'); bar=new Chart(bctx,{type:'bar',data:{labels:[],datasets:[{label:'تعداد',data:[],backgroundColor:'#00bfa5'}]},options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}});
-      const lctx=document.getElementById('line-timeline').getContext('2d'); line=new Chart(lctx,{type:'line',data:{labels:[],datasets:[{label:'شروع‌های ثبت‌شده',data:[],borderColor:'#00E676',fill:true,backgroundColor:'rgba(0,230,118,0.12)'}]},options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}});
-    }
-    initCharts();
-
-    function updateDashboard(){ const t=JSON.parse(localStorage.getItem(KEY_TRAINERS)||'[]'); const s=summarize(t); document.getElementById('k-total').textContent=s.total; document.getElementById('k-active').textContent=s.active; document.getElementById('k-completed').textContent=s.completed; document.getElementById('k-percent').textContent=s.percent+'%'; const statuses=[ t.filter(d=>d.status!=='تکمیل‌شده').length, t.filter(d=>d.status==='تکمیل‌شده').length, t.filter(d=>d.status==='در انتظار').length ]; pie.data.datasets[0].data=statuses; pie.update(); const courses=Object.keys(s.byCourse); bar.data.labels=courses; bar.data.datasets[0].data=courses.map(c=>s.byCourse[c]||0); bar.update(); const keys=Object.keys(s.timeline).filter(k=>k!=='نامشخص').sort(); line.data.labels=keys; line.data.datasets[0].data=keys.map(k=>s.timeline[k]); line.update(); // recent
-      const tbody=document.getElementById('recent-body'); tbody.innerHTML=''; t.slice(0,12).forEach(r=>{ const tr=document.createElement('tr'); tr.innerHTML=`<td style=\"padding:6px 8px\">${escapeHtml(r.name)}</td><td>${escapeHtml(r.unit)}</td><td>${escapeHtml(r.course)}</td><td>${escapeHtml(r.start||'-')}</td><td>${escapeHtml(r.status)}</td>`; tbody.appendChild(tr); }); }
-
-    // auto update when storage changes (other tabs)
-    window.addEventListener('storage',()=>{ trainers = JSON.parse(localStorage.getItem(KEY_TRAINERS)||'[]'); renderTr(); renderCoord(); updateDashboard(); });
-
-    // init dashboard values
-    updateDashboard();
-    setInterval(updateDashboard,7000);
-
-    // export CSV from dashboard
-    function exportCSV(){ const data = JSON.parse(localStorage.getItem(KEY_TRAINERS)||'[]'); if(!data.length){alert('هیچ داده‌ای برای خروجی وجود ندارد.');return} const headers=['name','unit','course','start','status','note']; const rows=data.map(r=>headers.map(h=>`"${String(r[h]||'').replace(/"/g,'""')}"`).join(',')); const csv=[headers.join(','),...rows].join('\n'); const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='trainers_export.csv'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); }
-    document.getElementById('nav-dashboard').addEventListener('click',updateDashboard);
-    document.querySelector('.actions .btn')?.addEventListener('click',exportCSV);
-
+    // بارگذاری اولیه: نمایش صفحه خانه
+    showPage('home');
   </script>
 </body>
 </html>
