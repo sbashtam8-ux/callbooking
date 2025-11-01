@@ -107,115 +107,90 @@
   </style>
 </head>
 <body>
-  <main class="app">
-    <header class="top">
-      <div class="brand">Snapp!</div>
-      <div>
-        <div class="title">Snapp! Learning & Assistance Platform</div>
-        <div class="sub">نمونهٔ سازمانی مدیریت آموزش، مربیان و فرآیند همیاری</div>
-      </div>
-      <div class="actions">
-        <button id="nav-home" class="btn" data-page="home">صفحه اصلی</button>
-        <button id="nav-trainers" class="btn ghost" data-page="trainers">مربیان</button>
-        <button id="nav-dashboard" class="btn ghost" data-page="dashboard">داشبورد</button>
-        <button id="nav-coord" class="btn ghost" data-page="coordination">Coordination</button>
-      </div>
-    </header>
-
-    <div class="layout">
-      <aside class="sidebar">
-        <div style="font-weight:800">منوی سریع</div>
-        <nav class="nav">
-          <button data-page="home" class="active">🏠 خانه</button>
-          <button data-page="trainers">🎓 مربیان</button>
-          <button data-page="dashboard">📊 داشبورد</button>
-          <button data-page="coordination">🧭 Coordination</button>
-        </nav>
-        <hr style="margin:12px 0;border:none;border-top:1px solid #eef2f4">
-        <div class="muted" style="font-weight:700">نسخهٔ نمایشی — داده‌ها در مرورگر شما ذخیره می‌شود</div>
-      </aside>
-
-      <section>
-        <!-- HOME -->
-        <div id="page-home" class="page fade-in">
-          <section class="hero" aria-labelledby="hero-title">
-            <div class="brand-small" aria-hidden="true">Snapp!</div>
-            <div class="hero-inner">
-              <h1 id="hero-title" class="hero-title">Snapp! Learning & Assistance Platform</h1>
-              <p class="hero-sub">یک پلتفرم نمونه برای مدیریت مربیان، هماهنگی و آموزش‌ها</p>
-              <div class="hero-cta">
-                <button class="btn" onclick="showPage('trainers')">برو به مربیان</button>
-                <button class="btn ghost" onclick="showPage('dashboard')">باز کردن داشبورد</button>
-              </div>
-            </div>
-          </section>
-        </div>
-
-        <!-- TRAINERS -->
-        <div id="page-trainers" class="page fade-in">
-          <section class="hero" aria-labelledby="trainers-title">
-            <div class="brand-small">Snapp!</div>
-            <div class="hero-inner">
-              <h1 id="trainers-title" class="hero-title">ثبت اطلاعات مربیان</h1>
-            </div>
-          </section>
-        </div>
-
-        <!-- DASHBOARD -->
-        <div id="page-dashboard" class="page fade-in">
-          <section class="hero" aria-labelledby="dashboard-title">
-            <div class="brand-small">Snapp!</div>
-            <div class="hero-inner">
-              <h1 id="dashboard-title" class="hero-title">داشبورد مدیریتی</h1>
-            </div>
-          </section>
-        </div>
-
-        <!-- COORDINATION -->
-        <div id="page-coordination" class="page fade-in">
-          <section class="hero" aria-labelledby="coord-title">
-            <div class="brand-small">Snapp!</div>
-            <div class="hero-inner">
-              <h1 id="coord-title" class="hero-title">ثبت کارشناسان نیازمند همراهی</h1>
-            </div>
-          </section>
-        </div>
-
-      </section>
+<main class="app">
+  <header class="top">
+    <div class="brand">Snapp!</div>
+    <div>
+      <div class="title">Snapp! Learning & Assistance Platform</div>
+      <div class="sub">نمونهٔ سازمانی مدیریت آموزش، مربیان و فرآیند همیاری</div>
     </div>
-  </main>
+    <div class="actions">
+      <button data-page="home" class="btn">صفحه اصلی</button>
+      <button data-page="trainers" class="btn ghost">مربیان</button>
+      <button data-page="dashboard" class="btn ghost">داشبورد</button>
+      <button data-page="coordination" class="btn ghost">Coordination</button>
+    </div>
+  </header>
 
-  <footer style="text-align:center;color:var(--muted);padding:18px">Prepared by your teammate — demo version. Ready for production hardening.</footer>
+  <div class="layout">
+    <aside class="sidebar">
+      <div style="font-weight:800">منوی سریع</div>
+      <nav class="nav">
+        <button data-page="home" class="active">🏠 خانه</button>
+        <button data-page="trainers">🎓 مربیان</button>
+        <button data-page="dashboard">📊 داشبورد</button>
+        <button data-page="coordination">🧭 Coordination</button>
+      </nav>
+      <hr style="margin:12px 0;border:none;border-top:1px solid #eef2f4">
+      <div class="muted" style="font-weight:700">نسخهٔ نمایشی — داده‌ها در مرورگر شما ذخیره می‌شود</div>
+    </aside>
 
-  <script>
-    // --- Navigation اصلاح شده ---
-    const pages = ['home','trainers','dashboard','coordination'];
+    <section>
+      <!-- HOME -->
+      <div id="page-home" class="page active fade-in">
+        <section class="hero">
+          <div class="brand-small">Snapp!</div>
+          <div class="hero-inner">
+            <h1 class="hero-title">Snapp! Learning & Assistance Platform</h1>
+            <p class="hero-sub">پلتفرمی برای مدیریت مربیان، Coordination و چرخه آموزش. آماده برای دمو و توسعه داخلی.</p>
+          </div>
+        </section>
+      </div>
 
-    function showPage(p){
-      pages.forEach(pp => {
-        const pageEl = document.getElementById('page-' + pp);
-        const btnEl = document.querySelector('[data-page="'+pp+'"]');
-        if(pageEl) pageEl.classList.remove('active');
-        if(btnEl) btnEl.classList.remove('active');
-      });
+      <!-- TRAINERS -->
+      <div id="page-trainers" class="page fade-in">
+        <section class="hero"><div class="brand-small">Snapp!</div><div class="hero-inner"><h1 class="hero-title">ثبت مربیان</h1></div></section>
+      </div>
 
-      const pageToShow = document.getElementById('page-' + p);
-      const btnToActive = document.querySelector('[data-page="'+p+'"]');
+      <!-- DASHBOARD -->
+      <div id="page-dashboard" class="page fade-in">
+        <section class="hero"><div class="brand-small">Snapp!</div><div class="hero-inner"><h1 class="hero-title">داشبورد مدیریتی</h1></div></section>
+      </div>
 
-      if(pageToShow) pageToShow.classList.add('active');
-      if(btnToActive) btnToActive.classList.add('active');
+      <!-- COORDINATION -->
+      <div id="page-coordination" class="page fade-in">
+        <section class="hero"><div class="brand-small">Snapp!</div><div class="hero-inner"><h1 class="hero-title">Coordination</h1></div></section>
+      </div>
+    </section>
+  </div>
+</main>
 
-      window.scrollTo({top:0, behavior:'smooth'});
-    }
+<footer style="text-align:center;color:var(--muted);padding:18px">Prepared by your teammate — demo version.</footer>
 
-    // اضافه کردن event listener به همه دکمه‌ها
-    document.querySelectorAll('.nav button, .actions button').forEach(btn=>{
-      const page = btn.dataset.page || btn.id.replace('nav-','');
-      btn.addEventListener('click', ()=> showPage(page));
+<script>
+  // --- NAVIGATION ---
+  const pages = ['home','trainers','dashboard','coordination'];
+  function showPage(p){
+    pages.forEach(pp=>{
+      const pageEl = document.getElementById('page-'+pp);
+      const btnEl = document.querySelector('[data-page="'+pp+'"]');
+      if(pageEl) pageEl.classList.remove('active');
+      if(btnEl) btnEl.classList.remove('active');
     });
+    const pageToShow = document.getElementById('page-'+p);
+    const btnToActive = document.querySelector('[data-page="'+p+'"]');
+    if(pageToShow) pageToShow.classList.add('active');
+    if(btnToActive) btnToActive.classList.add('active');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
 
-    // بارگذاری اولیه: نمایش صفحه خانه
-    showPage('home');
-  </script>
+  document.querySelectorAll('.nav button, .actions button').forEach(btn=>{
+    const page = btn.dataset.page;
+    btn.addEventListener('click', ()=> showPage(page));
+  });
+
+  // نمایش اولیه
+  showPage('home');
+</script>
 </body>
 </html>
