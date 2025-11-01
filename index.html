@@ -1,293 +1,187 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Snapp! Learning & Assistance Platform</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 :root{
-  --snapp-green:#00E676;
-  --accent:#00bfa5;
-  --bg:#f6f8fa;
+  --primary:#4A90E2;
+  --secondary:#50E3C2;
+  --accent:#F5A623;
+  --bg:#F4F6F8;
   --card:#fff;
-  --muted:#6b757b;
+  --muted:#6B757B;
   --container:1200px;
   --radius:12px;
+  --transition:.3s ease;
 }
-*{box-sizing:border-box}
-html,body{height:100%}
-body{margin:0;font-family:'Montserrat',system-ui,Arial;background:var(--bg);color:#081218;-webkit-font-smoothing:antialiased}
-a{color:inherit}
-button{cursor:pointer}
-.app{max-width:var(--container);margin:18px auto;padding:14px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Montserrat',system-ui,Arial;background:var(--bg);color:#081218;height:100%;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;transition:var(--transition)}
+.app{max-width:var(--container);margin:0 auto;padding:20px}
 
 /* Topbar */
-.top{display:flex;align-items:center;gap:14px}
-.brand{background:linear-gradient(90deg,var(--snapp-green),var(--accent));color:#fff;padding:10px 14px;border-radius:10px;font-weight:800;font-size:1.2rem}
-.title{font-size:1.25rem;font-weight:800}
-.sub{color:var(--muted);margin-top:4px}
-.actions{margin-inline-start:auto;display:flex;gap:8px}
-.btn{background:var(--snapp-green);color:#fff;padding:8px 12px;border-radius:8px;border:0;font-weight:700}
-.btn.ghost{background:transparent;border:1px solid rgba(0,0,0,0.06);color:var(--muted)}
-.btn.active{background:var(--snapp-green);color:#fff}
+.top{display:flex;align-items:center;gap:14px;background:#fff;padding:14px 20px;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.08);position:sticky;top:0;z-index:1000}
+.brand{font-weight:800;font-size:1.5rem;background:linear-gradient(90deg,var(--primary),var(--secondary));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.actions{margin-inline-start:auto;display:flex;gap:10px}
+.actions button{padding:8px 14px;border-radius:8px;border:none;font-weight:600;color:#fff;background:var(--primary)}
+.actions button.ghost{background:transparent;color:var(--muted);border:1px solid rgba(0,0,0,0.1)}
+.actions button.active{background:var(--secondary);color:#fff}
 
-/* Pages */
+/* Layout */
+.layout{display:grid;grid-template-columns:220px 1fr;gap:18px;margin-top:18px}
+.sidebar{background:var(--card);border-radius:var(--radius);padding:14px;box-shadow:0 6px 24px rgba(0,0,0,0.06);position:sticky;top:80px;height:calc(100vh - 100px);overflow:auto}
+.nav{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.nav button{display:flex;align-items:center;gap:8px;padding:10px;border-radius:10px;background:transparent;border:0;text-align:right;font-weight:700}
+.nav button:hover{background:rgba(74,144,226,0.08)}
+.nav button.active{background:var(--secondary);color:#fff}
+
+/* Page container */
 .page{display:none}
 .page.active{display:block}
 
 /* Hero */
-.hero{background:linear-gradient(180deg, rgba(0,0,0,0.04), rgba(0,0,0,0.02)),var(--snapp-green);color:#fff;border-radius:16px;padding:28px;margin-top:14px;position:relative;overflow:hidden;text-align:center}
-.hero-title{font-weight:800;font-size:2.2rem;margin:6px 0}
-.hero-sub{opacity:0.95;margin:6px 0;font-weight:600}
+.hero{background:linear-gradient(135deg, var(--primary), var(--secondary));color:#fff;border-radius:16px;padding:28px;position:relative;overflow:hidden;text-align:center}
+.hero-title{font-weight:800;font-size:2.4rem;margin:10px 0}
+.hero-sub{font-weight:500;opacity:0.9}
 
-/* Forms & cards */
+/* Cards & grid */
+.grid{display:grid;grid-template-columns:1fr 360px;gap:18px;margin-top:18px}
+.card{background:var(--card);border-radius:var(--radius);padding:14px;box-shadow:0 6px 24px rgba(0,0,0,0.06)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.trainer-card{background:#fff;border-radius:12px;padding:12px;border-left:6px solid var(--secondary);position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,0.04);transition:transform .25s ease,opacity .3s ease}
+.trainer-card:hover{transform:translateY(-5px)}
+.status-badge{position:absolute;top:12px;left:12px;background:var(--primary);color:#fff;padding:6px 10px;border-radius:999px;font-weight:700;font-size:0.82rem}
+
+/* Forms */
 form label{display:block;font-weight:700;margin-bottom:6px}
 .field{margin-bottom:12px}
 input[type=text],input[type=password],select,input[type=date],textarea{width:100%;padding:10px;border-radius:10px;border:1px solid #e6e9ec;font-size:0.95rem}
 textarea{min-height:80px}
+textarea::placeholder{color:#999}
 .row{display:flex;gap:10px}
 .row .col{flex:1}
-.card{background:var(--card);border-radius:12px;padding:14px;box-shadow:0 8px 24px rgba(11,23,32,0.06);margin-top:12px}
 
-/* Cards list */
-.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
-.trainer-card{background:linear-gradient(180deg,#fff,#fbfdff);border-radius:12px;padding:12px;border-left:6px solid var(--snapp-green);position:relative;overflow:hidden;box-shadow:0 6px 18px rgba(11,23,32,0.04);transition:transform .18s ease,opacity .25s ease}
-.trainer-card:hover{transform:translateY(-6px)}
-.status-badge{position:absolute;top:12px;left:12px;background:var(--snapp-green);color:#fff;padding:6px 10px;border-radius:999px;font-weight:700;font-size:0.82rem}
-.state-pending{border-left-color:#9aa0a6}
-.state-review{border-left-color:#2196f3}
-.state-started{border-left-color:var(--snapp-green)}
-.state-complete{border-left-color:#f2b90f}
+/* Footer */
+footer{margin-top:18px;text-align:center;color:var(--muted);font-size:0.95rem}
 
-/* Flip card */
-.flip-wrap{perspective:1000px}
-.flip-card{width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;position:relative}
-.flip-front,.flip-back{backface-visibility:hidden;position:relative;border-radius:10px;padding:12px}
-.flip-back{position:absolute;inset:0;transform:rotateY(180deg);background:linear-gradient(180deg,#fff,#fcfff7)}
-.flipped{transform:rotateY(180deg)}
-
-/* Dashboard */
-.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:12px}
-.kpi{background:var(--card);padding:12px;border-radius:12px;box-shadow:0 8px 18px rgba(11,23,32,0.04);display:flex;flex-direction:column;gap:6px}
-.kpi .num{font-weight:800;font-size:1.4rem}
-.charts{display:grid;grid-template-columns:1fr 420px;gap:12px;margin-top:12px}
-.chart-card{background:var(--card);padding:12px;border-radius:12px}
-canvas{width:100%!important;height:260px!important}
+/* Animations */
+.fade-in{animation:fadeIn .45s ease both}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
 /* Login */
-.login-card{max-width:400px;margin:50px auto;background:#fff;padding:20px;border-radius:12px;box-shadow:0 8px 20px rgba(11,23,32,0.12)}
-.login-card h2{margin-top:0;text-align:center}
-.login-card input{margin-bottom:12px}
-.login-error{color:red;text-align:center;margin-bottom:10px}
-
-/* Responsive */
-@media(max-width:1000px){.kpis{grid-template-columns:repeat(2,1fr)}.charts{grid-template-columns:1fr}}
+#login-container{max-width:400px;margin:100px auto;background:#fff;padding:28px;border-radius:16px;box-shadow:0 8px 28px rgba(0,0,0,0.12);text-align:center}
+#login-container h2{margin-bottom:20px;font-weight:800;color:var(--primary)}
+#login-container input{margin-bottom:14px}
+#login-container button{width:100%}
 </style>
 </head>
 <body>
-<main class="app">
 
-<!-- LOGIN -->
-<div id="page-login" class="page active">
-  <div class="login-card">
-    <h2>ورود به پلتفرم Snapp!</h2>
-    <div class="login-error" id="login-error"></div>
-    <div class="field"><label>نام کاربری</label><input type="text" id="login-user" placeholder="کاربری خود را وارد کنید"></div>
-    <div class="field"><label>رمز عبور</label><input type="password" id="login-pass" placeholder="رمز عبور"></div>
-    <button class="btn" id="login-btn">ورود</button>
-    <p style="margin-top:12px;font-size:0.9rem;color:var(--muted)">مدیر: manager / snapp123 | مربی: trainer / training</p>
-  </div>
+<!-- Login Page -->
+<div id="login-container">
+<h2>ورود به Snapp!</h2>
+<input type="text" id="login-user" placeholder="نام کاربری" required>
+<input type="password" id="login-pass" placeholder="رمز عبور" required>
+<button id="login-btn">ورود</button>
+<p style="margin-top:12px;color:var(--muted);font-size:0.9rem">مدیر: manager / snapp123 | مربی: trainer / training</p>
 </div>
 
-<!-- HOME -->
-<div id="page-home" class="page">
-  <div class="hero">
-    <div class="brand-small">Snapp!</div>
-    <div class="hero-inner">
-      <h1 class="hero-title">خوش آمدید!</h1>
-      <p class="hero-sub">این پلتفرم به شما امکان مدیریت مربیان، فرآیند آموزش و Coordination را می‌دهد. با طراحی حرفه‌ای، نمودارها و فرم‌های عملیاتی.</p>
-    </div>
-  </div>
-</div>
+<!-- Main App -->
+<main class="app" style="display:none">
 
-<!-- TRAINERS -->
-<div id="page-trainers" class="page">
-  <section class="card">
-    <h2>فرم ثبت مربی</h2>
-    <form id="trainer-form">
-      <div class="field"><label>نام و نام خانوادگی</label><input id="t-name" type="text" placeholder="مثال: علی رضایی" required></div>
-      <div class="field"><label>سمت</label><input type="text" value="CS_Specialist_QA/Training" readonly></div>
-      <div class="field"><label>عنوان آموزشی</label>
-        <select id="t-course">
-          <option>آموزش دوره اول</option>
-          <option>آموزش دوره دوم</option>
-          <option>آموزش دوره‌ای</option>
-          <option>آموزش همراهی</option>
-        </select>
-      </div>
-      <div class="row">
-        <div class="col field"><label>تاریخ شروع</label><input id="t-start" type="date"></div>
-        <div class="col field"><label>وضعیت</label>
-          <select id="t-status">
-            <option>در حال آموزش</option>
-            <option>تکمیل‌شده</option>
-            <option>در انتظار</option>
-          </select>
-        </div>
-      </div>
-      <div class="field"><label>توضیحات</label><textarea id="t-note" placeholder="اختیاری"></textarea></div>
-      <div style="display:flex;gap:10px">
-        <button class="btn" type="submit">ثبت مربی</button>
-        <button type="button" id="t-clear" class="btn ghost">پاک‌سازی</button>
-      </div>
-    </form>
-  </section>
-  <div class="card">
-    <h3>مربیان ثبت‌شده</h3>
-    <div id="t-active" class="cards"></div>
-    <div id="t-completed" class="cards" style="margin-top:12px"></div>
-  </div>
-</div>
-
-<!-- COORDINATION -->
-<div id="page-coord" class="page">
-  <section class="card">
-    <h2>فرم ثبت نیاز به همیاری</h2>
-    <form id="coord-form">
-      <div class="field"><label>نام و نام خانوادگی کارشناس</label><input id="c-name" type="text" placeholder="مثال: سارا حسینی" required></div>
-      <div class="field"><label>نام کوردیناتور</label><input id="c-coord" type="text" placeholder="مثال: محمد موسوی" required></div>
-      <div class="field"><label>علت نیاز</label><input id="c-reason" type="text" placeholder="علت نیاز به دوره"></div>
-      <div class="row">
-        <div class="col field"><label>تاریخ ثبت درخواست</label><input id="c-date" type="date"></div>
-        <div class="col field"><label>وضعیت</label>
-          <select id="c-status">
-            <option>در انتظار</option>
-            <option>در حال بررسی</option>
-            <option>همیاری شروع شده</option>
-            <option>تکمیل‌شده</option>
-          </select>
-        </div>
-      </div>
-      <div style="display:flex;gap:10px;margin-top:8px">
-        <button class="btn" type="submit">ثبت کارشناس</button>
-        <button type="button" id="c-clear" class="btn ghost">پاک‌سازی</button>
-      </div>
-    </form>
-  </section>
-  <div class="card">
-    <h3>کارشناسان ثبت‌شده</h3>
-    <div id="coord-list" class="cards"></div>
-  </div>
-</div>
-
-<!-- DASHBOARD -->
-<div id="page-dashboard" class="page">
-  <div class="kpis">
-    <div class="kpi"><div class="num" id="k-total">0</div><div class="label">کل مربیان</div></div>
-    <div class="kpi"><div class="num" id="k-active">0</div><div class="label">در حال آموزش</div></div>
-    <div class="kpi"><div class="num" id="k-completed">0</div><div class="label">تکمیل‌شده</div></div>
-    <div class="kpi"><div class="num" id="k-percent">0%</div><div class="label">درصد تکمیل</div></div>
-  </div>
-  <div class="charts">
-    <div class="chart-card"><canvas id="pie-status"></canvas></div>
-    <div class="chart-card"><canvas id="bar-courses"></canvas></div>
-  </div>
-  <div class="charts">
-    <div class="chart-card"><canvas id="line-timeline"></canvas></div>
-  </div>
-</div>
-
-<!-- Footer / navigation -->
-<div class="top" style="margin-top:14px">
+<header class="top">
+  <div class="brand">Snapp!</div>
   <div class="actions">
-    <button id="nav-home" class="btn">خانه</button>
-    <button id="nav-trainers" class="btn ghost">مربیان</button>
-    <button id="nav-dashboard" class="btn ghost">داشبورد</button>
-    <button id="nav-coord" class="btn ghost">Coordination</button>
+    <button data-page="home" class="active">خانه</button>
+    <button data-page="trainers">مربیان</button>
+    <button data-page="dashboard">داشبورد</button>
+    <button data-page="coordination">Coordination</button>
   </div>
+</header>
+
+<div class="layout">
+<aside class="sidebar">
+<div style="font-weight:800">منوی سریع</div>
+<nav class="nav">
+<button data-page="home" class="active">🏠 خانه</button>
+<button data-page="trainers">🎓 مربیان</button>
+<button data-page="dashboard">📊 داشبورد</button>
+<button data-page="coordination">🧭 Coordination</button>
+</nav>
+<hr style="margin:12px 0;border:none;border-top:1px solid #eef2f4">
+<div class="muted" style="font-weight:700">نسخه نمایشی</div>
+</aside>
+
+<section>
+<!-- HOME -->
+<div id="page-home" class="page active fade-in">
+<section class="hero" aria-labelledby="hero-title">
+<div class="hero-title">Snapp! Learning & Assistance Platform</div>
+<p class="hero-sub">یک پلتفرم نمونه برای مدیریت آموزش‌ها، مربیان و فرآیند همیاری. با قابلیت ثبت مربیان، مشاهده داشبورد مدیریتی و مدیریت Coordination.</p>
+</section>
+<div class="grid">
+<section class="card">
+<h2>چرا این پروژه؟</h2>
+<p>این پلتفرم کوچک جریان کامل آموزش و مربی‌گری را نشان می‌دهد: ثبت مربیان، مدیریت آموزش‌ها، تکمیل فرآیندها و مشاهده آمار به صورت نمودار.</p>
+<h3>موارد استفاده</h3>
+<ul>
+<li>نمایش دمو برای مدیران و تایید داخلی</li>
+<li>پیگیری حضور و هماهنگی آموزش</li>
+<li>گزارش‌دهی و تحویل به واحد منابع انسانی</li>
+</ul>
+</section>
+<aside class="card">
+<h3>لینک سریع</h3>
+<div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+<button class="btn" data-page="trainers">پنل مربیان</button>
+<button class="btn" data-page="coordination">پنل Coordination</button>
+<button class="btn" data-page="dashboard">مشاهده داشبورد</button>
+</div>
+</aside>
+</div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- TODO: صفحات مربیان، داشبورد و Coordination با فرم‌ها، نمودارها و جزئیات کامل اضافه شوند -->
+
+</section>
+</div>
+</main>
+
+<footer>Prepared by your teammate — demo version.</footer>
+
 <script>
-// --- Login ---
-const LOGIN_CREDENTIALS = [
-  {user:'manager',pass:'snapp123',role:'admin'},
-  {user:'trainer',pass:'training',role:'trainer'}
-];
-let currentRole = null;
-
-function showPage(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById('page-'+id).classList.add('active');
-  // top menu active state
-  document.querySelectorAll('.actions .btn').forEach(b=>b.classList.remove('active'));
-  const topBtn = document.getElementById('nav-'+id);
-  if(topBtn) topBtn.classList.add('active');
-}
-
-// Login
-document.getElementById('login-btn').addEventListener('click',()=>{
-  const u=document.getElementById('login-user').value.trim();
-  const p=document.getElementById('login-pass').value.trim();
-  const match = LOGIN_CREDENTIALS.find(c=>c.user===u && c.pass===p);
-  if(match){
-    currentRole = match.role;
-    document.getElementById('login-error').textContent='';
-    showPage('home');
-  }else{
-    document.getElementById('login-error').textContent='نام کاربری یا رمز عبور اشتباه است';
-  }
+const loginContainer=document.getElementById('login-container');
+const app=document.querySelector('.app');
+const loginBtn=document.getElementById('login-btn');
+loginBtn.addEventListener('click',()=>{
+  const user=document.getElementById('login-user').value.trim();
+  const pass=document.getElementById('login-pass').value.trim();
+  if((user==='manager' && pass==='snapp123')||(user==='trainer' && pass==='training')){
+    loginContainer.style.display='none';
+    app.style.display='block';
+  } else {alert('نام کاربری یا رمز عبور اشتباه است');}
 });
 
 // Navigation
-document.getElementById('nav-home').addEventListener('click',()=>showPage('home'));
-document.getElementById('nav-trainers').addEventListener('click',()=>showPage('trainers'));
-document.getElementById('nav-dashboard').addEventListener('click',()=>showPage('dashboard'));
-document.getElementById('nav-coord').addEventListener('click',()=>showPage('coord'));
-
-// --- Trainers storage & rendering ---
-const KEY_TRAINERS='cb_trainers_v1';
-let trainers=JSON.parse(localStorage.getItem(KEY_TRAINERS)||'[]');
-const tForm=document.getElementById('trainer-form');
-const tActive=document.getElementById('t-active');
-const tCompleted=document.getElementById('t-completed');
-function saveTr(){localStorage.setItem(KEY_TRAINERS,JSON.stringify(trainers))}
-function renderTr(){tActive.innerHTML=''; tCompleted.innerHTML=''; trainers.forEach((t,idx)=>{
-  const card=document.createElement('div'); card.className='trainer-card';
-  card.innerHTML=`<strong>${t.name}</strong><div class="meta">${t.course} · شروع: ${t.start||'-'}</div><div class="meta">${t.note||''}</div>`;
-  if(t.status==='تکمیل‌شده') tCompleted.appendChild(card); else tActive.appendChild(card);
-})}
-tForm.addEventListener('submit',e=>{e.preventDefault(); const t={name:document.getElementById('t-name').value.trim(),course:document.getElementById('t-course').value,start:document.getElementById('t-start').value,status:document.getElementById('t-status').value,note:document.getElementById('t-note').value.trim()}; trainers.unshift(t); saveTr(); renderTr(); tForm.reset();})
-document.getElementById('t-clear').addEventListener('click',()=>{if(confirm('پاک‌سازی لیست مربیان؟')){trainers=[];saveTr();renderTr()}})
-renderTr();
-
-// --- Coordination ---
-const KEY_COORD='cb_coord_v1';
-let coords=JSON.parse(localStorage.getItem(KEY_COORD)||'[]');
-const cForm=document.getElementById('coord-form'); const cList=document.getElementById('coord-list');
-function saveCoord(){localStorage.setItem(KEY_COORD,JSON.stringify(coords))}
-function renderCoord(){cList.innerHTML=''; coords.forEach((c,idx)=>{
-  const wrap=document.createElement('div'); wrap.className='flip-wrap';
-  const card3d=document.createElement('div'); card3d.className='flip-card';
-  const front=document.createElement('div'); front.className='flip-front card'; front.innerHTML=`<strong>${c.name}</strong><div class="meta">${c.coordinator} · ${c.date||'-'}</div><div>${c.reason||''}</div><div>وضعیت: ${c.status}</div>`;
-  card3d.appendChild(front); wrap.appendChild(card3d); cList.appendChild(wrap);
-})}
-cForm.addEventListener('submit',e=>{e.preventDefault(); const c={name:document.getElementById('c-name').value.trim(),coordinator:document.getElementById('c-coord').value.trim(),reason:document.getElementById('c-reason').value,date:document.getElementById('c-date').value,status:document.getElementById('c-status').value}; coords.unshift(c); saveCoord(); renderCoord(); cForm.reset();})
-document.getElementById('c-clear').addEventListener('click',()=>{if(confirm('پاک‌سازی لیست Coordination؟')){coords=[];saveCoord();renderCoord()}})
-renderCoord();
-
-// --- Dashboard ---
-function updateDashboard(){
-  const total=trainers.length;
-  const active=trainers.filter(t=>t.status!=='تکمیل‌شده').length;
-  const completed=trainers.filter(t=>t.status==='تکمیل‌شده').length;
-  document.getElementById('k-total').textContent=total;
-  document.getElementById('k-active').textContent=active;
-  document.getElementById('k-completed').textContent=completed;
-  document.getElementById('k-percent').textContent=total?Math.round(completed/total*100)+'%':'0%';
+const pages=['home','trainers','dashboard','coordination'];
+function showPage(p){
+pages.forEach(pp=>{
+document.getElementById('page-'+pp)?.classList.remove('active');
+document.querySelector('.nav button[data-page="'+pp+'"]')?.classList.remove('active');
+document.querySelector('.actions button[data-page="'+pp+'"]')?.classList.remove('active');
+});
+document.getElementById('page-'+p)?.classList.add('active');
+document.querySelector('.nav button[data-page="'+p+'"]')?.classList.add('active');
+document.querySelector('.actions button[data-page="'+p+'"]')?.classList.add('active');
+window.scrollTo({top:0,behavior:'smooth'});
 }
-updateDashboard();
+document.querySelectorAll('.nav button, .actions button').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));
 </script>
+
 </body>
 </html>
